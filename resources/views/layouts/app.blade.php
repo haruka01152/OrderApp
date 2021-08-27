@@ -1,48 +1,65 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 
-        @livewireStyles
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-        <!-- Scripts -->
-        <script src="{{ mix('js/app.js') }}" defer></script>
-    </head>
-    <body class="font-sans antialiased">
-        <x-jet-banner />
+  @livewireStyles
 
-        <div class="min-h-screen bg-gray-100">
-            @livewire('navigation-menu')
+  <!-- Scripts -->
+  <script src="{{ mix('js/app.js') }}" defer></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
 
-            <!-- Page Heading -->
-            @if (isset($header))
-                <header class="bg-white shadow">
-                    <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endif
+<body class="font-sans antialiased">
+  <x-jet-banner />
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
-        </div>
+  <div class="min-h-screen bg-gray-100">
+    @livewire('navigation-menu')
 
-        @stack('modals')
+    <!-- Page Heading -->
+    @if (isset($header))
+    <header class="bg-white shadow">
+      <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {{ $header }}
+      </div>
+    </header>
+    @endif
 
-        @livewireScripts
-        
-    </body>
+    <!-- Page Content -->
+    <main>
+      {{ $slot }}
+    </main>
+  </div>
+
+  @stack('modals')
+
+  @livewireScripts
+
+  <script>
+    $(function(){
+    $('.js-open').on('click',function(){
+        $('#overlay, .modal-window').fadeIn();
+        return false;
+    });
+    $('.js-close, #overlay').on('click',function(){
+        $('#overlay, .modal-window').fadeOut();
+        return false;
+    });
+});
+  </script>
+
+</body>
+
 </html>

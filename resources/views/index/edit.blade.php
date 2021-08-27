@@ -1,3 +1,64 @@
+<style>
+    input[type="file"] {
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+    }
+
+    th,
+    td {
+        border: 1px solid gray;
+        padding: .7rem 1.5rem;
+    }
+
+    tbody {
+        width: 100%;
+        display: table;
+    }
+
+    input[type="checkbox"] {
+        display: none;
+        /* チェックボックスは非表示 */
+    }
+
+    /* --- チェックボックス直後のlabel --- */
+    input[type="checkbox"]+label {
+        display: inline-block;
+        opacity: 0;
+        /* 透明度       */
+        cursor: pointer;
+        /* カーソル設定 */
+        transition: .2s;
+        /* なめらか変化 */
+        transform: scale(0.8, 0.8);
+        /* 少し小さく   */
+    }
+
+    /* --- 選択されたチェックボックス直後のlabel --- */
+    input[type="checkbox"]:checked+label {
+        opacity: 1;
+        /* 透明度       */
+        transform: scale(1, 1);
+        /* 原寸に戻す   */
+    }
+
+    .table,
+    .table-cell {
+        border: 1px solid gray;
+        border-collapse: collapse;
+    }
+
+    .table {
+        width: 100%;
+        text-align: center;
+    }
+
+    .table-cell {
+        padding: .7rem 1.5rem;
+        vertical-align: middle;
+    }
+</style>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -42,92 +103,57 @@
                 <div>
                     <h2 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h2>
 
-                    <script type="text/javascript">
-                        window.onload = function() {
-                            var URL_BLANK_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
-                            var elDrop = document.getElementById('droparea');
-                            var elFiles = document.getElementById('files');
+                    <h3 class="pt-10 pb-1">*登録済みの注文書</h3>
 
-                            elDrop.addEventListener('dragover', function(event) {
-                                event.preventDefault();
-                                event.dataTransfer.dropEffect = 'copy';
-                                showDropping();
-                            });
+                    <div class="table">
+                        <div class="table-row bg-gray-200">
+                            <div class="table-cell w-1/12">登録日</div>
+                            <div class="table-cell w-9/12">注文書データ</div>
+                            <div class="table-cell">到着状況<span class="text-xs">　※クリックしてチェック</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">8/24</div>
+                            <div class="table-cell"></div>
+                            <div class="table-cell p-0">
+                                <input type="checkbox" name="s1" id="i1">
+                                <label for="i1" class="block w-full h-full" style="border:none;">
+                                    <i class="fas fa-check fa-2x text-green-500"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">8/24</div>
+                            <div class="table-cell"></div>
+                            <div class="table-cell p-0">
+                                <input type="checkbox" name="s1" id="i2">
+                                <label for="i2" class="block w-full h-full" style="border:none;">
+                                    <i class="fas fa-check fa-2x text-green-500"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell">8/24</div>
+                            <div class="table-cell"></div>
+                            <div class="table-cell p-0">
+                                <input type="checkbox" name="s1" id="i3">
+                                <label for="i3" class="block w-full h-full" style="border:none;">
+                                    <i class="fas fa-check fa-2x text-green-500"></i>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
-                            elDrop.addEventListener('dragleave', function(event) {
-                                hideDropping();
-                            });
+                    <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full my-10 text-center py-24 m-auto text-gray-600">
+                        <input type="file" id="image" name="image" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
+                        ここにファイルをドロップ<br>or<br>下のボタンをクリックして選択
+                    </label>
+                </div>
 
-                            elDrop.addEventListener('drop', function(event) {
-                                event.preventDefault();
-                                hideDropping();
-
-                                var files = event.dataTransfer.files;
-                                showFiles(files);
-                            });
-
-                            document.addEventListener('click', function(event) {
-                                var elTarget = event.target;
-                                if (elTarget.tagName === 'IMG') {
-                                    var src = elTarget.src;
-                                    var w = window.open('about:blank');
-                                    var d = w.document;
-
-                                    d.open();
-                                    d.write('<img src="' + src + '" />');
-                                    d.close();
-                                }
-                            });
-
-                            function showDropping() {
-                                elDrop.classList.add('dropover');
-                            }
-
-                            function hideDropping() {
-                                elDrop.classList.remove('dropover');
-                            }
-
-                            function showFiles(files) {
-                                elFiles.innerHTML = '';
-
-                                for (var i = 0, l = files.length; i < l; i++) {
-                                    var file = files[i];
-                                    var elFile = buildElFile(file);
-                                    elFiles.appendChild(elFile);
-                                }
-                            }
-
-                            function buildElFile(file) {
-                                var elFile = document.createElement('li');
-
-                                if (file.type.indexOf('image/') === 0) {
-                                    var elImage = document.createElement('img');
-                                    elImage.src = URL_BLANK_IMAGE;
-                                    elFile.appendChild(elImage);
-
-                                    attachImage(file, elImage);
-                                }
-
-                                return elFile;
-                            }
-
-                            function attachImage(file, elImage) {
-                                var reader = new FileReader();
-                                reader.onload = function(event) {
-                                    var src = event.target.result;
-                                    elImage.src = src;
-                                    elImage.setAttribute('title', file.name);
-                                };
-                                reader.readAsDataURL(file);
-                            }
-                        }
-                    </script>
-
-                    <div effectallowed="move" id="droparea" class="bg-gray-100 rounded-lg border-dashed border-4 p-10 mt-10">ここにファイルをドロップ</div>
-                    <ul id="files"></ul>
-
+                <div class="pt-16 pb-5 text-center block">
+                    <input type="submit" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
                 </div>
             </form>
         </div>
     </div>
+
 </x-app-layout>

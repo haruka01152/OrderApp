@@ -12,6 +12,11 @@ class IndexController extends Controller
         return view('dashboard');
     }
 
+    public function add()
+    {
+        return view('index.add');
+    }
+
     public function edit(Request $request, $id)
     {
         return view('index.edit');
