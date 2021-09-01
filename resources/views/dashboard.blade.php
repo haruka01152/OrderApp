@@ -135,83 +135,99 @@
                 </form>
             </div>
 
-            <div class="mx-5 w-4/5 bg-white overflow-hidden shadow-xl p-8 h-full">
-                <div class="flex items-center text-blue-500 text-lg mb-7">
-                    <a href="{{route('add')}}" class="inline-block border border-blue-500 rounded-lg py-2 px-4 hover:bg-blue-100">
-                        <i class="fas fa-pencil-alt"></i>
-                        工事作成
-                    </a>
-                    <a class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
-                        ？
-                    </a>
+            <div class="mx-5 w-4/5">
+                <div class="mb-5 bg-white overflow-hidden shadow-xl p-8 border-4 border-gray-500 border-double">
+                    <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">新着アラート</h3>
 
+                    <div class="pt-11 px-3">
+                        <a href="{{route('edit', ['id' => 1])}}" class="mb-1 flex justify-between text-red-600 hover:bg-gray-100">
+                            <div class="block">【未着物品あり】　―　9/1工事　株式会社京都虹彩　FUJITSU PRIMERGY TX1310 M3 Server費用一式</div>
+                            <div class="block">2021-08-24 15:36</div>
+                        </a>
+                        <a href="{{route('edit', ['id' => 1])}}" class="mb-1 flex justify-between text-red-600 hover:bg-gray-100">
+                            <div class="block">【未着物品あり】　―　9/1工事　株式会社京都虹彩　FUJITSU PRIMERGY TX1310 M3 Server費用一式</div>
+                            <div class="block">2021-08-24 15:36</div>
+                        </a>
+                    </div>
                 </div>
-                <table class="text-center m-auto block overflow-x-scroll whitespace-nowrap w-full">
-                    <tr class="bg-gray-200 hover:bg-gray-200">
-                        <th>契約日</a></th>
-                        <th>工事日</th>
-                        <th>お客様名</th>
-                        <th>案件名</th>
-                        <th>物品到着状況</th>
-                    </tr>
-                    <tr>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}"></a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">株式会社京都虹彩</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">FUJITSU PRIMERGY TX1310 M3 Server費用一式</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">未</a></td>
-                    </tr>
-                    <tr>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">光本瓦店有限会社</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">PC廃棄料一式</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}"><i class="fas fa-check fa-2x text-green-500"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-19</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-30</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">株式会社ライフシード</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">無線AP取付費用一式（同志社大学様分）</a></td>
-                        <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">1/5</a></td>
-                    </tr>
-                </table>
+                <div class="bg-white overflow-hidden shadow-xl p-8">
+                    <div class="flex items-center text-blue-500 text-lg mb-7">
+                        <a href="{{route('add')}}" class="inline-block border border-blue-500 rounded-lg py-2 px-4 hover:bg-blue-100">
+                            <i class="fas fa-pencil-alt"></i>
+                            工事作成
+                        </a>
+                        <a class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
+                            ？
+                        </a>
+
+                    </div>
+                    <table class="text-center m-auto block overflow-x-scroll whitespace-nowrap w-full">
+                        <tr class="bg-gray-200 hover:bg-gray-200">
+                            <th>契約日</a></th>
+                            <th>工事日</th>
+                            <th>お客様名</th>
+                            <th>案件名</th>
+                            <th>物品到着状況</th>
+                        </tr>
+                        <tr>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}"></a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">株式会社京都虹彩</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">FUJITSU PRIMERGY TX1310 M3 Server費用一式</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">未</a></td>
+                        </tr>
+                        <tr>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-24</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">光本瓦店有限会社</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">PC廃棄料一式</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}"><i class="fas fa-check fa-2x text-green-500"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-19</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">2021-08-30</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">株式会社ライフシード</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">無線AP取付費用一式（同志社大学様分）</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => 1])}}">1/5</a></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             <div class="bg-white overflow-hidden shadow-xl p-8 h-full" style="width:25%;">
                 <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">操作履歴</h3>
 
                 <div class="mt-11 px-4">
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが工事内容を修正しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
-                <div class="my-4 pb-3 border-b border-gray-300">
-                    <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                    <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                    <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが工事内容を修正しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
                 </div>
 
             </div>

@@ -62,7 +62,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            工事情報編集
+            工事編集
         </h2>
     </x-slot>
 
@@ -73,11 +73,11 @@
         <a href="{{route('edit', ['id' => 1])}}" class="text-blue-500 pr-3">工事情報編集</a>
     </div>
 
-    <div class="py-12">
-        <div>
-            <form class="max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+    <div class="pt-12 pb-28">
+        <div class="flex justify-between">
+            <form class="mx-10 max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
                 <div>
-                    <h2 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h2>
+                    <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
 
                     <div class="flex pt-10">
                         <div class="flex flex-col">
@@ -101,15 +101,15 @@
                 </div>
 
                 <div>
-                    <h2 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h2>
+                    <h3 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h3>
 
-                    <h3 class="pt-10 pb-1">*登録済みの注文書</h3>
+                    <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書</h4>
 
                     <div class="table">
                         <div class="table-row bg-gray-200">
                             <div class="table-cell w-1/12">登録日</div>
                             <div class="table-cell w-9/12">注文書データ</div>
-                            <div class="table-cell">到着状況<span class="text-xs">　※クリックしてチェック</span></div>
+                            <div class="table-cell">到着状況<span class="text-xs"><br>※クリックしてチェック</span></div>
                         </div>
                         <div class="table-row">
                             <div class="table-cell">8/24</div>
@@ -143,16 +143,85 @@
                         </div>
                     </div>
 
-                    <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full my-10 text-center py-24 m-auto text-gray-600">
+                    <div>
+                        <h4 class="pt-10 pb-3 text-gray-800">◆アラート設定</h4>
+
+                        <div class="flex justify-around py-5 border-4 border-gray-500 border-double">
+                           <div>
+                               <label for="">2週間前</label>
+                               <input type="radio" name="alert" value="" id="" checked>
+                            </div>
+                            <div>
+                               <label for="">1週間前</label>
+                               <input type="radio" name="alert" value="" id="">
+                            </div>
+                            <div>
+                               <label for="">5日前</label>
+                               <input type="radio" name="alert" value="" id="">
+                            </div>
+                            <div>
+                               <label for="">2日前</label>
+                               <input type="radio" name="alert" value="" id="">
+                            </div>
+                        </div>
+
+                        <p class="text-sm pt-3 text-right">※すべて土日祝を除いた日数</p>
+                    </div>
+
+                    <div>
+                    <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
+
+                    <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full mb-10 text-center py-24 m-auto text-gray-600">
                         <input type="file" id="image" name="image" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
                         ここにファイルをドロップ<br>or<br>下のボタンをクリックして選択
                     </label>
+
+                    </div>
                 </div>
 
-                <div class="pt-16 pb-5 text-center block">
+                <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
                     <input type="submit" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
                 </div>
             </form>
+
+            <div class="bg-white overflow-hidden shadow-xl p-8 h-full" style="width:25%;">
+                <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">この工事の操作履歴</h3>
+
+                <div class="mt-11 px-4">
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが工事内容を修正しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                    <div class="my-4 pb-3 border-b border-gray-300">
+                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
+                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
+                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
