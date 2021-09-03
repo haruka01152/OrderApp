@@ -115,18 +115,12 @@
                     </div>
 
                     <div class="pt-5 mr-auto ml-2">
+                        @foreach($statuses as $status)
                         <div>
-                            <input type="radio" id="notchecked" name="view" value="" checked>
-                            <label for="notchecked">物品未着</label>
+                            <input type="radio" id="notchecked" name="status" value="{{$status->id}}" checked>
+                            <label for="notchecked">{{$status->name}}</label>
                         </div>
-                        <div>
-                            <input type="radio" id="checked" name="view" value="">
-                            <label for="checked">物品到着済</label>
-                        </div>
-                        <div>
-                            <input type="radio" id="all" name="view" value="">
-                            <label for="all">すべて</label>
-                        </div>
+                        @endforeach
                     </div>
 
                     <div class="text-center">
@@ -136,20 +130,22 @@
             </div>
 
             <div class="mx-5 w-4/5">
+
+                @if(count($alerts) > 0)
                 <div class="mb-5 bg-white overflow-hidden shadow-xl p-8 border-4 border-gray-500 border-double">
                     <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">新着アラート</h3>
 
                     <div class="pt-11 px-3">
+                        @foreach($alerts as $alert)
                         <a href="{{route('edit', ['id' => 1])}}" class="mb-1 flex justify-between text-red-600 hover:bg-gray-100">
-                            <div class="block">【未着物品あり】　―　9/1工事　株式会社京都虹彩　FUJITSU PRIMERGY TX1310 M3 Server費用一式</div>
+                            <div class="block">【未着物品あり】　―　{{$alert->construction_id}}工事　株式会社京都虹彩　FUJITSU PRIMERGY TX1310 M3 Server費用一式</div>
                             <div class="block">2021-08-24 15:36</div>
                         </a>
-                        <a href="{{route('edit', ['id' => 1])}}" class="mb-1 flex justify-between text-red-600 hover:bg-gray-100">
-                            <div class="block">【未着物品あり】　―　9/1工事　株式会社京都虹彩　FUJITSU PRIMERGY TX1310 M3 Server費用一式</div>
-                            <div class="block">2021-08-24 15:36</div>
-                        </a>
+                        @endforeach
                     </div>
                 </div>
+                @endif
+
                 <div class="bg-white overflow-hidden shadow-xl p-8">
                     <div class="flex items-center text-blue-500 text-lg mb-7">
                         <a href="{{route('add')}}" class="inline-block border border-blue-500 rounded-lg py-2 px-4 hover:bg-blue-100">

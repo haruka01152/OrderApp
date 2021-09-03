@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Alert extends Model
 {
     use HasFactory;
+
+    public function constructions()
+    {
+        return $this->hasOne('App\Models\Construction');
+    }
 }
