@@ -16,6 +16,7 @@ class CreateAlertConfigsTable extends Migration
         Schema::create('alert__configs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('period');
             $table->timestamps();
         });
     }

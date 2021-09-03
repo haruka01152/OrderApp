@@ -15,8 +15,8 @@ class CreateConstructionsTable extends Migration
     {
         Schema::create('constructions', function (Blueprint $table) {
             $table->id();
-            $table->date('contract_date');
-            $table->date('construction_date');
+            $table->date('contract_date')->nullable();
+            $table->date('construction_date')->nullable();
             $table->string('customer_name');
             $table->string('construction_name');
             $table->integer('alert_config');

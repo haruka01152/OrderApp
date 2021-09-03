@@ -70,7 +70,7 @@
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('edit', ['id' => 1])}}" class="text-blue-500 pr-3">工事情報編集</a>
+        <a href="{{route('edit', ['id' => 1])}}" class="text-blue-500 pr-3">工事編集</a>
     </div>
 
     <div class="pt-12 pb-28">
@@ -108,12 +108,14 @@
                     <div class="table">
                         <div class="table-row bg-gray-200">
                             <div class="table-cell w-1/12">登録日</div>
-                            <div class="table-cell w-9/12">注文書データ</div>
-                            <div class="table-cell">到着状況<span class="text-xs"><br>※クリックしてチェック</span></div>
+                            <div class="table-cell">注文書データ</div>
+                            <div class="table-cell w-4/12">備考</div>
+                            <div class="table-cell w-2/12">到着状況<span class="text-xs"><br>※クリックしてチェック</span></div>
                         </div>
                         <div class="table-row">
                             <div class="table-cell">8/24</div>
                             <div class="table-cell"></div>
+                            <div class="table-cell">〇〇は到着　△△はまだかかりそう→9/15到着見込！</div>
                             <div class="table-cell p-0">
                                 <input type="checkbox" name="s1" id="i1">
                                 <label for="i1" class="block w-full h-full" style="border:none;">
@@ -124,6 +126,7 @@
                         <div class="table-row">
                             <div class="table-cell">8/24</div>
                             <div class="table-cell"></div>
+                            <div class="table-cell"></div>
                             <div class="table-cell p-0">
                                 <input type="checkbox" name="s1" id="i2">
                                 <label for="i2" class="block w-full h-full" style="border:none;">
@@ -133,6 +136,7 @@
                         </div>
                         <div class="table-row">
                             <div class="table-cell">8/24</div>
+                            <div class="table-cell"></div>
                             <div class="table-cell"></div>
                             <div class="table-cell p-0">
                                 <input type="checkbox" name="s1" id="i3">
