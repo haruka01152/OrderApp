@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Status;
 use App\Models\Alert;
+use App\Models\Construction;
 
 class IndexController extends Controller
 {
@@ -13,7 +14,8 @@ class IndexController extends Controller
     {
         $statuses = Status::all();
         $alerts = Alert::all();
-        return view('dashboard', compact('statuses', 'alerts'));
+        $constructions = Construction::sortable()->paginate(15);
+        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
     }
 
     public function add()

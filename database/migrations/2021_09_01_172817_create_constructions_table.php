@@ -19,6 +19,7 @@ class CreateConstructionsTable extends Migration
             $table->date('construction_date')->nullable();
             $table->string('customer_name');
             $table->string('construction_name');
+            $table->string('arrive_status');
             $table->integer('alert_config');
             $table->timestamps();
         });

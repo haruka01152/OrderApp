@@ -11,6 +11,6 @@ class Alert extends Model
 
     public function constructions()
     {
-        return $this->hasOne('App\Models\Construction');
+        return $this->belongsTo('App\Models\Construction', 'construction_id', 'id');
     }
 }
