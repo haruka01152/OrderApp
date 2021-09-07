@@ -75,17 +75,18 @@
 
     <div class="pt-12 pb-28">
         <form class="max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+            @csrf
             <div>
                 <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
 
                 <div class="flex pt-10">
                     <div class="flex flex-col">
                         <label for="contract_date">契約日</label>
-                        <input type="date" id="contract_date" name="contract_date" value="" class="mt-1">
+                        <input type="date" id="contract_date" name="contract_date" value="{{old('contract_date')}}" class="mt-1">
                     </div>
                     <div class="flex flex-col ml-10">
-                        <label for="construct_date">工事日</label>
-                        <input type="date" id="construct_date" name="construct_date" value="" class="mt-1">
+                        <label for="construction_date">工事日</label>
+                        <input type="date" id="construction_date" name="construction_date" value="{{old('construction_date')}}" class="mt-1">
                     </div>
                 </div>
 
@@ -94,8 +95,8 @@
                     <input type="text" id="customer_name" name="customer_name" value="" class="mt-1">
                 </div>
                 <div class="flex flex-col pt-10 w-2/4">
-                    <label for="project_title">案件名</label>
-                    <input type="text" id="project_title" name="project_title" value="" class="mt-1">
+                    <label for="construction_name">案件名</label>
+                    <input type="text" id="construction_name" name="construction_name" value="{{old('construction_name')}}" class="mt-1">
                 </div>
             </div>
 
@@ -106,22 +107,12 @@
                     <h4 class="pt-10 pb-3 text-gray-800">◆アラート設定</h4>
 
                     <div class="flex justify-around py-5 border-4 border-gray-500 border-double">
+                        @foreach($alert_configs as $alert_config)
                         <div>
-                            <label for="">2週間前</label>
-                            <input type="radio" name="alert" value="" id="" checked>
+                            <label for="{{$alert_config->name}}">{{$alert_config->name}}</label>
+                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" @if(env('DEFAULT_ALERT_CONFIG') == $alert_config->period || old('alert_config') == $alert_config->period)checked @endif>
                         </div>
-                        <div>
-                            <label for="">1週間前</label>
-                            <input type="radio" name="alert" value="" id="">
-                        </div>
-                        <div>
-                            <label for="">5日前</label>
-                            <input type="radio" name="alert" value="" id="">
-                        </div>
-                        <div>
-                            <label for="">2日前</label>
-                            <input type="radio" name="alert" value="" id="">
-                        </div>
+                        @endforeach
                     </div>
 
                     <p class="text-sm pt-3 text-right">※すべて土日祝を除いた日数</p>
@@ -131,7 +122,7 @@
                     <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
 
                     <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full mb-10 text-center py-24 m-auto text-gray-600">
-                        <input type="file" id="image" name="image" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
+                        <input type="file" id="image" name="image[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
                         ここにファイルをドロップ<br>or<br>下のボタンをクリックして選択
                     </label>
 

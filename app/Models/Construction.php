@@ -11,6 +11,15 @@ class Construction extends Model
     use HasFactory;
     use Sortable;
 
+    protected $fillable = [
+        'contract_date', 
+        'construction_date', 
+        'customer_name',
+        'construction_name',
+        'arrive_status',
+        'alert_config',
+    ];
+
     public $sortable = ['contract_date', 'construction_date', 'customer_name', 'construction_name'];
 
     public function alerts()

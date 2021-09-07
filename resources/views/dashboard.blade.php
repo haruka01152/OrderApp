@@ -179,7 +179,7 @@
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->customer_name}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_name}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">未</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->arrive_status}}</a></td>
                         </tr>
                         @endforeach
                     </table>
