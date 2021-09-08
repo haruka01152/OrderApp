@@ -79,22 +79,23 @@
     <div class="pt-12 pb-28">
         <div class="flex justify-between">
             <form class="mx-10 max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+                @csrf
                 <div>
                     <div class="flex justify-between">
                     <h3 class="w-11/12 text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
 
-                    <a href=""><i class="fas fa-trash-alt fa-2x text-gray-600 hover:text-blue-400"></i>
+                    <a href=""><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
 </a>
                     </div>
 
                     <div class="flex pt-10">
                         <div class="flex flex-col">
                             <label for="contract_date">契約日</label>
-                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}} @else {{old('contract_date')}} @endif" class="mt-1">
+                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}}@else {{old('contract_date')}}@endif" class="mt-1">
                         </div>
                         <div class="flex flex-col ml-10">
                             <label for="construction_date">工事日</label>
-                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}} @else {{old('construction_date')}} @endif" class="mt-1">
+                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}}@else {{old('construction_date')}}@endif" class="mt-1">
                         </div>
                     </div>
 
@@ -122,15 +123,16 @@
                             <div class="table-cell w-2/12">到着状況<span class="text-xs"><br>※クリックしてチェック</span></div>
                         </div>
                         @foreach($orders as $order)
+                        <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
                         <div class="table-row">
                             <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
                             <div class="table-cell"><a href="">{{$order->image}}</a></div>
                             <div class="table-cell p-0">
-                                <input type="text" name="memo" value="@if($order->memo){{$order->memo}} @else {{old('memo')}} @endif" class="block w-full border-none text-center">
+                                <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}} @else {{old('memo')}} @endif" class="block w-full border-none text-center">
                             </div>
                             <div class="table-cell p-0">
-                                <input type="checkbox" name="s1" id="i1">
-                                <label for="i1" class="block w-full h-full" style="border:none;">
+                                <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>
+                                <label for="order{{$order->id}}" class="block w-full h-full" style="border:none;">
                                     <i class="fas fa-check fa-2x text-green-500"></i>
                                 </label>
                             </div>
@@ -146,7 +148,7 @@
                         @foreach($alert_configs as $alert_config)
                         <div>
                             <label for="{{$alert_config->name}}">{{$alert_config->name}}</label>
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" @if(env('DEFAULT_ALERT_CONFIG') == $alert_config->period || request('alert_config') == $alert_config->period)checked @endif>
+                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" @if(old('alert_config') == $alert_config->period)checked @elseif(env('DEFAULT_ALERT_CONFIG') == $alert_config->period) checked @endif>
                         </div>
                         @endforeach
                         </div>

@@ -22,5 +22,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('add', 'IndexController@create');
 
     Route::get('edit/{id}', 'IndexController@edit')->name('edit');
+    Route::post('edit/{id}', 'IndexController@update');
 
 });
