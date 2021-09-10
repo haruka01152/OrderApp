@@ -100,39 +100,33 @@
     </div>
     <div id="overlay" class="overlay"></div>
     <x-slot name="header">
-        <div class="flex items-center">
+        <div class="flex items-center justify-between lg:container m-auto">
+            <div class="flex items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 工事物品管理トップ
             </h2>
             <a class="pl-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
+            </div>
+
+            <form class="flex items-center m-0 w-8/12 justify-end">
+                @csrf
+                <div class="flex px-5">
+                    @foreach($statuses as $status)
+                    <div class="pl-3">
+                        <input type="radio" id="status{{$status->id}}" name="status" value="{{$status->id}}" @if(request('status')==$status->id || !request('status') && $status->id == 1)checked @endif>
+                        <label for="status{{$status->id}}">{{$status->name}}</label>
+                    </div>
+                    @endforeach
+                </div>
+                <input type="text" name="find" value="" placeholder="案件名 or お客様名を検索" class="w-5/12 ml-5">
+                <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
+            </form>
         </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="flex mx-auto max-w-full">
-            <div class="w-80 h-full bg-white overflow-hidden shadow-xl py-8">
-                <form class="flex flex-col items-center w-56 m-auto">
-                    @csrf
-                    <div>
-                        <input type="text" name="find" value="" placeholder="案件名 or お客様名を検索" class="w-full">
-                    </div>
-
-                    <div class="pt-5 mr-auto ml-2">
-                        @foreach($statuses as $status)
-                        <div class="pt-1">
-                            <input type="radio" id="status{{$status->id}}" name="status" value="{{$status->id}}" @if(request('status')==$status->id || !request('status') && $status->id == 1)checked @endif>
-                            <label for="status{{$status->id}}">{{$status->name}}</label>
-                        </div>
-                        @endforeach
-                    </div>
-
-                    <div class="text-center">
-                        <input type="submit" value="検索" class="mt-5 w-52 py-2 border border-gray-400">
-                    </div>
-                </form>
-            </div>
-
-            <div class="mx-5 w-4/5">
+    <div class="py-6">
+        <div class="mx-auto lg:container">
+            <div>
 
                 @if(count($alerts) > 0)
                 <div class="mb-5 bg-white overflow-hidden shadow-xl p-7 border-4 border-gray-500 border-double">
@@ -196,44 +190,6 @@
 
                     @endif
                 </div>
-            </div>
-
-            <div class="bg-white overflow-hidden shadow-xl p-8 h-full" style="width:25%;">
-                <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">操作履歴</h3>
-
-                <div class="mt-11 px-4">
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが工事内容を修正しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
