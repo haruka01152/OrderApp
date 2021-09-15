@@ -25,6 +25,9 @@ class StatusesTableSeeder extends Seeder
             [
                 'name' => 'すべて',
             ],
+            [
+                'name' => '削除済み',
+            ],
         ]);
     }
 }

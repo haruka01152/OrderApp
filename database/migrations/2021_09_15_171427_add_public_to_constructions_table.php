@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogsTable extends Migration
+class AddPublicToConstructionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->string('message');
-            $table->timestamps();
+        Schema::table('constructions', function (Blueprint $table) {
+            //
+            $table->integer('public')->default(1);
         });
     }
 
@@ -27,6 +26,9 @@ class CreateLogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('logs');
+        Schema::table('constructions', function (Blueprint $table) {
+            //
+            $table->dropColumn('public');
+        });
     }
 }

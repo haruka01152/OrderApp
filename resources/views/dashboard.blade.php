@@ -90,8 +90,7 @@
 <x-app-layout>
     <div class="modal-window">
         <h3 class="text-xl pb-8 text-center font-bold">ヘルプ　—　物品到着状況について</h3>
-        <p>・　空欄　―　注文書登録なし</p><br>
-        <p>・　未　―　注文書登録があるが、到着済みの注文書が1つもない</p><br>
+        <p class="pt-5">・　空欄　―　注文書登録なし</p><br>
         <p>・　数字/数字　―　登録された注文書のうち、いくつ到着済かを表示<br>
             　 <span class="text-sm pl-1">例：1/5　→　5つ注文書が登録されていて、そのうちの1つが到着済</span></p><br>
         <p>・　✔　―　登録された注文書すべてが到着済</p>
@@ -102,27 +101,39 @@
     <x-slot name="header">
         <div class="flex items-center justify-between lg:container m-auto">
             <div class="flex items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                工事物品管理トップ
-            </h2>
-            <a class="pl-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    工事物品管理
+                </h2>
+                <a class="ml-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
             </div>
 
             <form class="flex items-center m-0 w-8/12 justify-end">
                 @csrf
-                <div class="flex px-5">
-                    @foreach($statuses as $status)
+                <div class="flex pl-5">
                     <div class="pl-3">
-                        <input type="radio" id="status{{$status->id}}" name="status" value="{{$status->id}}" @if(request('status')==$status->id || !request('status') && $status->id == 1)checked @endif>
-                        <label for="status{{$status->id}}">{{$status->name}}</label>
+                        <select name="status">
+                            @foreach($statuses as $status)
+                            <option value="{{$status->id}}">{{$status->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
-                    @endforeach
                 </div>
                 <input type="text" name="find" value="" placeholder="案件名 or お客様名を検索" class="w-5/12 ml-5">
-                <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
+                <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
             </form>
         </div>
     </x-slot>
+
+    <!-- パンくずリスト -->
+    @if(request('find'))
+    <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
+        <div class="lg:container m-auto">
+            <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('dashboard', ['find' => request('find')])}}" class="text-blue-500 pr-3">絞り込み : {{request('find')}}</a>
+        </div>
+    </div>
+    @endif
 
     <div class="py-6">
         <div class="mx-auto lg:container">
@@ -171,8 +182,8 @@
                         <tr>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->contract_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->customer_name}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_name}}</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 20, '…')}}</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->construction_name, 30, '…')}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->arrive_status}}</a></td>
                         </tr>
                         @endforeach
@@ -185,7 +196,7 @@
                     @else
 
                     <div class="text-center">
-                        <p>データがありません。</p>
+                        <p class="py-10">データがありません。</p>
                     </div>
 
                     @endif
