@@ -25,7 +25,7 @@ class IndexController extends Controller
 
         // 何も入力せず検索したら最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
         return view('dashboard', compact('statuses', 'alerts', 'constructions'));

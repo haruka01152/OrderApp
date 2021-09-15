@@ -113,7 +113,7 @@
                     <div class="pl-3">
                         <select name="status">
                             @foreach($statuses as $status)
-                            <option value="{{$status->id}}">{{$status->name}}</option>
+                            <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
                             @endforeach
                         </select>
                     </div>
