@@ -16,19 +16,39 @@ class IndexController extends Controller
     {
         $statuses = Status::all();
         $alerts = Alert::all();
+        $all_constructions = count(Construction::where('status', '!=', 4)->get());
+
         $constructions = Construction::where(function ($query) {
-            if($find = request('find')){
+            if ($find = request('find')) {
                 $query->where('customer_name', 'LIKE', "%{$find}%")
-                ->orWhere('construction_name', 'LIKE', "%{$find}%");
+                    ->orWhere('construction_name', 'LIKE', "%{$find}%");
+            }
+
+            switch (request('status')) {
+                case null:
+                case 1:
+                    $query->where('status', 1);
+                    break;
+                case 2:
+                    $query->where('status', 2);
+                    break;
+                case 3:
+                    $query->where('status', 1)->orWhere('status', 2);
+                    break;
+                case 4:
+                    $query->where('status', 4);
+                    break;
             }
         })->sortable()->orderBy('contract_date', 'desc')->paginate(15);
+
+        $find_constructions = count($constructions);
 
         // 何も入力せず検索したら最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
-        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
+        return view('dashboard', compact('statuses', 'alerts', 'constructions', 'all_constructions', 'find_constructions'));
     }
 
     public function add()
@@ -71,7 +91,7 @@ class IndexController extends Controller
             ]);
         }
 
-        return redirect()->action('IndexController@index');
+        return redirect()->route('dashboard');
     }
 
     public function edit(Request $request, $id)
@@ -80,7 +100,11 @@ class IndexController extends Controller
         $orders = Order::where('construction_id', $id)->get();
         $alert_configs = Alert_Config::all();
 
-        return view('index.edit', compact('construction', 'orders', 'alert_configs'));
+        if ($construction->status != 4) {
+            return view('index.edit', compact('construction', 'orders', 'alert_configs'));
+        } elseif ($construction->status == 4) {
+            return view('index.deleted', compact('construction', 'orders', 'alert_configs'));
+        }
     }
 
     public function update(Request $request, $id)
@@ -97,15 +121,15 @@ class IndexController extends Controller
         }
 
         // 既存の注文書があれば情報を更新
-        if($request->orders){
-            foreach($request->orders as $order){
+        if ($request->orders) {
+            foreach ($request->orders as $order) {
 
-                if(isset($order['arrive_status'])){
+                if (isset($order['arrive_status'])) {
                     Order::where('id', $order['id'])->update([
                         'memo' => $order['memo'],
                         'arrive_status' => 1,
                     ]);
-                }else{
+                } else {
                     Order::where('id', $order['id'])->update([
                         'memo' => $order['memo'],
                         'arrive_status' => 0,
@@ -118,15 +142,18 @@ class IndexController extends Controller
         $all_orders = count(Order::where('construction_id', $id)->get());
         $arrived_orders = count(Order::where('construction_id', $id)->where('arrive_status', 1)->get());
 
-        if($all_orders > 0){
-            if($all_orders == $arrived_orders){
+        if ($all_orders > 0) {
+            if ($all_orders == $arrived_orders) {
                 $const_arrive_status = '✔';
-            }else{
+                $status = 2;
+            } else {
                 $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
+                $status = 1;
             }
-        }else{
+        } else {
             // 注文書がひとつもない場合
             $const_arrive_status = '';
+            $status = 1;
         }
 
         // 工事情報を更新
@@ -137,27 +164,36 @@ class IndexController extends Controller
             'construction_name' => $request->construction_name,
             'arrive_status' => $const_arrive_status,
             'alert_config' => $request->alert_config,
+            'status' => $status,
         ]);
 
         return redirect()->route('edit', ['id' => $id]);
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, $id)
+    {
         $construction = Construction::findOrFail($id);
         $orders = Order::where('construction_id', $id)->get();
         $alert_configs = Alert_Config::all();
         return view('index.delete', compact('construction', 'orders', 'alert_configs'));
     }
 
-    public function destroy(Request $request, $id){
+    public function destroy(Request $request, $id)
+    {
         Construction::where('id', $id)->update([
-            'public' => 0,
+            'status' => 4,
         ]);
-        return redirect()->action('IndexController@index');
+        return redirect()->route('dashboard');
     }
 
     public function deleteOrder(Request $request)
     {
+        $construction = Construction::findOrFail($request->id);
+
+        if ($construction->status == 4) {
+            return redirect()->route('dashboard');
+        }
+
         $construction_id = $request->id;
         $order_id = $request->orderId;
         Order::where('id', $order_id)->delete();
@@ -166,20 +202,24 @@ class IndexController extends Controller
         $all_orders = count(Order::where('construction_id', $construction_id)->get());
         $arrived_orders = count(Order::where('construction_id', $construction_id)->where('arrive_status', 1)->get());
 
-        if($all_orders > 0){
-            if($all_orders == $arrived_orders){
+        if ($all_orders > 0) {
+            if ($all_orders == $arrived_orders) {
                 $const_arrive_status = '✔';
-            }else{
+                $status = 2;
+            } else {
                 $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
+                $status = 1;
             }
-        }else{
+        } else {
             // 注文書がひとつもない場合
             $const_arrive_status = '';
+            $status = 1;
         }
 
         // 工事情報を更新
         Construction::where('id', $construction_id)->update([
             'arrive_status' => $const_arrive_status,
+            'status' => $status,
         ]);
 
         return redirect()->route('edit', ['id' => $construction_id]);

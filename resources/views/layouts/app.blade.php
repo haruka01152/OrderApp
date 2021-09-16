@@ -57,6 +57,9 @@
         $('#overlay, .modal-window').fadeOut();
         return false;
     });
+    $("#submit_select").change(function(){
+    $("#submit_form").submit();
+});
 });
   </script>
 

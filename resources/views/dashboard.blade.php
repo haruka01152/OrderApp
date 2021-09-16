@@ -90,11 +90,12 @@
 <x-app-layout>
     <div class="modal-window">
         <h3 class="text-xl pb-8 text-center font-bold">ヘルプ　—　物品到着状況について</h3>
-        <p class="pt-5">・　空欄　―　注文書登録なし</p><br>
-        <p>・　数字/数字　―　登録された注文書のうち、いくつ到着済かを表示<br>
+        <div class="pt-5 px-3">
+        <p>＊ 空欄　→　注文書登録なし</p><br>
+        <p>＊ 数字/数字　→　登録された注文書のうち、いくつ到着済かを表示<br>
             　 <span class="text-sm pl-1">例：1/5　→　5つ注文書が登録されていて、そのうちの1つが到着済</span></p><br>
-        <p>・　✔　―　登録された注文書すべてが到着済</p>
-
+        <p>＊ ✔　→　登録された注文書すべてが到着済</p>
+        </div>
         <a class="js-close button-close bg-red-500 text-center">× 閉じる</a>
     </div>
     <div id="overlay" class="overlay"></div>
@@ -107,18 +108,18 @@
                 <a class="ml-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
             </div>
 
-            <form class="flex items-center m-0 w-8/12 justify-end">
+            <form class="flex items-center m-0 w-8/12 justify-end" id="submit_form">
                 @csrf
                 <div class="flex pl-5">
                     <div class="pl-3">
-                        <select name="status">
+                        <select name="status" id="#submit_select" onchange="submit(this.form)">
                             @foreach($statuses as $status)
                             <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
-                <input type="text" name="find" value="" placeholder="案件名 or お客様名を検索" class="w-5/12 ml-5">
+                <input type="text" name="find" value="{{request('find')}}" placeholder="案件名 or お客様名を検索" class="w-5/12 ml-5">
                 <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
             </form>
         </div>
@@ -166,6 +167,10 @@
                         <a class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
                             ？
                         </a>
+
+                        @if(count($constructions) > 0)
+                        <p class="text-gray-400 pl-10">全{{$all_constructions}}件中{{$find_constructions}}件を表示しています</p>
+                        @endif
 
                     </div>
 
