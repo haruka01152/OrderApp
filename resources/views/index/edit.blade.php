@@ -61,9 +61,36 @@
     * {
         box-sizing: border-box;
     }
+
+    .message-text:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 0;
+        display: block;
+        background: #5bc8ac;
+        z-index: -1;
+        transition: .2s;
+    }
+
+    .message-text:hover {
+        color: #fff;
+    }
+
+    .message-text:hover:before {
+        width: 100%;
+    }
 </style>
 
 <x-app-layout>
+
+    @if(Session::has('message'))
+    <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
+        <p class="message-text lg:container m-auto">{{session('message')}}</p>
+    </div>
+    @endif
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             工事編集
@@ -73,9 +100,9 @@
     <!-- パンくずリスト -->
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <div class="lg:container m-auto">
-        <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-        <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事編集</a>
+            <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事編集</a>
         </div>
     </div>
 
@@ -195,7 +222,8 @@
                         <span class="text-sm pb-1 block">2021-08-24 15:36</span>
                         <p class="pb-3">user1さんが新規工事を作成しました。</p>
                         <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
-                    </div>                </div>
+                    </div>
+                </div>
 
             </div>
 

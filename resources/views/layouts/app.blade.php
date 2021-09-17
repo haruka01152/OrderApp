@@ -48,19 +48,21 @@
   @livewireScripts
 
   <script>
-    $(function(){
-    $('.js-open').on('click',function(){
+    $(function() {
+      $('.js-open').on('click', function() {
         $('#overlay, .modal-window').fadeIn();
         return false;
-    });
-    $('.js-close, #overlay').on('click',function(){
+      });
+      $('.js-close, #overlay').on('click', function() {
         $('#overlay, .modal-window').fadeOut();
         return false;
+      });
+      $("#submit_select").change(function() {
+        $("#submit_form").submit();
+      });
+
+      // $('#target_msg_box').delay(5000).fadeOut('slow');
     });
-    $("#submit_select").change(function(){
-    $("#submit_form").submit();
-});
-});
   </script>
 
 </body>

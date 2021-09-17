@@ -167,7 +167,7 @@ class IndexController extends Controller
             'status' => $status,
         ]);
 
-        return redirect()->route('edit', ['id' => $id]);
+        return redirect()->route('edit', ['id' => $id])->with('message', '更新しました。');
     }
 
     public function delete(Request $request, $id)
