@@ -66,7 +66,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            工事編集（削除済み）
+            案件編集（削除済み）
         </h2>
     </x-slot>
 
@@ -75,13 +75,13 @@
         <div class="lg:container m-auto">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事編集（削除済み）</a>
+        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集（削除済み）</a>
         </div>
     </div>
 
     <div class="pt-12 pb-28">
         <div class="flex justify-center">
-            <form class="w-7/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+            <form class="w-7/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="{{route('restore', ['id' => $construction->id])}}" method="post">
                 @csrf
                 <div>
                         <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
@@ -89,21 +89,21 @@
                     <div class="flex pt-10">
                         <div class="flex flex-col">
                             <label for="contract_date">契約日</label>
-                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}}@else {{old('contract_date')}}@endif" class="mt-1" readonly>
+                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}}@endif" class="mt-1" readonly>
                         </div>
                         <div class="flex flex-col ml-10">
                             <label for="construction_date">工事日</label>
-                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}}@else {{old('construction_date')}}@endif" class="mt-1" readonly>
+                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}}@endif" class="mt-1" readonly>
                         </div>
                     </div>
 
                     <div class="flex flex-col pt-10 w-1/4">
                         <label for="customer_name">お客様名</label>
-                        <input type="text" id="customer_name" name="customer_name" value="@if($construction->customer_name){{$construction->customer_name}}@else {{old('customer_name')}} @endif" class="mt-1" readonly>
+                        <input type="text" id="customer_name" name="customer_name" value="@if($construction->customer_name){{$construction->customer_name}}@endif" class="mt-1" readonly>
                     </div>
                     <div class="flex flex-col pt-10 w-2/4">
                         <label for="">案件名</label>
-                        <input type="text" id="construction_name" name="construction_name" value="@if($construction->construction_name){{$construction->construction_name}}@else {{old('construction_name')}} @endif" class="mt-1" readonly>
+                        <input type="text" id="construction_name" name="construction_name" value="@if($construction->construction_name){{$construction->construction_name}}@endif" class="mt-1" readonly>
                     </div>
                 </div>
 

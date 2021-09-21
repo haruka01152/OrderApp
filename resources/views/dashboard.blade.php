@@ -88,6 +88,12 @@
 </style>
 
 <x-app-layout>
+
+@if(Session::has('message'))
+    <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
+        <p class="message-text lg:container m-auto">{{session('message')}}</p>
+    </div>
+    @endif
     <div class="modal-window">
         <h3 class="text-xl pb-8 text-center font-bold">ヘルプ　—　物品到着状況について</h3>
         <div class="pt-5 px-3">
@@ -148,12 +154,15 @@
                         @foreach($alerts as $alert)
                         <a href="{{route('edit', ['id' => $alert->construction_id])}}" class="table-row text-red-600 hover:bg-gray-100">
                             <div class="table-cell w-3/12">【未着物品あり】　―　{{date('m/d', strtotime($alert->constructions->construction_date))}}工事</div>
-                            <div class="table-cell w-3/12">{{$alert->constructions->customer_name}}</div>
-                            <div class="table-cell w-4/12">{{$alert->constructions->construction_name}}</div>
+                            <div class="table-cell w-3/12">{{Str::limit($alert->constructions->customer_name, 20, '…')}}</div>
+                            <div class="table-cell w-4/12">{{Str::limit($alert->constructions->construction_name, 30, '…')}}</div>
                             <div class="table-cell">{{$alert->created_at}}</div>
                         </a>
                         <div class="border-2 border-transparent"></div>
                         @endforeach
+                    </div>
+                    <div class="text-right pt-5 pr-5">
+                        <a href="{{route('alerts')}}" class="text-red-600">すべて見る >></a>
                     </div>
                 </div>
                 @endif
@@ -162,14 +171,14 @@
                     <div class="flex items-center text-blue-500 text-lg mb-7">
                         <a href="{{route('add')}}" class="inline-block border border-blue-500 rounded-lg py-2 px-4 hover:bg-blue-100">
                             <i class="fas fa-pencil-alt"></i>
-                            工事作成
+                            案件作成
                         </a>
                         <a class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
                             ？
                         </a>
 
                         @if(count($constructions) > 0)
-                        <p class="text-gray-400 pl-10">全{{$all_constructions}}件中{{$find_constructions}}件を表示しています</p>
+                        <p class="text-gray-400 pl-10">全{{session('all_constructions')}}件中{{$find_constructions}}件を表示しています</p>
                         @endif
 
                     </div>

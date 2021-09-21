@@ -48,7 +48,7 @@
     display: flex;
     justify-content: center;
     margin-top: 38px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .paginationWrap ul.pagination {

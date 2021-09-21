@@ -61,7 +61,7 @@
         $("#submit_form").submit();
       });
 
-      // $('#target_msg_box').delay(5000).fadeOut('slow');
+      $('#target_msg_box').delay(1000).fadeOut(800);
     });
   </script>
 

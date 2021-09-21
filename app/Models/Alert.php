@@ -9,6 +9,10 @@ class Alert extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'construction_id',
+    ];
+
     public function constructions()
     {
         return $this->belongsTo('App\Models\Construction', 'construction_id', 'id');

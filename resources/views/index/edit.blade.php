@@ -62,24 +62,9 @@
         box-sizing: border-box;
     }
 
-    .message-text:before {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 0;
-        display: block;
-        background: #5bc8ac;
-        z-index: -1;
-        transition: .2s;
-    }
-
-    .message-text:hover {
-        color: #fff;
-    }
-
-    .message-text:hover:before {
-        width: 100%;
+    .error {
+        color: red;
+        padding-top: 5px;
     }
 </style>
 
@@ -93,7 +78,7 @@
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            工事編集
+            案件編集
         </h2>
     </x-slot>
 
@@ -101,8 +86,12 @@
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <div class="lg:container m-auto">
             <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
+            @if($find != 0)
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-            <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事編集</a>
+            <a href="{{url()->previous()}}" class="text-blue-500 pr-3">絞り込み : {{$find}}</a>
+            @endif
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>
         </div>
     </div>
 
@@ -121,22 +110,28 @@
                     <div class="flex pt-10">
                         <div class="flex flex-col">
                             <label for="contract_date">契約日</label>
-                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}}@else {{old('contract_date')}}@endif" class="mt-1">
+                            <input type="date" id="contract_date" name="contract_date" value="@if($construction->contract_date){{$construction->contract_date}}@endif" class="mt-1">
                         </div>
                         <div class="flex flex-col ml-10">
                             <label for="construction_date">工事日</label>
-                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}}@else {{old('construction_date')}}@endif" class="mt-1">
+                            <input type="date" id="construction_date" name="construction_date" value="@if($construction->construction_date){{$construction->construction_date}}@endif" class="mt-1">
                         </div>
                     </div>
 
                     <div class="flex flex-col pt-10 w-1/4">
                         <label for="customer_name">お客様名</label>
-                        <input type="text" id="customer_name" name="customer_name" value="@if($construction->customer_name){{$construction->customer_name}}@else {{old('customer_name')}} @endif" class="mt-1">
+                        <input type="text" id="customer_name" name="customer_name" value="{{!old('customer_name') ? $construction->customer_name : old('customer_name')}}" class="mt-1">
                     </div>
+                    @error('customer_name')
+                    <p class="error">{{$message}}</p>
+                    @enderror
                     <div class="flex flex-col pt-10 w-2/4">
                         <label for="">案件名</label>
-                        <input type="text" id="construction_name" name="construction_name" value="@if($construction->construction_name){{$construction->construction_name}}@else {{old('construction_name')}} @endif" class="mt-1">
+                        <input type="text" id="construction_name" name="construction_name" value="{{!old('construction_name') ? $construction->construction_name : old('construction_name')}}" class="mt-1">
                     </div>
+                    @error('construction_name')
+                    <p class="error">{{$message}}</p>
+                    @enderror
                 </div>
 
                 <div>
@@ -160,7 +155,7 @@
                             <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
                             <div class="table-cell"><a href="" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
                             <div class="table-cell p-0">
-                                <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@else {{old('memo')}}@endif" class="block w-full border-none text-center">
+                                <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                             </div>
                             <div class="table-cell p-0">
                                 <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>

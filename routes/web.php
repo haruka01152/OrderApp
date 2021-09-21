@@ -18,15 +18,23 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // ダッシュボード
     Route::get('/', 'IndexController@index')->name('dashboard');
 
-    Route::get('add', 'IndexController@add')->name('add');
+    Route::get('add', 'ViewController@add')->name('add');
     Route::post('add', 'IndexController@create');
 
-    Route::get('edit/{id}', 'IndexController@edit')->name('edit');
+    Route::get('edit/{id}', 'ViewController@edit')->name('edit');
     Route::post('edit/{id}', 'IndexController@update');
 
     // 注文書の削除
-    Route::get('deleteOrder', 'IndexController@deleteOrder')->name('deleteOrder');
+    Route::get('deleteOrder', 'OrderController@delete')->name('deleteOrder');
     // 工事の削除
-    Route::get('delete/{id}', 'IndexController@delete')->name('delete');
+    Route::get('delete/{id}', 'ViewController@delete')->name('delete');
     Route::post('delete/{id}', 'IndexController@destroy');
+
+    // 削除した工事を復元
+    Route::post('restore/{id}', 'IndexController@restore')->name('restore');
+
+    // 後で消す
+    Route::get('createAlert', 'AlertController@createAlert');
+
+    Route::get('alerts', 'AlertController@alerts')->name('alerts');
 });

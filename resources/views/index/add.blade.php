@@ -57,12 +57,16 @@
         padding: .7rem 1.5rem;
         vertical-align: middle;
     }
+    .error{
+        color:red;
+        padding-top: 5px;
+    }
 </style>
 
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            工事作成
+            案件作成
         </h2>
     </x-slot>
 
@@ -71,7 +75,7 @@
         <div class="lg:container m-auto">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('add')}}" class="text-blue-500 pr-3">工事作成</a>
+        <a href="{{route('add')}}" class="text-blue-500 pr-3">案件作成</a>
         </div>
     </div>
 
@@ -96,10 +100,16 @@
                     <label for="customer_name">お客様名</label>
                     <input type="text" id="customer_name" name="customer_name" value="{{old('customer_name')}}" class="mt-1">
                 </div>
+                @error('customer_name')
+                <p class="error">{{$message}}</p>
+                @enderror
                 <div class="flex flex-col pt-10 w-2/4">
                     <label for="construction_name">案件名</label>
                     <input type="text" id="construction_name" name="construction_name" value="{{old('construction_name')}}" class="mt-1">
                 </div>
+                @error('construction_name')
+                <p class="error">{{$message}}</p>
+                @enderror
             </div>
 
             <div>
@@ -137,8 +147,8 @@
             </div>
 
             <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
-                <input type="submit" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
-            </div>
+                    <input type="button" onclick="submit();" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
+                </div>
         </form>
 
 

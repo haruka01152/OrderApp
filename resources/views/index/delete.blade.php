@@ -71,7 +71,7 @@
         <div class="lg:container m-auto">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事編集</a>
+        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
         <a href="{{route('delete', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事削除</a>
         </div>
@@ -146,7 +146,7 @@
                         @foreach($alert_configs as $alert_config)
                         <div>
                             <label for="{{$alert_config->name}}">{{$alert_config->name}}</label>
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{ $construction->alert_config == $alert_config->period ? 'checked' : '' }}>
+                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{ $construction->alert_config == $alert_config->period ? 'checked' : '' }} disabled>
                         </div>
                         @endforeach
                     </div>
