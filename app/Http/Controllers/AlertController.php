@@ -9,6 +9,7 @@ use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
 use Carbon\Carbon;
+use \Yasumi\Yasumi;
 
 class AlertController extends Controller
 {
@@ -20,15 +21,24 @@ class AlertController extends Controller
 
     public function createAlert()
     {
-        $today = new Carbon('today');
+        $construction = Construction::orderBy('construction_date', 'desc')->take(1)->get();
+        dd($construction);
 
-        $constructions = Construction::where('id', '!=', 'delete')->get();
+        $today = date('m/d/Y');
+        $holidays = Yasumi::create('Japan', date('Y'), 'ja_JP');
 
-        foreach($constructions as $construction){
-            Alert::create([
-                'construction_id' => $construction->id,
-            ]);
-        }
+        // foreach($constructions as $construction){
+            $construction_date = $construction->construction_date;
+            $holidayInBetweenDays = $holidays->between(
+                \DateTime::createFromFormat('m/d/Y', $today),
+                \DateTime::createFromFormat('m/d/Y', $construction_date)
+            );
+            dd($holidayInBetweenDays);
+
+            // Alert::create([
+            //     'construction_id' => $construction->id,
+            // ]);
+        // }
         
         return redirect()->route('dashboard');
     }
