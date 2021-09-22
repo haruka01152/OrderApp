@@ -35,8 +35,20 @@ class IndexController extends Controller
             });
 
             $query->where(function ($query) use ($find) {
-                $query->where('customer_name', 'LIKE', "%{$find}%")
-                    ->orWhere('construction_name', 'LIKE', "%{$find}%");
+                if (strpos($find, ' ') || strpos($find, '　')) {
+                    $find = mb_convert_kana($find, 's');
+                    $find = preg_split('/[\s]+/', $find, -1, PREG_SPLIT_NO_EMPTY);
+                }
+
+                if (is_array($find)) {
+                    foreach ($find as $f) {
+                        $query->where('customer_name', 'LIKE', "%{$f}%")
+                            ->orWhere('construction_name', 'LIKE', "%{$f}%");
+                    }
+                } else {
+                    $query->where('customer_name', 'LIKE', "%{$find}%")
+                        ->orWhere('construction_name', 'LIKE', "%{$find}%");
+                }
             });
         })->sortable()->orderBy('created_at', 'desc');
 
@@ -154,7 +166,10 @@ class IndexController extends Controller
             'status' => $status,
         ]);
 
-        return redirect()->route('edit', ['id' => $id])->with('message', '案件を更新しました。');
+        $previousUrl = request('previousUrl');
+        $find  = urldecode(str_replace('find=', '', strstr($previousUrl, 'find=')));
+
+        return view('index.edit', compact('previousUrl', 'find'))->with('message', '案件を更新しました。');
     }
 
     public function destroy(Request $request, $id)
@@ -173,7 +188,7 @@ class IndexController extends Controller
             Construction::where('id', $id)->update([
                 'status' => 2,
             ]);
-        }else{
+        } else {
             Construction::where('id', $id)->update([
                 'status' => 1,
             ]);

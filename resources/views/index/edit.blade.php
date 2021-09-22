@@ -86,9 +86,9 @@
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <div class="lg:container m-auto">
             <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-            @if($find != 0)
+            @if($previousUrl != 0)
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-            <a href="{{url()->previous()}}" class="text-blue-500 pr-3">絞り込み : {{$find}}</a>
+            <a href="{{$previousUrl}}" class="text-blue-500 pr-3">絞り込み : {{$find}}</a>
             @endif
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
             <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>
@@ -98,6 +98,9 @@
     <div class="pt-12 pb-28">
         <div class="flex justify-center">
             <form class="w-7/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+            @if($previousUrl != 0)
+            <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
+            @endif
                 @csrf
                 <div>
                     <div class="flex justify-between">

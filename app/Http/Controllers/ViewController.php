@@ -28,7 +28,9 @@ class ViewController extends Controller
         // 検索を介していたら検索ワードを取得
         if(strpos(url()->previous(), 'find')){
             $find = urldecode(str_replace('find=', '', strstr(url()->previous(), 'find=')));
+            $previousUrl = url()->previous();
         }else{
+            $previousUrl = 0;
             $find = 0;
         }
 
@@ -38,7 +40,7 @@ class ViewController extends Controller
             $view = 'index.deleted';
         }
 
-        return view($view, compact('construction', 'orders', 'alert_configs', 'find'));
+        return view($view, compact('construction', 'orders', 'alert_configs', 'find', 'previousUrl'));
     }
 
     public function delete(Request $request, $id)
