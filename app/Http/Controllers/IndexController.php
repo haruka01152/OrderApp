@@ -13,44 +13,17 @@ use App\Http\Requests\IndexRequest;
 class IndexController extends Controller
 {
     //
+    public function __construct(Construction $construction)
+    {
+        $this->construction = $construction;
+    }
+
     public function index(Request $request)
     {
         $statuses = Status::all();
         $alerts = Alert::orderBy('id', 'asc')->paginate(5);
 
-        $nonpage_constructions = Construction::where(function ($query) {
-
-            $status = request('status');
-            $find = request('find');
-
-            $query->where(function ($query) use ($status) {
-                if ($status == 3) {
-                    $query->where('status', '=', 1)
-                        ->orWhere('status', '=', 2);
-                } elseif (!$status) {
-                    $query->where('status', '=', 1);
-                } else {
-                    $query->where('status', '=', $status);
-                }
-            });
-
-            $query->where(function ($query) use ($find) {
-                if (strpos($find, ' ') || strpos($find, '　')) {
-                    $find = mb_convert_kana($find, 's');
-                    $find = preg_split('/[\s]+/', $find, -1, PREG_SPLIT_NO_EMPTY);
-                }
-
-                if (is_array($find)) {
-                    foreach ($find as $f) {
-                        $query->where('customer_name', 'LIKE', "%{$f}%")
-                            ->orWhere('construction_name', 'LIKE', "%{$f}%");
-                    }
-                } else {
-                    $query->where('customer_name', 'LIKE', "%{$find}%")
-                        ->orWhere('construction_name', 'LIKE', "%{$find}%");
-                }
-            });
-        })->sortable()->orderBy('created_at', 'desc');
+        $nonpage_constructions = $this->construction->findConstructions();
 
         $constructions = $nonpage_constructions->paginate(20);
         $find_constructions = count($constructions);
@@ -103,7 +76,7 @@ class IndexController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)
@@ -166,10 +139,15 @@ class IndexController extends Controller
             'status' => $status,
         ]);
 
-        $previousUrl = request('previousUrl');
-        $find  = urldecode(str_replace('find=', '', strstr($previousUrl, 'find=')));
+        $construction = Construction::findOrFail($id);
+        $orders = Order::where('construction_id', $id)->get();
+        $alert_configs = Alert_Config::all();
 
-        return view('index.edit', compact('previousUrl', 'find'))->with('message', '案件を更新しました。');
+        $previousUrl = $request->previousUrl;
+        $find  = urldecode(str_replace('find=', '', strstr($previousUrl, 'find=')));
+        $message = '案件を更新しました。';
+
+        return view('index.edit', compact('construction', 'orders', 'alert_configs', 'previousUrl', 'find', 'message'));
     }
 
     public function destroy(Request $request, $id)
