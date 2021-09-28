@@ -69,11 +69,11 @@
     <!-- パンくずリスト -->
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <div class="lg:container m-auto">
-        <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-        <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>
-        <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('delete', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事削除</a>
+            <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('delete', ['id' => $construction->id])}}" class="text-blue-500 pr-3">工事削除</a>
         </div>
     </div>
 
@@ -108,35 +108,35 @@
                 <h3 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h3>
 
                 @if(count($orders) > 0)
-                    <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書</h4>
+                <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書</h4>
 
-                    <div class="table">
-                        <div class="table-row bg-gray-200">
-                            <div class="table-cell w-1/12">登録日</div>
-                            <div class="table-cell">注文書データ</div>
-                            <div class="table-cell w-4/12">備考</div>
-                            <div class="table-cell w-2/12">到着状況</div>
-                        </div>
-
-                        @foreach($orders as $order)
-                        <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
-                        <div class="table-row">
-                            <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
-                            <div class="table-cell"><a href="" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
-                            <div class="table-cell p-0">
-                                <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center" readonly>
-                            </div>
-                            <div class="table-cell p-0">
-                                <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif disabled>
-                                <label for="order{{$order->id}}" class="block w-full h-full" style="border:none;">
-                                    <i class="fas fa-check fa-2x text-gray-500"></i>
-                                </label>
-                            </div>
-                        </div>
-                        @endforeach
-
+                <div class="table">
+                    <div class="table-row bg-gray-200">
+                        <div class="table-cell w-1/12">登録日</div>
+                        <div class="table-cell">注文書データ</div>
+                        <div class="table-cell w-4/12">備考</div>
+                        <div class="table-cell w-2/12">到着状況</div>
                     </div>
-                    @endif
+
+                    @foreach($orders as $order)
+                    <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
+                    <div class="table-row">
+                        <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
+                        <div class="table-cell"><a href="" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
+                        <div class="table-cell p-0">
+                            <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center" readonly>
+                        </div>
+                        <div class="table-cell p-0">
+                            <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif disabled>
+                            <label for="order{{$order->id}}" class="block w-full h-full" style="border:none;">
+                                <i class="fas fa-check fa-2x text-gray-500"></i>
+                            </label>
+                        </div>
+                    </div>
+                    @endforeach
+
+                </div>
+                @endif
 
 
                 <div>

@@ -8,46 +8,38 @@ use Illuminate\Http\Request;
 use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
-
+use App\Models\Alert;
+use App\Class\Common;
 
 class ViewController extends Controller
 {
     //
+    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Alert_Config $alert_config)
+    {
+        $this->construction = $construction;
+        $this->order = $order;
+        $this->alert = $alert;
+        $this->alert_config = $alert_config;
+        $this->common = $common;
+    }
+
     public function add()
     {
-        $alert_configs = Alert_Config::all();
+        $alert_configs = $this->alert_config->all();
         return view('index.add', compact('alert_configs'));
     }
 
     public function edit(Request $request, $id)
     {
-        $construction = Construction::findOrFail($id);
-        $orders = Order::where('construction_id', $id)->get();
-        $alert_configs = Alert_Config::all();
-
-        // 検索を介していたら検索ワードを取得
-        if(strpos(url()->previous(), 'find')){
-            $find = urldecode(str_replace('find=', '', strstr(url()->previous(), 'find=')));
-            $previousUrl = url()->previous();
-        }else{
-            $previousUrl = 0;
-            $find = 0;
-        }
-
-        if ($construction->status != 4) {
-            $view = 'index.edit';
-        } elseif ($construction->status == 4) {
-            $view = 'index.deleted';
-        }
-
+        list($construction, $orders, $alert_configs) = $this->common->getInfoForDetail($id);
+        list($previousUrl, $find) = $this->common->getFindWord($request);
+        $view = $this->common->selectBladeForEdit($id);
         return view($view, compact('construction', 'orders', 'alert_configs', 'find', 'previousUrl'));
     }
 
     public function delete(Request $request, $id)
     {
-        $construction = Construction::findOrFail($id);
-        $orders = Order::where('construction_id', $id)->get();
-        $alert_configs = Alert_Config::all();
+        list($construction, $orders, $alert_configs) = $this->common->getInfoForDetail($id); 
         return view('index.delete', compact('construction', 'orders', 'alert_configs'));
     }
 

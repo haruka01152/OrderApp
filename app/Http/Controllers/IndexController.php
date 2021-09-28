@@ -9,32 +9,25 @@ use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
 use App\Http\Requests\IndexRequest;
+use App\Class\Common;
 
 class IndexController extends Controller
 {
-    //
-    public function __construct(Construction $construction)
+    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert)
     {
         $this->construction = $construction;
+        $this->order = $order;
+        $this->alert = $alert;
+        $this->common = $common;
     }
 
     public function index(Request $request)
     {
-        $statuses = Status::all();
-        $alerts = Alert::orderBy('id', 'asc')->paginate(5);
+        list($statuses, $alerts, $nonpage_constructions, $constructions, $find_constructions) = $this->common->getInfoForDashboard();
 
-        $nonpage_constructions = $this->construction->findConstructions();
+        $this->construction->countHits();
 
-        $constructions = $nonpage_constructions->paginate(20);
-        $find_constructions = count($constructions);
-
-        // 検索でヒットした件数を割り出す
-        if (!request('page')) {
-            $all_constructions = $nonpage_constructions->count();
-            session(['all_constructions' => $all_constructions]);
-        }
-
-        // 何も入力せず検索したら最初のURLにリダイレクト
+        // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
@@ -44,107 +37,17 @@ class IndexController extends Controller
 
     public function create(IndexRequest $request)
     {
-        if ($request->image[0] != null) {
-
-            Construction::create([
-                'contract_date' => $request->contract_date,
-                'construction_date' => $request->construction_date,
-                'customer_name' => $request->customer_name,
-                'construction_name' => $request->construction_name,
-                'arrive_status' => '',
-                'alert_config' => $request->alert_config,
-            ]);
-
-            // 今作成した工事データを取り出す
-            $construction = Construction::latest()->first();
-
-            foreach ($request->image as $image) {
-                Order::create([
-                    'construction_id' => $construction->id,
-                    'image' => $image,
-                    'arrive_status' => 0,
-                ]);
-            }
-        } else {
-            Construction::create([
-                'contract_date' => $request->contract_date,
-                'construction_date' => $request->construction_date,
-                'customer_name' => $request->customer_name,
-                'construction_name' => $request->construction_name,
-                'arrive_status' => '',
-                'alert_config' => $request->alert_config,
-            ]);
-        }
-
+        $this->construction->createConstruction($request);
         return redirect()->route('dashboard')->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)
     {
-        // 新しい注文書があれば登録
-        if ($request->images[0] != null) {
-            foreach ($request->images as $image) {
-                Order::create([
-                    'construction_id' => $id,
-                    'image' => $image,
-                    'arrive_status' => 0,
-                ]);
-            }
-        }
+        $this->construction->updateConstruction($request, $id);
+        list($construction, $orders, $alert_configs) = $this->common->getInfoForDetail($id);
 
-        // 既存の注文書があれば情報を更新
-        if ($request->orders) {
-            foreach ($request->orders as $order) {
+        list($previousUrl, $find) = $this->common->getFindWord($request);
 
-                if (isset($order['arrive_status'])) {
-                    Order::where('id', $order['id'])->update([
-                        'memo' => $order['memo'],
-                        'arrive_status' => 1,
-                    ]);
-                } else {
-                    Order::where('id', $order['id'])->update([
-                        'memo' => $order['memo'],
-                        'arrive_status' => 0,
-                    ]);
-                }
-            }
-        }
-
-        // 注文書の到着状況を取得
-        $all_orders = Order::where('construction_id', $id)->get()->count();
-        $arrived_orders = Order::where('construction_id', $id)->where('arrive_status', 1)->get()->count();
-
-        if ($all_orders > 0) {
-            if ($all_orders == $arrived_orders) {
-                $const_arrive_status = '✔';
-                $status = 2;
-            } else {
-                $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
-                $status = 1;
-            }
-        } else {
-            // 注文書がひとつもない場合
-            $const_arrive_status = '';
-            $status = 1;
-        }
-
-        // 工事情報を更新
-        Construction::where('id', $id)->update([
-            'contract_date' => $request->contract_date,
-            'construction_date' => $request->construction_date,
-            'customer_name' => $request->customer_name,
-            'construction_name' => $request->construction_name,
-            'arrive_status' => $const_arrive_status,
-            'alert_config' => $request->alert_config,
-            'status' => $status,
-        ]);
-
-        $construction = Construction::findOrFail($id);
-        $orders = Order::where('construction_id', $id)->get();
-        $alert_configs = Alert_Config::all();
-
-        $previousUrl = $request->previousUrl;
-        $find  = urldecode(str_replace('find=', '', strstr($previousUrl, 'find=')));
         $message = '案件を更新しました。';
 
         return view('index.edit', compact('construction', 'orders', 'alert_configs', 'previousUrl', 'find', 'message'));
@@ -152,26 +55,13 @@ class IndexController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        Construction::where('id', $id)->update([
-            'status' => 4,
-        ]);
+        $this->construction->destroyConstruction($id);
         return redirect()->route('dashboard')->with('message', '案件を削除しました。');
     }
 
     public function restore(Request $request, $id)
     {
-        $construction = Construction::findOrFail($id);
-
-        if ($construction->arrive_status == '✔') {
-            Construction::where('id', $id)->update([
-                'status' => 2,
-            ]);
-        } else {
-            Construction::where('id', $id)->update([
-                'status' => 1,
-            ]);
-        }
-
+        $this->construction->restoreConstruction($id);
         return redirect()->route('edit', ['id' => $id])->with('message', '案件を復元しました。');
     }
 }

@@ -15,4 +15,10 @@ class Order extends Model
         'memo',
         'arrive_status',
     ];
+
+    public function getOrders($id)
+    {
+        $order = Order::where('construction_id', $id)->get();
+        return $order;
+    }
 }

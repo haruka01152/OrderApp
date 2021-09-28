@@ -17,4 +17,10 @@ class Alert extends Model
     {
         return $this->belongsTo('App\Models\Construction', 'construction_id', 'id');
     }
+
+    public function getAlerts()
+    {
+        $alerts = Alert::orderBy('id', 'asc')->paginate(5);
+        return $alerts;
+    }
 }

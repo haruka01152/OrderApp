@@ -145,7 +145,7 @@
                     <h3 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h3>
 
                     @if(count($orders) > 0)
-                    <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書</h4>
+                    <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書　<span>（到着状況：　{{$construction->arrive_status == '✔' ? 'すべて到着' : $construction->arrive_status}}）</span></h4>
 
                     <div class="table">
                         <div class="table-row bg-gray-200">
