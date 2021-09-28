@@ -78,7 +78,7 @@
     <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
         <p class="message-text lg:container m-auto">{{session('message')}}</p>
     </div>
-    @elseif($errors)
+    @elseif($errors->any())
     <div class="message-box relative bg-red-600 text-white text-lg py-3">
         <p class="message-text lg:container m-auto">※ エラーが発生しました。入力内容を確認してください。</p>
     </div>

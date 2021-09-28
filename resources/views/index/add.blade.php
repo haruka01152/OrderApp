@@ -65,7 +65,7 @@
 </style>
 
 <x-app-layout>
-    @if($errors)
+    @if($errors->any())
     <div class="message-box relative bg-red-600 text-white text-lg py-3">
         <p class="message-text lg:container m-auto">※ エラーが発生しました。入力内容を確認してください。</p>
     </div>
