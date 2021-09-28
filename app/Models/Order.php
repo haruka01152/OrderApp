@@ -21,4 +21,72 @@ class Order extends Model
         $order = Order::where('construction_id', $id)->get();
         return $order;
     }
+
+    public static function createOrder($request, $id)
+    {
+        foreach ($request->images as $image) {
+            Order::create([
+                'construction_id' => $id,
+                'image' => $image,
+                'arrive_status' => 0,
+            ]);
+        }
+    }
+
+    public static function updateOrder($request)
+    {
+        foreach ($request->orders as $order) {
+
+            if (isset($order['arrive_status'])) {
+                Order::where('id', $order['id'])->update([
+                    'memo' => $order['memo'],
+                    'arrive_status' => 1,
+                ]);
+            } else {
+                Order::where('id', $order['id'])->update([
+                    'memo' => $order['memo'],
+                    'arrive_status' => 0,
+                ]);
+            }
+        }
+    }
+
+    public function deleteOrder($request)
+    {
+        $construction_id = $request->id;
+        $construction = Construction::findOrFail($construction_id);
+
+        if ($construction->status == 4) {
+            return redirect()->route('dashboard');
+        }
+
+        Order::where('id', $request->orderId)->delete();
+
+        // 注文書の到着状況を取得
+        $all_orders = Order::where('construction_id', $construction_id)->get()->count();
+        $arrived_orders = Order::where('construction_id', $construction_id)->where('arrive_status', 1)->get()->count();
+
+        if ($all_orders > 0) {
+            if ($all_orders == $arrived_orders) {
+                $const_arrive_status = '✔';
+                $status = 2;
+            } else {
+                $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
+                $status = 1;
+            }
+        } else {
+            // 注文書がひとつもない場合
+            $const_arrive_status = '';
+            $status = 1;
+        }
+
+        // 工事情報を更新
+        Construction::where('id', $construction_id)->update([
+            'arrive_status' => $const_arrive_status,
+            'status' => $status,
+        ]);
+
+        return $construction_id;
+
+    }
 }

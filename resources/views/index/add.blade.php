@@ -57,13 +57,19 @@
         padding: .7rem 1.5rem;
         vertical-align: middle;
     }
-    .error{
-        color:red;
+
+    .error {
+        color: red;
         padding-top: 5px;
     }
 </style>
 
 <x-app-layout>
+    @if($errors)
+    <div class="message-box relative bg-red-600 text-white text-lg py-3">
+        <p class="message-text lg:container m-auto">※ エラーが発生しました。入力内容を確認してください。</p>
+    </div>
+    @endif
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             案件作成
@@ -73,9 +79,9 @@
     <!-- パンくずリスト -->
     <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
         <div class="lg:container m-auto">
-        <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-        <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{route('add')}}" class="text-blue-500 pr-3">案件作成</a>
+            <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{route('add')}}" class="text-blue-500 pr-3">案件作成</a>
         </div>
     </div>
 
@@ -101,14 +107,14 @@
                     <input type="text" id="customer_name" name="customer_name" value="{{old('customer_name')}}" class="mt-1">
                 </div>
                 @error('customer_name')
-                <p class="error">{{$message}}</p>
+                <p class="error">* {{$message}}</p>
                 @enderror
                 <div class="flex flex-col pt-10 w-2/4">
                     <label for="construction_name">案件名</label>
                     <input type="text" id="construction_name" name="construction_name" value="{{old('construction_name')}}" class="mt-1">
                 </div>
                 @error('construction_name')
-                <p class="error">{{$message}}</p>
+                <p class="error">* {{$message}}</p>
                 @enderror
             </div>
 
@@ -139,7 +145,7 @@
                     <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
 
                     <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full mb-10 text-center py-24 m-auto text-gray-600">
-                        <input type="file" id="image" name="image[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
+                        <input type="file" id="image" name="images[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
                         ここにファイルをドロップ<br>or<br>下のボタンをクリックして選択
                     </label>
 
@@ -147,8 +153,8 @@
             </div>
 
             <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
-                    <input type="button" onclick="submit();" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
-                </div>
+                <input type="button" onclick="submit();" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
+            </div>
         </form>
 
 

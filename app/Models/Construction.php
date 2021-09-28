@@ -81,7 +81,7 @@ class Construction extends Model
 
     public function createConstruction($request)
     {
-        if ($request->image[0] != null) {
+        if ($request->images[0] != null) {
 
             Construction::create([
                 'contract_date' => $request->contract_date,
@@ -93,15 +93,10 @@ class Construction extends Model
             ]);
 
             // 今作成した工事データを取り出す
-            $construction = Construction::latest()->first();
+            $id = Construction::latest()->first()->id;
 
-            foreach ($request->image as $image) {
-                Order::create([
-                    'construction_id' => $construction->id,
-                    'image' => $image,
-                    'arrive_status' => 0,
-                ]);
-            }
+            Order::createOrder($request, $id);
+
         } else {
             Construction::create([
                 'contract_date' => $request->contract_date,
@@ -118,31 +113,12 @@ class Construction extends Model
     {
         // 新しい注文書があれば登録
         if ($request->images[0] != null) {
-            foreach ($request->images as $image) {
-                Order::create([
-                    'construction_id' => $id,
-                    'image' => $image,
-                    'arrive_status' => 0,
-                ]);
-            }
+            Order::createOrder($request, $id);
         }
 
         // 既存の注文書があれば情報を更新
         if ($request->orders) {
-            foreach ($request->orders as $order) {
-
-                if (isset($order['arrive_status'])) {
-                    Order::where('id', $order['id'])->update([
-                        'memo' => $order['memo'],
-                        'arrive_status' => 1,
-                    ]);
-                } else {
-                    Order::where('id', $order['id'])->update([
-                        'memo' => $order['memo'],
-                        'arrive_status' => 0,
-                    ]);
-                }
-            }
+            Order::updateOrder($request);
         }
 
         // 注文書の到着状況を取得

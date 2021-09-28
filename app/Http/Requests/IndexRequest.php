@@ -27,6 +27,7 @@ class IndexRequest extends FormRequest
             //
             'customer_name' => ['required', 'max:30'],
             'construction_name' => ['required', 'max:100'],
+            'orders.*.*' => ['nullable', 'max:20'],
         ];
     }
 
@@ -37,6 +38,7 @@ class IndexRequest extends FormRequest
             'customer_name.max' => 'お客様名は30文字以内で入力してください。',
             'construction_name.required' => '案件名を入力してください。', 
             'construction_name.max' => '案件名は100文字以内で入力してください。',
+            'orders.*.memo.max' => '備考は20文字以内で入力してください。', 
         ];
     }
 }

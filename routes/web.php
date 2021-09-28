@@ -25,7 +25,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('edit/{id}', 'IndexController@update');
 
     // 注文書の削除
-    Route::get('deleteOrder', 'OrderController@delete')->name('deleteOrder');
+    Route::get('deleteOrder', 'OrderController@deleteOrder')->name('deleteOrder');
     // 工事の削除
     Route::get('delete/{id}', 'ViewController@delete')->name('delete');
     Route::post('delete/{id}', 'IndexController@destroy');

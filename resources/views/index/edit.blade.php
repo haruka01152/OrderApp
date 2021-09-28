@@ -78,6 +78,10 @@
     <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
         <p class="message-text lg:container m-auto">{{session('message')}}</p>
     </div>
+    @elseif($errors)
+    <div class="message-box relative bg-red-600 text-white text-lg py-3">
+        <p class="message-text lg:container m-auto">※ エラーが発生しました。入力内容を確認してください。</p>
+    </div>
     @endif
 
     <x-slot name="header">
@@ -102,9 +106,9 @@
     <div class="pt-12 pb-28">
         <div class="flex justify-center">
             <form class="w-7/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
-            @if($previousUrl != 0)
-            <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
-            @endif
+                @if($previousUrl != 0)
+                <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
+                @endif
                 @csrf
                 <div>
                     <div class="flex justify-between">
@@ -130,14 +134,14 @@
                         <input type="text" id="customer_name" name="customer_name" value="{{!old('customer_name') ? $construction->customer_name : old('customer_name')}}" class="mt-1">
                     </div>
                     @error('customer_name')
-                    <p class="error">{{$message}}</p>
+                    <p class="error">* {{$message}}</p>
                     @enderror
                     <div class="flex flex-col pt-10 w-2/4">
                         <label for="">案件名</label>
                         <input type="text" id="construction_name" name="construction_name" value="{{!old('construction_name') ? $construction->construction_name : old('construction_name')}}" class="mt-1">
                     </div>
                     @error('construction_name')
-                    <p class="error">{{$message}}</p>
+                    <p class="error">* {{$message}}</p>
                     @enderror
                 </div>
 
@@ -175,8 +179,11 @@
                             </div>
                         </div>
                         @endforeach
-
                     </div>
+
+                    @error('orders.*.*')
+                        <p class="error">* {{$message}}</p>
+                        @enderror
                     @endif
 
                     <div>

@@ -8,16 +8,18 @@ use App\Models\Alert;
 use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
+use App\Models\Log;
 use App\Http\Requests\IndexRequest;
 use App\Class\Common;
 
 class IndexController extends Controller
 {
-    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert)
+    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Log $log)
     {
         $this->construction = $construction;
         $this->order = $order;
         $this->alert = $alert;
+        $this->log = $log;
         $this->common = $common;
     }
 
