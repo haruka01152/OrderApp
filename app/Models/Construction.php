@@ -30,6 +30,12 @@ class Construction extends Model
         return $this->hasMany('App\Models\Alert');
     }
 
+    public static function getConstruction($id)
+    {
+        $construction = Construction::findOrFail($id);
+        return $construction;
+    }
+
     public function findConstructions()
     {
         $nonpage_constructions = Construction::where(function ($query) {
@@ -76,41 +82,36 @@ class Construction extends Model
 
         $all_constructions = $nonpage_constructions->count();
         session(['all_constructions' => $all_constructions]);
+    }
 
+    public function createData($request)
+    {
+        Construction::create([
+            'contract_date' => $request->contract_date,
+            'construction_date' => $request->construction_date,
+            'customer_name' => $request->customer_name,
+            'construction_name' => $request->construction_name,
+            'arrive_status' => '',
+            'alert_config' => $request->alert_config,
+        ]);
     }
 
     public function createConstruction($request)
     {
+        $this->createData($request);
+
         if ($request->images[0] != null) {
-
-            Construction::create([
-                'contract_date' => $request->contract_date,
-                'construction_date' => $request->construction_date,
-                'customer_name' => $request->customer_name,
-                'construction_name' => $request->construction_name,
-                'arrive_status' => '',
-                'alert_config' => $request->alert_config,
-            ]);
-
-            // 今作成した工事データを取り出す
+            // 注文書登録があった場合は登録して、工事の物品到着状況を書き込む
             $id = Construction::latest()->first()->id;
-
             Order::createOrder($request, $id);
-
-        } else {
-            Construction::create([
-                'contract_date' => $request->contract_date,
-                'construction_date' => $request->construction_date,
-                'customer_name' => $request->customer_name,
-                'construction_name' => $request->construction_name,
-                'arrive_status' => '',
-                'alert_config' => $request->alert_config,
-            ]);
+            $orders = Order::getOrders($id)->count();
+            Construction::where('id', $id)->update(['arrive_status' => '0 / ' . $orders]);
         }
     }
 
     public function updateConstruction($request, $id)
     {
+
         // 新しい注文書があれば登録
         if ($request->images[0] != null) {
             Order::createOrder($request, $id);
@@ -122,22 +123,7 @@ class Construction extends Model
         }
 
         // 注文書の到着状況を取得
-        $all_orders = Order::where('construction_id', $id)->get()->count();
-        $arrived_orders = Order::where('construction_id', $id)->where('arrive_status', 1)->get()->count();
-
-        if ($all_orders > 0) {
-            if ($all_orders == $arrived_orders) {
-                $const_arrive_status = '✔';
-                $status = 2;
-            } else {
-                $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
-                $status = 1;
-            }
-        } else {
-            // 注文書がひとつもない場合
-            $const_arrive_status = '';
-            $status = 1;
-        }
+        list($const_arrive_status, $status) = Order::getArriveStatusOfOrders($id);
 
         // 工事情報を更新
         Construction::where('id', $id)->update([

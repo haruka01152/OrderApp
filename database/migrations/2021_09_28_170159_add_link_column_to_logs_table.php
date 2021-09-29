@@ -15,6 +15,7 @@ class AddLinkColumnToLogsTable extends Migration
     {
         Schema::table('logs', function (Blueprint $table) {
             //
+            $table->string('link')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddLinkColumnToLogsTable extends Migration
     {
         Schema::table('logs', function (Blueprint $table) {
             //
+            $table->dropColumn('link');
         });
     }
 }

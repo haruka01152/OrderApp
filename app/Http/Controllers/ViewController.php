@@ -9,17 +9,19 @@ use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
 use App\Models\Alert;
+use App\Models\Log;
 use App\Class\Common;
 
 class ViewController extends Controller
 {
     //
-    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Alert_Config $alert_config)
+    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Alert_Config $alert_config, Log $log)
     {
         $this->construction = $construction;
         $this->order = $order;
         $this->alert = $alert;
         $this->alert_config = $alert_config;
+        $this->log = $log;
         $this->common = $common;
     }
 
@@ -31,10 +33,10 @@ class ViewController extends Controller
 
     public function edit(Request $request, $id)
     {
-        list($construction, $orders, $alert_configs) = $this->common->getInfoForDetail($id);
+        list($construction, $orders, $alert_configs, $logs) = $this->common->getInfoForDetail($id);
         list($previousUrl, $find) = $this->common->getFindWord($request);
         $view = $this->common->selectBladeForEdit($id);
-        return view($view, compact('construction', 'orders', 'alert_configs', 'find', 'previousUrl'));
+        return view($view, compact('construction', 'orders', 'alert_configs', 'find', 'previousUrl', 'logs'));
     }
 
     public function delete(Request $request, $id)

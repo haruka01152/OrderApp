@@ -11,6 +11,7 @@ use App\Models\Order;
 use App\Models\Log;
 use App\Http\Requests\IndexRequest;
 use App\Class\Common;
+use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -40,30 +41,35 @@ class IndexController extends Controller
     public function create(IndexRequest $request)
     {
         $this->construction->createConstruction($request);
+        $id = Construction::latest()->first()->id;
+        $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('dashboard')->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)
     {
         $this->construction->updateConstruction($request, $id);
-        list($construction, $orders, $alert_configs) = $this->common->getInfoForDetail($id);
+        $this->log->createLog(Auth::user()->name, $id, url()->current());
+        list($construction, $orders, $alert_configs, $logs) = $this->common->getInfoForDetail($id);
 
         list($previousUrl, $find) = $this->common->getFindWord($request);
 
         $message = '案件を更新しました。';
 
-        return view('index.edit', compact('construction', 'orders', 'alert_configs', 'previousUrl', 'find', 'message'));
+        return view('index.edit', compact('construction', 'orders', 'alert_configs', 'logs', 'previousUrl', 'find', 'message'));
     }
 
     public function destroy(Request $request, $id)
     {
         $this->construction->destroyConstruction($id);
+        $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('dashboard')->with('message', '案件を削除しました。');
     }
 
     public function restore(Request $request, $id)
     {
         $this->construction->restoreConstruction($id);
+        $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('edit', ['id' => $id])->with('message', '案件を復元しました。');
     }
 }

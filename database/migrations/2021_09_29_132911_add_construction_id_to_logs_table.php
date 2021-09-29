@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DropPublicByConstructionsTable extends Migration
+class AddConstructionIdToLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class DropPublicByConstructionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('constructions', function (Blueprint $table) {
+        Schema::table('logs', function (Blueprint $table) {
             //
-            $table->dropColumn('public');
+            $table->integer('construction_id');
         });
     }
 
@@ -26,8 +26,9 @@ class DropPublicByConstructionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('constructions', function (Blueprint $table) {
+        Schema::table('logs', function (Blueprint $table) {
             //
+            $table->dropColumn('construction_id');
         });
     }
 }

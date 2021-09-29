@@ -104,8 +104,8 @@
     </div>
 
     <div class="pt-12 pb-28">
-        <div class="flex justify-center">
-            <form class="w-7/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+        <div class="flex justify-between mx-auto lg:container">
+            <form class="w-8/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
                 @if($previousUrl != 0)
                 <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
                 @endif
@@ -129,7 +129,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col pt-10 w-1/4">
+                    <div class="flex flex-col pt-10 w-2/4">
                         <label for="customer_name">お客様名</label>
                         <input type="text" id="customer_name" name="customer_name" value="{{!old('customer_name') ? $construction->customer_name : old('customer_name')}}" class="mt-1">
                     </div>
@@ -182,8 +182,8 @@
                     </div>
 
                     @error('orders.*.*')
-                        <p class="error">* {{$message}}</p>
-                        @enderror
+                    <p class="error">* {{$message}}</p>
+                    @enderror
                     @endif
 
                     <div>
@@ -223,19 +223,24 @@
                 </div>
             </form>
 
-            <div class="ml-10 bg-white overflow-hidden shadow-xl py-8 px-5 h-full" style="width:20%;">
-                <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">この工事の操作履歴</h3>
+            @if(count($logs) > 0)
+            <div class="bg-white overflow-hidden shadow-xl py-8 px-5 h-full" style="width:30%;">
+                <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">この案件の操作履歴</h3>
 
+                @foreach($logs as $log)
                 <div class="mt-11 px-4">
                     <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block">2021-08-24 15:36</span>
-                        <p class="pb-3">user1さんが新規工事を作成しました。</p>
-                        <a href="{{route('edit', ['id' => 1])}}" class="border-b border-red-600 text-sm text-red-600">―　株式会社京都虹彩　FUJITSU PRIMERGY...</a>
+                        <span class="text-sm pb-1 block text-blue-600">{{$log->created_at}}</span>
+                        <p class="pb-3">{{$log->message}}</p>
                     </div>
                 </div>
-
+                @endforeach
+                <div class="mt-5 md:mt-0">
+                    {{$logs->appends(request()->query())->links()}}
+                </div>
             </div>
 
+            @endif
         </div>
     </div>
 

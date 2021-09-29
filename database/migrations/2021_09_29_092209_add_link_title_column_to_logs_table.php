@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPublicToConstructionsTable extends Migration
+class AddLinkTitleColumnToLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class AddPublicToConstructionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('constructions', function (Blueprint $table) {
+        Schema::table('logs', function (Blueprint $table) {
             //
-            $table->integer('public')->default(1);
+            $table->string('linkTitle')->nullable();
         });
     }
 
@@ -26,9 +26,9 @@ class AddPublicToConstructionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('constructions', function (Blueprint $table) {
+        Schema::table('logs', function (Blueprint $table) {
             //
-            $table->dropColumn('public');
+            $table->dropColumn('linkTitle');
         });
     }
 }

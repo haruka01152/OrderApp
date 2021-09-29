@@ -16,10 +16,32 @@ class Order extends Model
         'arrive_status',
     ];
 
-    public function getOrders($id)
+    public static function getOrders($id)
     {
-        $order = Order::where('construction_id', $id)->get();
-        return $order;
+        $orders = Order::where('construction_id', $id)->get();
+        return $orders;
+    }
+
+    public static function getArriveStatusOfOrders($id)
+    {
+        $all_orders = Order::where('construction_id', $id)->get()->count();
+        $arrived_orders = Order::where('construction_id', $id)->where('arrive_status', 1)->get()->count();
+
+        if ($all_orders > 0) {
+            if ($all_orders == $arrived_orders) {
+                $const_arrive_status = '✔';
+                $status = 2;
+            } else {
+                $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
+                $status = 1;
+            }
+        } else {
+            // 注文書がひとつもない場合
+            $const_arrive_status = '';
+            $status = 1;
+        }
+
+        return [$const_arrive_status, $status];
     }
 
     public static function createOrder($request, $id)
@@ -63,22 +85,7 @@ class Order extends Model
         Order::where('id', $request->orderId)->delete();
 
         // 注文書の到着状況を取得
-        $all_orders = Order::where('construction_id', $construction_id)->get()->count();
-        $arrived_orders = Order::where('construction_id', $construction_id)->where('arrive_status', 1)->get()->count();
-
-        if ($all_orders > 0) {
-            if ($all_orders == $arrived_orders) {
-                $const_arrive_status = '✔';
-                $status = 2;
-            } else {
-                $const_arrive_status = $arrived_orders . ' / ' . $all_orders;
-                $status = 1;
-            }
-        } else {
-            // 注文書がひとつもない場合
-            $const_arrive_status = '';
-            $status = 1;
-        }
+        list($const_arrive_status, $status) = $this->getArriveStatusOfOrders($construction_id);
 
         // 工事情報を更新
         Construction::where('id', $construction_id)->update([

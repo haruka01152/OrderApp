@@ -7,14 +7,16 @@ use App\Models\Alert_Config;
 use App\Models\Order;
 use App\Models\Alert;
 use App\Models\Status;
+use App\Models\Log;
 
 class Common
 {
-    public function __construct(Construction $construction, Order $order, Alert $alert, Status $status)
+    public function __construct(Construction $construction, Order $order, Alert $alert, Status $status, Log $log)
     {
         $this->construction = $construction;
         $this->order = $order;
         $this->alert = $alert;
+        $this->log = $log;
         $this->status = $status;
     }
 
@@ -34,8 +36,9 @@ class Common
         $construction = Construction::findOrFail($id);
         $orders = $this->order->getOrders($id);
         $alert_configs = Alert_Config::all();
+        $logs = $this->log->getLogs($id);
 
-        return [$construction, $orders, $alert_configs];
+        return [$construction, $orders, $alert_configs, $logs];
     }
 
     public function getFindWord($request)
@@ -66,4 +69,5 @@ class Common
 
         return $view;
     }
+
 }

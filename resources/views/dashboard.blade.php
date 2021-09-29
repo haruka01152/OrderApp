@@ -196,8 +196,8 @@
                         <tr>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->contract_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 20, '…')}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->construction_name, 30, '…')}}</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 25, '…')}}</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->construction_name, 50, '…')}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->arrive_status}}</a></td>
                         </tr>
                         @endforeach

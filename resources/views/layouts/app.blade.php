@@ -62,7 +62,9 @@
       });
 
       $('#target_msg_box').delay(1000).fadeOut(800);
+
     });
+
   </script>
 
 </body>
