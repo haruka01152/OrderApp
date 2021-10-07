@@ -114,7 +114,7 @@
                     <div class="flex justify-between">
                         <h3 class="w-11/12 text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
 
-                        <a href="{{route('delete', ['id' => $construction->id])}}"><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
+                        <a title="この案件を削除する" href="{{route('delete', ['id' => $construction->id])}}"><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
                         </a>
                     </div>
 
@@ -164,7 +164,7 @@
                         <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
                         <div class="table-row">
                             <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
-                            <div class="table-cell"><a href="" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
+                            <div class="table-cell"><a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
                             <div class="table-cell p-0">
                                 <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                             </div>
@@ -218,7 +218,7 @@
                     </div>
                 </div>
 
-                <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
+                <div class="py-7 text-center block fixed -inset-x-0 -bottom-0 z-10" style="background:rgba(0,0,0,.2);">
                     <input type="button" onclick="submit();" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
                 </div>
             </form>
@@ -235,7 +235,7 @@
                     </div>
                 </div>
                 @endforeach
-                <div class="mt-5 md:mt-0">
+                <div class="mt-5 md:mt-0 flex justify-center">
                     {{$logs->appends(request()->query())->links()}}
                 </div>
             </div>

@@ -89,7 +89,7 @@
 
 <x-app-layout>
 
-@if(Session::has('message'))
+    @if(Session::has('message'))
     <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
         <p class="message-text lg:container m-auto">{{session('message')}}</p>
     </div>
@@ -97,10 +97,10 @@
     <div class="modal-window">
         <h3 class="text-xl pb-8 text-center font-bold">ヘルプ　—　物品到着状況について</h3>
         <div class="pt-5 px-3">
-        <p>＊ 空欄　→　注文書登録なし</p><br>
-        <p>＊ 数字/数字　→　登録された注文書のうち、いくつ到着済かを表示<br>
-            　 <span class="text-sm pl-1">例：1/5　→　5つ注文書が登録されていて、そのうちの1つが到着済</span></p><br>
-        <p>＊ ✔　→　登録された注文書すべてが到着済</p>
+            <p>＊ 空欄　→　注文書登録なし</p><br>
+            <p>＊ 数字/数字　→　登録された注文書のうち、いくつ到着済かを表示<br>
+                　 <span class="text-sm pl-1">例：1/5　→　5つ注文書が登録されていて、そのうちの1つが到着済</span></p><br>
+            <p>＊ ✔　→　登録された注文書すべてが到着済</p>
         </div>
         <a class="js-close button-close bg-red-500 text-center">× 閉じる</a>
     </div>
@@ -178,7 +178,12 @@
                         </a>
 
                         @if(count($constructions) > 0)
-                        <p class="text-gray-400 pl-10">全{{session('all_constructions')}}件中{{$find_constructions}}件を表示しています</p>
+                        <div class="ml-auto flex items-center">
+                            <p class="text-gray-400 pl-10">{{$constructions->firstItem()}} - {{$constructions->lastItem()}} 件を表示しています（全{{$constructions->total()}}件）</p>
+                            <div class="-mt-1">
+                                {{$constructions->appends(request()->query())->links()}}
+                            </div>
+                        </div>
                         @endif
 
                     </div>
@@ -202,11 +207,6 @@
                         </tr>
                         @endforeach
                     </table>
-
-                    <div class="mt-5 md:mt-0">
-                        {{$constructions->appends(request()->query())->links()}}
-                    </div>
-
                     @else
 
                     <div class="text-center">

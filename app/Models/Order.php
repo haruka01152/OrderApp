@@ -14,6 +14,7 @@ class Order extends Model
         'image',
         'memo',
         'arrive_status',
+        'path',
     ];
 
     public static function getOrders($id)
@@ -44,13 +45,14 @@ class Order extends Model
         return [$const_arrive_status, $status];
     }
 
-    public static function createOrder($request, $id)
+    public static function createOrder($imageAndPath, $id)
     {
-        foreach ($request->images as $image) {
+        foreach ($imageAndPath as $image => $path) {
             Order::create([
                 'construction_id' => $id,
                 'image' => $image,
                 'arrive_status' => 0,
+                'path' => $path,
             ]);
         }
     }

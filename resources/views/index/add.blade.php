@@ -86,7 +86,7 @@
     </div>
 
     <div class="pt-12 pb-28">
-        <form class="max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+        <form class="max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post" enctype="multipart/form-data">
             @csrf
             <div>
                 <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
@@ -152,7 +152,7 @@
                 </div>
             </div>
 
-            <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
+            <div class="py-7 text-center block fixed -inset-x-0 -bottom-0 z-10" style="background:rgba(0,0,0,.2);">
                 <input type="button" onclick="submit();" value="確定" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
             </div>
         </form>

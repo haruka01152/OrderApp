@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Class\Image;
 
 
 class Construction extends Model
@@ -75,15 +76,6 @@ class Construction extends Model
         return $nonpage_constructions;
     }
 
-    public function countHits()
-    {
-        // 検索でヒットした件数を割り出す
-        $nonpage_constructions = $this->findConstructions();
-
-        $all_constructions = $nonpage_constructions->count();
-        session(['all_constructions' => $all_constructions]);
-    }
-
     public function createData($request)
     {
         Construction::create([
@@ -103,7 +95,8 @@ class Construction extends Model
         if ($request->images[0] != null) {
             // 注文書登録があった場合は登録して、工事の物品到着状況を書き込む
             $id = Construction::latest()->first()->id;
-            Order::createOrder($request, $id);
+            $imageAndPath = Image::store($request);
+            Order::createOrder($imageAndPath, $id);
             $orders = Order::getOrders($id)->count();
             Construction::where('id', $id)->update(['arrive_status' => '0 / ' . $orders]);
         }

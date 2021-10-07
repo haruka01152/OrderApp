@@ -26,9 +26,8 @@ class Common
         $alerts = $this->alert->getAlerts();
         $nonpage_constructions = $this->construction->findConstructions();
         $constructions = $nonpage_constructions->paginate(20);
-        $find_constructions = $constructions->count();
 
-        return [$statuses, $alerts, $nonpage_constructions, $constructions, $find_constructions];
+        return [$statuses, $alerts, $nonpage_constructions, $constructions];
     }
 
     public function getInfoForDetail($id)

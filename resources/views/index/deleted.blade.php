@@ -157,7 +157,7 @@
                     </div>
                 </div>
 
-                <div class="py-7 text-center block fixed -inset-x-0 -bottom-0" style="background:rgba(0,0,0,.2);">
+                <div class="py-7 text-center block fixed -inset-x-0 -bottom-0 z-10" style="background:rgba(0,0,0,.2);">
                     <input type="button" onclick="submit();" value="復元" class="bg-blue-500 text-white text-xl rounded-lg py-2 px-8 cursor-pointer">
                 </div>
             </form>
