@@ -92,7 +92,7 @@ class Construction extends Model
     {
         $this->createData($request);
 
-        if ($request->images[0] != null) {
+        if (isset($request->images) && $request->images[0] != null) {
             // 注文書登録があった場合は登録して、工事の物品到着状況を書き込む
             $id = Construction::latest()->first()->id;
             $imageAndPath = Image::store($request);
@@ -106,8 +106,9 @@ class Construction extends Model
     {
 
         // 新しい注文書があれば登録
-        if ($request->images[0] != null) {
-            Order::createOrder($request, $id);
+        if (isset($request->images) && $request->images[0] != null) {
+            $imageAndPath = Image::store($request);
+            Order::createOrder($imageAndPath, $id);
         }
 
         // 既存の注文書があれば情報を更新

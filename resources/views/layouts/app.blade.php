@@ -14,12 +14,14 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
 
   @livewireStyles
 
   <!-- Scripts -->
   <script src="{{ mix('js/app.js') }}" defer></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/js/modaal.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
@@ -57,6 +59,9 @@
         $('#overlay, .modal-window').fadeOut();
         return false;
       });
+      $('.pdf').modaal({
+        type: 'iframe',
+      });
       $("#submit_select").change(function() {
         $("#submit_form").submit();
       });
@@ -64,7 +69,6 @@
       $('#target_msg_box').delay(1000).fadeOut(800);
 
     });
-
   </script>
 
 </body>

@@ -54,6 +54,9 @@
     }
 
     .table-cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         padding: .7rem 1.5rem;
         vertical-align: middle;
     }
@@ -65,6 +68,58 @@
     .error {
         color: red;
         padding-top: 5px;
+    }
+
+    /* モーダルウィンドウ */
+    .modal-window {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        border-radius: 5px;
+        background: white;
+        z-index: 11;
+        padding: 2rem;
+    }
+
+    /* 閉じるボタン */
+    .button-close {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 150px;
+        padding: .5em;
+        color: #eaeaea;
+        border-radius: 20rem;
+        cursor: pointer;
+    }
+
+    .modal-window {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 550px;
+        height: 380px;
+        background-color: white;
+        border-radius: 5px;
+        z-index: 11;
+        padding: 2rem;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        width: 100%;
+        height: 100%;
+        z-index: 10;
     }
 </style>
 
@@ -83,6 +138,8 @@
         <p class="message-text lg:container m-auto">※ エラーが発生しました。入力内容を確認してください。</p>
     </div>
     @endif
+
+    <div id="overlay" class="overlay"></div>
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -105,7 +162,7 @@
 
     <div class="pt-12 pb-28">
         <div class="flex justify-between mx-auto lg:container">
-            <form class="w-8/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post">
+            <form class="w-8/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post" enctype="multipart/form-data">
                 @if($previousUrl != 0)
                 <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
                 @endif
@@ -164,7 +221,9 @@
                         <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
                         <div class="table-row">
                             <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
-                            <div class="table-cell"><a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
+                            <div class="table-cell">
+                                <a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="pdf cursor-pointer text-blue-500">{{{Str::limit($order->image, 30, '…')}}}</a>
+                            </div>
                             <div class="table-cell p-0">
                                 <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                             </div>
@@ -209,6 +268,9 @@
 
                     <div>
                         <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
+                        @error('images.*')
+                        <p class="error">* {{$message}}</p>
+                        @enderror
 
                         <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full mb-10 text-center py-24 m-auto text-gray-600">
                             <input type="file" id="image" name="images[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>

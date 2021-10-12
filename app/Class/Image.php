@@ -12,6 +12,7 @@ class Image{
     {
         // アップされた画像をファイルに保存
         foreach($request->file('images') as $file){
+            $file_extension = $file->getClientOriginalExtension();
             $file_name = $file->getClientOriginalName();
             $image_path = $file->storeAs('public/images', time() . $file_name);
             $file_names[] = $file_name;

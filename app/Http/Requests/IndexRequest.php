@@ -27,7 +27,8 @@ class IndexRequest extends FormRequest
             //
             'customer_name' => ['required', 'max:30'],
             'construction_name' => ['required', 'max:100'],
-            'orders.*.*' => ['nullable', 'max:20'],
+            'orders.*.memo' => ['nullable', 'max:20'],
+            'images.*' => ['mimes:jpeg,jpg,png,gif,pdf,xlsx'],
         ];
     }
 
@@ -39,6 +40,7 @@ class IndexRequest extends FormRequest
             'construction_name.required' => '案件名を入力してください。', 
             'construction_name.max' => '案件名は100文字以内で入力してください。',
             'orders.*.memo.max' => '備考は20文字以内で入力してください。', 
+            'images.*.mimes' => 'アップロードするファイルはjpeg,jpg,png,gif,pdf,xlsxのいずれかにしてください。', 
         ];
     }
 }

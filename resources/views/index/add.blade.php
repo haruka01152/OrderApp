@@ -89,6 +89,15 @@
         <form class="max-w-7xl lg:container m-auto bg-white overflow-hidden shadow-xl py-8 px-16" action="" method="post" enctype="multipart/form-data">
             @csrf
             <div>
+                <div class="pt-3 pb-20">
+                <label for="instruction">ステータス</label>
+                <select name="instruction" id="instruction" class="ml-3 text-center w-48">
+                    <option value="1">- - -</option>
+                    <option value="2">発注指示</option>
+                    <option value="3">発注完了</option>
+                </select>
+                </div>
+
                 <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
 
                 <div class="flex pt-10">
@@ -143,6 +152,9 @@
 
                 <div>
                     <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
+                    @error('images.*')
+                    <p class="error">* {{$message}}</p>
+                    @enderror
 
                     <label for="image" class="relative block bg-blue-50 border-2 border-blue-200 border-dashed w-full mb-10 text-center py-24 m-auto text-gray-600">
                         <input type="file" id="image" name="images[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
