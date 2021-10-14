@@ -15,6 +15,12 @@
   <!-- Styles -->
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
+  @if(\Route::currentRouteName() == 'edit')
+  <link rel="stylesheet" href="{{ asset('css/editStyle.css') }}">
+  @elseif(\Route::currentRouteName() == 'add')
+  <link rel="stylesheet" href="{{ asset('css/addStyle.css') }}">
+  @endif
+
 
   @livewireStyles
 
@@ -27,12 +33,10 @@
 <body class="font-sans antialiased">
   <x-jet-banner />
 
-  <div class="min-h-screen bg-gray-100">
-    @livewire('navigation-menu')
-
+  <div class="min-h-screen bg-yellow-100">
     <!-- Page Heading -->
     @if (isset($header))
-    <header class="bg-white shadow">
+    <header class="shadow bg-original-blue">
       <div class="lg:container mx-auto py-6">
         {{ $header }}
       </div>

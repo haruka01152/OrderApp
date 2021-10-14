@@ -81,7 +81,7 @@
             <form class="w-8/12 bg-white overflow-hidden shadow py-8 px-16" action="{{route('restore', ['id' => $construction->id])}}" method="post">
                 @csrf
                 <div>
-                        <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
+                        <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
 
                     <div class="flex pt-10">
                         <div class="flex flex-col">
@@ -159,24 +159,7 @@
                 </div>
             </form>
 
-            @if(count($logs) > 0)
-            <div class="bg-white overflow-hidden shadow py-8 px-5 h-full" style="width:30%;">
-                <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">この案件の操作履歴</h3>
-
-                @foreach($logs as $log)
-                <div class="mt-11 px-4">
-                    <div class="my-4 pb-3 border-b border-gray-300">
-                        <span class="text-sm pb-1 block text-blue-600">{{$log->created_at}}</span>
-                        <p class="pb-3">{{$log->message}}</p>
-                    </div>
-                </div>
-                @endforeach
-                <div class="mt-5 md:mt-0">
-                    {{$logs->appends(request()->query())->links()}}
-                </div>
-            </div>
-            @endif
-
+            @include('components.logs')
         </div>
     </div>
 

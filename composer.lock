@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "061b5842131f34ca9ce184ad82248b8e",
+    "content-hash": "e388af6eb044e2d63bdac958ffa34ba1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -598,6 +598,68 @@
                 }
             ],
             "time": "2020-12-29T14:50:06+00:00"
+        },
+        {
+            "name": "enomotodev/jp-carbon",
+            "version": "2.0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/enomotodev/JpCarbon.git",
+                "reference": "5031200c484367a1bdfd0ac5d236ffc65218dadd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/enomotodev/JpCarbon/zipball/5031200c484367a1bdfd0ac5d236ffc65218dadd",
+                "reference": "5031200c484367a1bdfd0ac5d236ffc65218dadd",
+                "shasum": ""
+            },
+            "require": {
+                "nesbot/carbon": "~2.45",
+                "php": "^7.1.8 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.5.20 || ^8.5.14"
+            },
+            "suggest": {
+                "friendsofphp/php-cs-fixer": "Needed for the `composer phpcs` command. Allow to automatically fix code style."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/JpCarbon/helpers.php"
+                ],
+                "psr-4": {
+                    "JpCarbon\\": "src/JpCarbon/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "enomotodev",
+                    "email": "enomoto.dev@gmail.com",
+                    "homepage": "https://enomotodev.hatenablog.com"
+                }
+            ],
+            "description": "Japanese extended version of carbon of the PHP datetime API.",
+            "homepage": "https://enomotodev.hatenablog.com",
+            "keywords": [
+                "date",
+                "datetime",
+                "time"
+            ],
+            "support": {
+                "issues": "https://github.com/enomotodev/JpCarbon/issues",
+                "source": "https://github.com/enomotodev/JpCarbon"
+            },
+            "time": "2021-07-21T15:12:49+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",

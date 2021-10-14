@@ -33,8 +33,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // 削除した工事を復元
     Route::post('restore/{id}', 'IndexController@restore')->name('restore');
 
-    // 後で消す
-    Route::get('createAlert', 'AlertController@createAlert');
+    Route::get('calender', 'ViewController@calender')->name('calender');
 
     Route::get('alerts', 'AlertController@alerts')->name('alerts');
 });

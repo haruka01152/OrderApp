@@ -119,7 +119,7 @@ class Construction extends Model
         // 注文書の到着状況を取得
         list($const_arrive_status, $status) = Order::getArriveStatusOfOrders($id);
 
-        // 工事情報を更新
+        // 案件情報を更新
         $construction = Construction::findOrFail($id);
         $form = $request->all();
         unset($form['_token']);

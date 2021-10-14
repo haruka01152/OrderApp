@@ -6,7 +6,7 @@
             @endif
             <div>
                 <div class="flex justify-between">
-                    <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}} text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
+                    <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}} text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
 
                     @if(\Route::currentRouteName() == 'edit')
                     <a title="この案件を削除する" href="{{route('delete', ['id' => $construction->id])}}"><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
@@ -63,7 +63,7 @@
                         <div class="table-cell">
                             <a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="pdf cursor-pointer text-blue-500">{{{Str::limit($order->image, 30, '…')}}}</a>
                         </div>
-                        <div class="table-cell p-0">
+                        <div class="table-cell" style="padding:0;">
                             <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                         </div>
                         <div class="table-cell p-0">

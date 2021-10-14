@@ -105,35 +105,11 @@
         <a class="js-close button-close bg-red-500 text-center">× 閉じる</a>
     </div>
     <div id="overlay" class="overlay"></div>
-    <x-slot name="header">
-        <div class="flex items-center justify-between lg:container m-auto">
-            <div class="flex items-center">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    工事物品管理
-                </h2>
-                <a class="ml-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
-            </div>
-
-            <form class="flex items-center m-0 w-8/12 justify-end" id="submit_form">
-                @csrf
-                <div class="flex pl-5">
-                    <div class="pl-3">
-                        <select name="status" id="#submit_select" onchange="submit(this.form)">
-                            @foreach($statuses as $status)
-                            <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <input type="text" name="find" value="{{request('find')}}" placeholder="案件名 or お客様名を検索 （複数キーワード可）" class="w-5/12 ml-5">
-                <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
-            </form>
-        </div>
-    </x-slot>
+    @include('components.header')
 
     <!-- パンくずリスト -->
     @if(request('find'))
-    <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
+    <div class="flex items-center py-2 px-8 bg-white shadow border-t-2 border-gray-200">
         <div class="lg:container m-auto">
             <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
@@ -147,7 +123,7 @@
             <div>
 
                 @if(count($alerts) > 0)
-                <div class="mb-5 bg-white overflow-hidden shadow-xl p-7 border-4 border-gray-500 border-double">
+                <div class="mb-5 bg-white overflow-hidden shadow p-7 border-4 border-gray-500 border-double">
                     <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">新着アラート</h3>
 
                     <div class="pt-11 px-3 table w-full">
@@ -167,7 +143,7 @@
                 </div>
                 @endif
 
-                <div class="bg-white overflow-hidden shadow-xl p-8">
+                <div class="bg-white overflow-hidden shadow p-8">
                     <div class="flex items-center text-blue-500 text-lg mb-7">
                         <a href="{{route('add')}}" class="inline-block border border-blue-500 rounded-lg py-2 px-4 hover:bg-blue-100">
                             <i class="fas fa-pencil-alt"></i>
@@ -214,6 +190,10 @@
                     </div>
 
                     @endif
+                </div>
+
+                <div class="absolute right-0 bottom-0">
+                    <a title="各種設定" href="{{route('dashboard')}}" class="bg-white inline-block h-20 w-20 flex items-center justify-center" style="border-radius:100px 0 10px 0;"><i class="pt-3 pl-3 fas fa-cogs text-original-blue fa-3x transition duration-500 ease-in-out transform hover:-translate-x-4 hover:-translate-y-1 hover:-rotate-12"></i></a>
                 </div>
             </div>
         </div>

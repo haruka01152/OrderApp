@@ -92,7 +92,7 @@ class Order extends Model
         // 注文書の到着状況を取得
         list($const_arrive_status, $status) = $this->getArriveStatusOfOrders($construction_id);
 
-        // 工事情報を更新
+        // 案件情報を更新
         Construction::where('id', $construction_id)->update([
             'arrive_status' => $const_arrive_status,
             'status' => $status,

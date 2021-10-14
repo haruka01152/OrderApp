@@ -11,11 +11,12 @@ use App\Models\Order;
 use App\Models\Alert;
 use App\Models\Log;
 use App\Class\Common;
+use App\Class\Calender;
 
 class ViewController extends Controller
 {
     //
-    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Alert_Config $alert_config, Log $log)
+    public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Alert_Config $alert_config, Log $log, Calender $calender)
     {
         $this->construction = $construction;
         $this->order = $order;
@@ -23,6 +24,7 @@ class ViewController extends Controller
         $this->alert_config = $alert_config;
         $this->log = $log;
         $this->common = $common;
+        $this->calender = $calender;
     }
 
     public function add()
@@ -45,4 +47,9 @@ class ViewController extends Controller
         return view('index.delete', compact('construction', 'orders', 'alert_configs'));
     }
 
+    public function calender(Request $request)
+    {
+        list($dates, $year, $month, $previousYear, $previousMonth, $nextYear, $nextMonth) = $this->calender->getCalendarDates($request);
+        return view('index.calender', compact('dates', 'year', 'month', 'previousYear', 'previousMonth', 'nextYear', 'nextMonth'));
+    }
 }
