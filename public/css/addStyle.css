@@ -1,0 +1,63 @@
+input[type="file"] {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+}
+
+th,
+td {
+    border: 1px solid gray;
+    padding: .7rem 1.5rem;
+}
+
+tbody {
+    width: 100%;
+    display: table;
+}
+
+input[type="checkbox"] {
+    display: none;
+    /* チェックボックスは非表示 */
+}
+
+/* --- チェックボックス直後のlabel --- */
+input[type="checkbox"]+label {
+    display: inline-block;
+    opacity: 0;
+    /* 透明度       */
+    cursor: pointer;
+    /* カーソル設定 */
+    transition: .2s;
+    /* なめらか変化 */
+    transform: scale(0.8, 0.8);
+    /* 少し小さく   */
+}
+
+/* --- 選択されたチェックボックス直後のlabel --- */
+input[type="checkbox"]:checked+label {
+    opacity: 1;
+    /* 透明度       */
+    transform: scale(1, 1);
+    /* 原寸に戻す   */
+}
+
+.table,
+.table-cell {
+    border: 1px solid gray;
+    border-collapse: collapse;
+}
+
+.table {
+    width: 100%;
+    text-align: center;
+}
+
+.table-cell {
+    padding: .7rem 1.5rem;
+    vertical-align: middle;
+}
+
+.error {
+    color: red;
+    padding-top: 5px;
+}
