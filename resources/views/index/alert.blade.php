@@ -1,18 +1,10 @@
 <x-app-layout>
 
-    <x-slot name="header">
-        <div class="flex items-center justify-between lg:container m-auto">
-            <div class="flex items-center">
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    アラート一覧
-                </h2>
-                <a class="ml-10" href="{{route('dashboard')}}"><i class="far fa-calendar-alt fa-2x"></i></a>
-            </div>
-        </div>
-    </x-slot>
+@include('components.header')
+
 
     <!-- パンくずリスト -->
-    <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
+    <div class="flex items-center py-2 px-8 bg-white shadow border-t-2 border-gray-200">
         <div class="lg:container m-auto">
             <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
@@ -24,7 +16,7 @@
         <div class="mx-auto lg:container">
             <div>
 
-                <div class="mb-5 bg-white overflow-hidden shadow-xl p-7 border-4 border-gray-500 border-double">
+                <div class="mb-5 bg-white overflow-hidden shadow p-7 border-4 border-gray-500 border-double">
                     <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">すべてのアラート</h3>
 
                     <div class="pt-11 px-3 table w-full">

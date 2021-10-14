@@ -120,15 +120,20 @@ class Construction extends Model
         list($const_arrive_status, $status) = Order::getArriveStatusOfOrders($id);
 
         // 工事情報を更新
-        Construction::where('id', $id)->update([
-            'contract_date' => $request->contract_date,
-            'construction_date' => $request->construction_date,
-            'customer_name' => $request->customer_name,
-            'construction_name' => $request->construction_name,
-            'arrive_status' => $const_arrive_status,
-            'alert_config' => $request->alert_config,
-            'status' => $status,
-        ]);
+        $construction = Construction::findOrFail($id);
+        $form = $request->all();
+        unset($form['_token']);
+        $construction->fill($form);
+        $construction->arrive_status = $const_arrive_status;
+        $construction->status = $status;
+
+        if($construction->isDirty()){
+            $construction->save();
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     public function destroyConstruction($id)

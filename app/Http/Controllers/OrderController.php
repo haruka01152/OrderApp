@@ -20,7 +20,8 @@ class OrderController extends Controller
 
     public function deleteOrder(Request $request)
     {
-        $construction_id = $this->order->deleteOrder($request);
+        $construction_id = $request->id;
+        $this->order->deleteOrder($request);
         $this->log->createLog(Auth::user()->name, $construction_id, url()->current());
         return redirect()->route('edit', ['id' => $construction_id])->with('message', '注文書を削除しました。');
     }

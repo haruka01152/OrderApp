@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Class\Image;
+
 
 class Order extends Model
 {
@@ -84,6 +86,7 @@ class Order extends Model
             return redirect()->route('dashboard');
         }
 
+        Image::delete($request, $request->orderId);
         Order::where('id', $request->orderId)->delete();
 
         // 注文書の到着状況を取得
@@ -94,8 +97,6 @@ class Order extends Model
             'arrive_status' => $const_arrive_status,
             'status' => $status,
         ]);
-
-        return $construction_id;
 
     }
 }

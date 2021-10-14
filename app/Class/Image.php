@@ -4,7 +4,7 @@ namespace App\Class;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Order;
 
 class Image{
 
@@ -22,11 +22,11 @@ class Image{
         return $imageAndPath;
     }
 
-    // public function delete(Request $request, $id)
-    // {
-    //     // 保有リストの画像をファイルから削除
-    //     $del = Coin::findOrFail($id);
-    //     Storage::delete('public/images/' . $del->icon);
-    // }
+    public static function delete(Request $request, $id)
+    {
+        // 画像をファイルから削除
+        $file = Order::findOrFail($id);
+        Storage::delete($file->path);
+    }
 
 }

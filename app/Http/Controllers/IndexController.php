@@ -41,20 +41,17 @@ class IndexController extends Controller
         $this->construction->createConstruction($request);
         $id = Construction::latest()->first()->id;
         $this->log->createLog(Auth::user()->name, $id, url()->current());
-        return redirect()->route('dashboard')->with('message', '案件を作成しました。');
+        return redirect()->route('edit', ['id' => $id])->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)
     {
-        $this->construction->updateConstruction($request, $id);
-        $this->log->createLog(Auth::user()->name, $id, url()->current());
-        list($construction, $orders, $alert_configs, $logs) = $this->common->getInfoForDetail($id);
-
-        list($previousUrl, $find) = $this->common->getFindWord($request);
-
-        $message = '案件を更新しました。';
-
-        return view('index.edit', compact('construction', 'orders', 'alert_configs', 'logs', 'previousUrl', 'find', 'message'));
+        if($this->construction->updateConstruction($request, $id) != false){
+            $this->log->createLog(Auth::user()->name, $id, url()->current());
+            return redirect()->route('edit', ['id' => $id])->with('message', '案件を更新しました。');    
+        }else{
+            return redirect()->route('edit', ['id' => $id])->with('message', '※項目に変化がありません。');
+        }
     }
 
     public function destroy(Request $request, $id)

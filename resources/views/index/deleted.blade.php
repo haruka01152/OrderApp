@@ -64,14 +64,11 @@
 </style>
 
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            案件編集（削除済み）
-        </h2>
-    </x-slot>
+@include('components.header')
+
 
     <!-- パンくずリスト -->
-    <div class="flex items-center py-2 px-8 bg-white shadow-xl border-t-2 border-gray-200">
+    <div class="flex items-center py-2 px-8 bg-white shadow border-t-2 border-gray-200">
         <div class="lg:container m-auto">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
@@ -81,7 +78,7 @@
 
     <div class="pt-12 pb-28">
         <div class="flex justify-between mx-auto lg:container">
-            <form class="w-8/12 bg-white overflow-hidden shadow-xl py-8 px-16" action="{{route('restore', ['id' => $construction->id])}}" method="post">
+            <form class="w-8/12 bg-white overflow-hidden shadow py-8 px-16" action="{{route('restore', ['id' => $construction->id])}}" method="post">
                 @csrf
                 <div>
                         <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">工事情報</h3>
@@ -125,7 +122,7 @@
                         <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
                         <div class="table-row">
                             <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
-                            <div class="table-cell"><a href="" class="text-blue-500">{{Str::limit($order->image, 30, '…')}}</a></div>
+                            <div class="table-cell"><a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="pdf cursor-pointer text-blue-500">{{{Str::limit($order->image, 30, '…')}}}</a></div>
                             <div class="table-cell p-0">
                                 <input type="text" name="orders[{{$order->id}}][memo]" value="{{$order->memo}}" class="block w-full border-none text-center" readonly>
                             </div>
@@ -163,7 +160,7 @@
             </form>
 
             @if(count($logs) > 0)
-            <div class="bg-white overflow-hidden shadow-xl py-8 px-5 h-full" style="width:30%;">
+            <div class="bg-white overflow-hidden shadow py-8 px-5 h-full" style="width:30%;">
                 <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">この案件の操作履歴</h3>
 
                 @foreach($logs as $log)

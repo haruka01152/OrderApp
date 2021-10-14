@@ -119,7 +119,7 @@ return [
     'string'               => ':attributeには、文字を指定してください。',
     'timezone'             => ':attributeには、有効なタイムゾーンを指定してください。',
     'unique'               => '指定の:attributeは既に使用されています。',
-    'uploaded'             => 'アップロードするファイルはjpeg,jpg,png,gif,pdf,xlsxのいずれかにしてください。',
+    'uploaded'             => 'アップロードするファイルは2MBまでのjpeg,jpg,png,gif,pdf形式にしてください。',
     'url'                  => ':attributeは、有効なURL形式で指定してください。',
     'uuid'                 => ':attributeは、有効なUUIDでなければなりません。',
     'custom'               => [
