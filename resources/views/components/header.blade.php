@@ -5,7 +5,7 @@
                 工事物品管理
             </a>
             @if(\Route::currentRouteName() == 'dashboard')
-            <a class="ml-10" href="{{route('calender', ['year' => $currentYear, 'month' => $currentMonth])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
+            <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => $currentYear, 'month' => $currentMonth])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
             @endif
         </div>
 
@@ -22,7 +22,7 @@
                 </div>
             </div>
             <input type="text" name="find" value="{{request('find')}}" placeholder="案件名 or お客様名を検索 （複数キーワード可）" class="w-5/12 ml-5">
-            <input type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
+            <input title="検索" type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
         </form>
         @endif
     </div>

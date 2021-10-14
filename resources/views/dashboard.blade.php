@@ -149,7 +149,7 @@
                             <i class="fas fa-pencil-alt"></i>
                             案件作成
                         </a>
-                        <a class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
+                        <a title="ヘルプ" class="cursor-pointer js-open button-open inline-block w-7 h-7 flex justify-center items-center text-xl ml-10 border border-blue-500 rounded-full hover:bg-blue-100" style="padding-top:3px;">
                             ？
                         </a>
 
@@ -167,10 +167,10 @@
                     @if(count($constructions) > 0)
                     <table class="text-center m-auto block overflow-x-scroll whitespace-nowrap w-full">
                         <tr class="bg-gray-200 hover:bg-gray-200">
-                            <th>@sortablelink('contract_date', '契約日')</a></th>
-                            <th>@sortablelink('construction_date', '工事日')</th>
-                            <th>@sortablelink('customer_name', 'お客様名')</th>
-                            <th>@sortablelink('construction_name', '案件名')</th>
+                            <th title="契約日で並べ替え">@sortablelink('contract_date', '契約日')</a></th>
+                            <th title="工事日で並べ替え">@sortablelink('construction_date', '工事日')</th>
+                            <th title="お客様名で並べ替え">@sortablelink('customer_name', 'お客様名')</th>
+                            <th title="案件名で並べ替え">@sortablelink('construction_name', '案件名')</th>
                             <th>物品到着状況</th>
                         </tr>
                         @foreach($constructions as $construction)
