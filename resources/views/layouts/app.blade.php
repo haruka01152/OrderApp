@@ -72,6 +72,15 @@
 
       $('#target_msg_box').delay(1000).fadeOut(800);
 
+      $('.a-text').hover(
+        function() {
+          var i = $('.a-text').index(this);
+          $('.fukidashi').eq(i).css('display', 'block');
+        },
+        function() {
+          var i = $('.a-text').index(this);
+          $('.fukidashi').eq(i).css('display', 'none');
+        });
     });
   </script>
 

@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div class="pt-12 pb-28">
+    <div class="py-12">
         <div class="bg-white lg:container m-auto flex justify-between py-10 px-16 shadow">
             <div class="my-auto">
                 <a href="{{route('calender', ['year' => $previousYear, 'month' => $previousMonth])}}" class="pr-10"><i class="fas fa-chevron-left fa-3x text-gray-500"></i></a>
@@ -53,15 +53,11 @@
                             @endif
                             <td class="h-28 pb-3 px-1 align-top border border-gray-600 {{$date->month != $month ? 'opacity-30' : ''}} {{$date->dayOfWeek == 0 ? 'text-red-500' : 'text-gray-700'}} {{$date->dayOfWeek == 6 ? 'text-blue-500' : 'text-gray-700'}} {{$date->format('Y-m-d') == date('Y-m-d') ? 'bg-green-100' : ''}}">
                                 <span class="block mb-1">{{ $date->day }}</span>
-                                <div class="text-center">
+                                <div class="text-center relative">
                                     @foreach($constructions as $construction)
-                                    @if($construction->construction_date == $date->format('Y-m-d'))
-                                    @if($construction->arrive_status == '✔')
-                                    <a href="{{route('edit', ['id' => $construction->id])}}" class="w-11/12 inline-block mb-1 bg-gray-500 text-white text-center whitespace-wrap text-sm rounded-lg p-1">{{Str::limit($construction->customer_name, '20', '…')}}</a><br>
-                                    @else
-                                    <a href="{{route('edit', ['id' => $construction->id])}}" class="w-11/12 inline-block mb-1 bg-red-400 text-white text-center whitespace-wrap text-sm rounded-lg p-1">{{Str::limit($construction->customer_name, '20', '…')}}</a><br>
-                                    @endif
-                                    @endif
+                                    <div class="relative">
+                                        @include('components.chips')
+                                    </div>
                                     @endforeach
                                 </div>
                             </td>
@@ -76,31 +72,6 @@
                 <a href="{{route('calender', ['year' => $nextYear, 'month' => $nextMonth])}}" class="pl-10"><i class="fas fa-chevron-right fa-3x text-gray-500"></i></a>
             </div>
         </div>
-
-        <!-- <form action="" method="get" class="pt-14 w-full mx-auto">
-                    @csrf
-                    <div class="text-center">
-                        <p class="bg-original-blue text-white text-lg p-2 w-7/12 mx-auto text-center">指定のカレンダーを表示</p>
-                        <div class="pt-5">
-                            <select name="year" id="year" class="w-56 ml-1">
-                                @foreach (range($year-3, $year+10) as $targetYear)
-                                <option value="{{$targetYear}}" {{$targetYear == $year ? 'selected' : ''}}>{{$targetYear}}</option>
-                                @endforeach
-                            </select>
-                            <label for="year">年</label>
-                        </div>
-
-                        <div class="pt-2">
-                            <select name="month" id="month" class="w-56 ml-1">
-                                @foreach (range(1,12) as $targetMonth)
-                                <option value="{{$targetMonth}}" {{$targetMonth == $month ? 'selected' : ''}}>{{$targetMonth}}</option>
-                                @endforeach
-                            </select>
-                            <label for="year">月</label>
-                        </div>
-                        <input type="submit" value="表示" class="cursor-pointer mt-5 py-1 px-6 rounded-md text-lg border border-gray-400">
-                    </div>
-                </form> -->
     </div>
 
 </x-app-layout>

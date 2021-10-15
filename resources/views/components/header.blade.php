@@ -4,9 +4,7 @@
             <a href="{{route('dashboard')}}" class="font-semibold text-xl leading-tight">
                 工事物品管理
             </a>
-            @if(\Route::currentRouteName() == 'dashboard')
-            <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => $currentYear, 'month' => $currentMonth])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
-            @endif
+            <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => date('Y'), 'month' => date('m')])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
         </div>
 
         @if(\Route::currentRouteName() == 'dashboard')

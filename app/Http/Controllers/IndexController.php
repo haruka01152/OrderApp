@@ -28,8 +28,6 @@ class IndexController extends Controller
 
     public function index(Request $request)
     {
-        $currentYear = Carbon::now()->year;
-        $currentMonth = Carbon::now()->month;
         list($statuses, $alerts, $nonpage_constructions, $constructions) = $this->common->getInfoForDashboard();
 
         // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
@@ -37,7 +35,7 @@ class IndexController extends Controller
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
-        return view('dashboard', compact('currentYear', 'currentMonth', 'statuses', 'alerts', 'constructions'));
+        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
     }
 
     public function create(IndexRequest $request)
