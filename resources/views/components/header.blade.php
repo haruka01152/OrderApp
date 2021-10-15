@@ -1,7 +1,7 @@
 <x-slot name="header">
     <div class="flex items-center justify-between lg:container m-auto">
         <div class="flex items-center text-white">
-            <a href="{{route('dashboard')}}" class="font-semibold text-xl leading-tight">
+            <a title="工事物品管理トップ" href="{{route('dashboard')}}" class="font-semibold text-xl leading-tight">
                 工事物品管理
             </a>
             <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => date('Y'), 'month' => date('m')])}}"><i class="far fa-calendar-alt fa-2x"></i></a>

@@ -23,4 +23,27 @@ class Alert extends Model
         $alerts = Alert::orderBy('id', 'asc')->paginate(5);
         return $alerts;
     }
+
+    public static function createData($construction_id)
+    {
+        $construction = Construction::getConstruction($construction_id);
+        Alert::create([
+            'construction_id' => $construction_id,
+        ]);
+    }
+
+    public static function createAlert()
+    {
+        $constructions = Construction::getAllConstructions();
+        
+        foreach($constructions as $construction){
+            if(strtotime("+{$construction->alert_config} day") >= strtotime($construction->construction_date)){
+                $alert = Alert::where('construction_id', $construction->id)->first();
+                if($alert == null){
+                    self::createData($construction->id);
+                }
+            }
+        }
+    }
+
 }

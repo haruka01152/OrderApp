@@ -36,4 +36,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('calender', 'ViewController@calender')->name('calender');
 
     Route::get('alerts', 'AlertController@alerts')->name('alerts');
+    Route::get('createAlert', 'AlertController@create');
 });

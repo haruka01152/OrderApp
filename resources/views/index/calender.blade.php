@@ -29,7 +29,7 @@
             </div>
             <div class="w-full">
                 <div class="pb-5 flex justify-between text-gray-700">
-                    <span class="text-3xl font-bold text-original-blue">{{$year}}年{{$month}}月<span class="text-base text-gray-500">の工事日を表示しています</span></span>
+                    <span class="text-3xl font-bold text-original-blue">{{$year}}年{{$month}}月<span class="text-base text-gray-500">の工事予定</span></span>
 
                     <div class="flex items-center">
                         <span class="rounded-full bg-red-400 h-8 w-8"></span>
