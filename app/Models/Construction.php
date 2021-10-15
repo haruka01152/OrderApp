@@ -37,6 +37,12 @@ class Construction extends Model
         return $construction;
     }
 
+    public static function getAllConstructions()
+    {
+        $constructions = Construction::where('status', '!=', 4)->get();
+        return $constructions;
+    }
+
     public function findConstructions()
     {
         $nonpage_constructions = Construction::where(function ($query) {

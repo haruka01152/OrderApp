@@ -50,6 +50,7 @@ class ViewController extends Controller
     public function calender(Request $request)
     {
         list($dates, $year, $month, $previousYear, $previousMonth, $nextYear, $nextMonth) = $this->calender->getCalendarDates($request);
-        return view('index.calender', compact('dates', 'year', 'month', 'previousYear', 'previousMonth', 'nextYear', 'nextMonth'));
+        $constructions = $this->construction->getAllConstructions();
+        return view('index.calender', compact('dates', 'year', 'month', 'previousYear', 'previousMonth', 'nextYear', 'nextMonth', 'constructions'));
     }
 }

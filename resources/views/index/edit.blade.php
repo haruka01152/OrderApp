@@ -20,6 +20,9 @@
             @if($previousUrl != 0)
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
             <a href="{{$previousUrl}}" class="text-blue-500 pr-3">絞り込み : {{$find}}</a>
+            @elseif(strpos(url()->previous(), 'calender'))
+            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+            <a href="{{url()->previous()}}" class="text-blue-500 pr-3">カレンダー表示</a>
             @endif
             <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
             <a href="{{route('edit', ['id' => $construction->id])}}" class="text-blue-500 pr-3">案件編集</a>

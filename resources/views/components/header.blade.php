@@ -24,6 +24,28 @@
             <input type="text" name="find" value="{{request('find')}}" placeholder="案件名 or お客様名を検索 （複数キーワード可）" class="w-5/12 ml-5">
             <input title="検索" type="submit" value="&#xf002;" class="fas fa-lg text-gray-500 bg-gray-100 border-t border-r border-b border-gray-500 px-3 cursor-pointer" style="line-height:40px;">
         </form>
+
+        @elseif(\Route::currentRouteName() == 'calender')
+        <form class="flex m-0" action="" method="get">
+            @csrf
+            <div>
+                <select name="year" id="year">
+                    @foreach(range(date('Y')-3,date('Y')+3) as $y)
+                    <option value="{{$y}}" {{$y == $year ? 'selected' : ''}}>{{$y}}</option>
+                    @endforeach
+                </select>
+                <label class="text-white font-bold pr-1" for="year">年</label>
+            </div>
+            <div>
+                <select name="month" id="month">
+                    @foreach(range(1,12) as $m)
+                    <option value="{{$m}}" {{$m == $month ? 'selected' : ''}}>{{$m}}</option>
+                    @endforeach
+                </select>
+                <label class="text-white font-bold" for="year">月</label>
+            </div>
+            <input title="カレンダーを表示" type="submit" value="表示" class="cursor-pointer ml-5 py-1 px-5 text-lg rounded-lg border border-gray-500">
+        </form>
         @endif
     </div>
 </x-slot>
