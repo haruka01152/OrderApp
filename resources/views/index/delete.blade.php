@@ -79,7 +79,9 @@
             @csrf
             <div>
                 @include('components.header')
+                <p class="text-white p-1 bg-red-600 text-lg mb-10">　※ この案件を削除しようとしています。案件は復元可能ですが、関連するアラートが完全に削除されます。よろしいですか？</p>
 
+                <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}} text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
                 <div class="flex pt-10">
                     <div class="flex flex-col">
                         <label for="contract_date">契約日</label>

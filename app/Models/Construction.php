@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Class\Image;
-
+use Carbon\Carbon;
 
 class Construction extends Model
 {
@@ -28,7 +27,7 @@ class Construction extends Model
 
     public function alerts()
     {
-        return $this->hasMany('App\Models\Alert');
+        return $this->hasOne('App\Models\Alert');
     }
 
     public static function getConstruction($id)
@@ -97,10 +96,10 @@ class Construction extends Model
     public function createConstruction($request)
     {
         $this->createData($request);
+        $id = Construction::latest()->first()->id;
 
         if (isset($request->images) && $request->images[0] != null) {
             // 注文書登録があった場合は登録して、工事の物品到着状況を書き込む
-            $id = Construction::latest()->first()->id;
             $imageAndPath = Image::store($request);
             Order::createOrder($imageAndPath, $id);
             $orders = Order::getOrders($id)->count();
@@ -133,13 +132,18 @@ class Construction extends Model
         $construction->arrive_status = $const_arrive_status;
         $construction->status = $status;
 
-        if($construction->isDirty()){
+        if ($construction->isDirty()) {
             $construction->save();
+            Alert::createOneAlert($id);
+            $today = new Carbon();
+
+            if ($const_arrive_status == '✔' || $today->modify("+{$construction->alert_config} days") <= $construction->construction_date) {
+                Alert::deleteAlert($id);
+            }
             return true;
-        }else{
+        } else {
             return false;
         }
-
     }
 
     public function destroyConstruction($id)
@@ -163,4 +167,5 @@ class Construction extends Model
             ]);
         }
     }
+
 }

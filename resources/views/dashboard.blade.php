@@ -123,24 +123,7 @@
             <div>
 
                 @if(count($alerts) > 0)
-                <div class="mb-5 bg-white overflow-hidden shadow p-7 border-4 border-gray-500 border-double">
-                    <h3 class="text-xl border-b border-l-8 pl-3 border-gray-500">新着アラート</h3>
-
-                    <div class="pt-11 px-3 table w-full">
-                        @foreach($alerts as $alert)
-                        <a href="{{route('edit', ['id' => $alert->construction_id])}}" class="table-row text-red-600 hover:bg-gray-100">
-                            <div class="table-cell w-3/12">【未着物品あり】　―　{{date('m/d', strtotime($alert->constructions->construction_date))}}工事</div>
-                            <div class="table-cell w-3/12">{{Str::limit($alert->constructions->customer_name, 20, '…')}}</div>
-                            <div class="table-cell w-4/12">{{Str::limit($alert->constructions->construction_name, 30, '…')}}</div>
-                            <div class="table-cell">{{$alert->created_at}}</div>
-                        </a>
-                        <div class="border-2 border-transparent"></div>
-                        @endforeach
-                    </div>
-                    <div class="text-right pt-5 pr-5">
-                        <a href="{{route('alerts')}}" class="text-red-600">すべて見る >></a>
-                    </div>
-                </div>
+                @include('components.alertBoard')
                 @endif
 
                 <div class="bg-white overflow-hidden shadow p-8">
@@ -192,8 +175,8 @@
                     @endif
                 </div>
 
-                <div class="absolute right-0 bottom-0">
-                    <a title="各種設定" href="{{route('dashboard')}}" class="bg-white inline-block h-20 w-20 flex items-center justify-center" style="border-radius:100px 0 10px 0;"><i class="pt-3 pl-3 fas fa-cogs text-original-blue fa-3x transition duration-500 ease-in-out transform hover:-translate-x-4 hover:-translate-y-1 hover:-rotate-12"></i></a>
+                <div class="fixed right-0 bottom-0">
+                    <a title="各種設定" href="{{route('profile.show')}}" class="bg-white inline-block h-20 w-20 flex items-center justify-center" style="border-radius:100px 0 10px 0;"><i class="pt-3 pl-3 fas fa-cogs text-original-blue fa-3x transition duration-500 ease-in-out transform hover:-translate-x-4 hover:-translate-y-1 hover:-rotate-12"></i></a>
                 </div>
             </div>
         </div>

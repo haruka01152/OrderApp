@@ -16,13 +16,15 @@ class AlertController extends Controller
 {
     //
     public function alerts(){
-        $alerts = Alert::paginate(50);
-        return view('index.alert', compact('alerts'));
+        $alerts = Alert::getAlerts(50);
+        $date = new Carbon;
+        return view('index.alert', compact('alerts', 'date'));
     }
 
     public function create()
     {
-        Alert::createAlert();
+        Alert::createAlerts();
         return redirect()->route('dashboard')->with('message', 'アラートを作成');
     }
+
 }

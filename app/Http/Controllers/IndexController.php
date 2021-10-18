@@ -14,7 +14,6 @@ use App\Class\Common;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
 class IndexController extends Controller
 {
     public function __construct(Construction $construction, Order $order, Common $common, Alert $alert, Log $log)
@@ -29,19 +28,20 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         list($statuses, $alerts, $nonpage_constructions, $constructions) = $this->common->getInfoForDashboard();
-
+        $date = new Carbon;
         // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
-        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
+        return view('dashboard', compact('statuses', 'alerts', 'constructions', 'date'));
     }
 
     public function create(IndexRequest $request)
     {
         $this->construction->createConstruction($request);
         $id = Construction::latest()->first()->id;
+        $this->alert->createOneAlert($id);
         $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('edit', ['id' => $id])->with('message', '案件を作成しました。');
     }
@@ -59,6 +59,7 @@ class IndexController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->construction->destroyConstruction($id);
+        $this->alert->deleteAlert($id);
         $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('dashboard')->with('message', '案件を削除しました。');
     }
@@ -66,6 +67,7 @@ class IndexController extends Controller
     public function restore(Request $request, $id)
     {
         $this->construction->restoreConstruction($id);
+        $this->alert->createOneAlert($id);
         $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('edit', ['id' => $id])->with('message', '案件を復元しました。');
     }
