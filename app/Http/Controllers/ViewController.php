@@ -10,8 +10,8 @@ use App\Models\Construction;
 use App\Models\Order;
 use App\Models\Alert;
 use App\Models\Log;
-use App\Class\Common;
-use App\Class\Calender;
+use App\Common;
+use App\Calender;
 
 class ViewController extends Controller
 {

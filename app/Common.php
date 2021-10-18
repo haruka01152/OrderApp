@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Class;
+namespace App;
 
 use App\Models\Construction;
 use App\Models\Alert_Config;

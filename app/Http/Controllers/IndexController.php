@@ -10,7 +10,7 @@ use App\Models\Construction;
 use App\Models\Order;
 use App\Models\Log;
 use App\Http\Requests\IndexRequest;
-use App\Class\Common;
+use App\Common;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\DB;
-use App\Class\Image;
+use App\Image;
 use Carbon\Carbon;
 
 class Construction extends Model
