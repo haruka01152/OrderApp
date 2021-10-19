@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Alert;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         View::share('all_alerts', Alert::all());
+        View::share('carbon', new Carbon());
     }
 }

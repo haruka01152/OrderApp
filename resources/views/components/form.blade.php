@@ -21,7 +21,7 @@
                     </div>
                     <div class="flex flex-col ml-10">
                         <label for="construction_date">工事日</label>
-                        <input type="date" id="construction_date" name="construction_date" value="@if(isset($construction) && $construction->construction_date){{$construction->construction_date}}@endif" class="mt-1">
+                        <input type="date" id="construction_date" name="construction_date" value="@if(isset($construction) && $construction->construction_date){{$construction->construction_date}}@elseif(request('date')){{request('date')}}@endif" class="mt-1">
                     </div>
                 </div>
 
@@ -67,8 +67,8 @@
                             <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                         </div>
                         <div class="table-cell p-0">
-                            <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>
-                            <label for="order{{$order->id}}" class="block w-full h-full" style="border:none;">
+                            <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" class="ordersCheck" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>
+                            <label for="order{{$order->id}}" class="ordersLabel block w-full h-full" style="border:none;">
                                 <i class="fas fa-check fa-2x text-gray-500"></i>
                             </label>
                         </div>
@@ -87,30 +87,15 @@
                 <div>
                     <h4 class="pt-10 pb-3 text-gray-800">◆アラート設定</h4>
 
-                    <div class="flex justify-around py-5 border-4 border-gray-500 border-double">
-                        @foreach($alert_configs as $alert_config)
-                        <div>
-                            <label for="{{$alert_config->name}}">{{$alert_config->name}}</label>
-
-                            @if(\Route::currentRouteName() == 'edit')
-                            @if(old('alert_config'))
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{ old('alert_config', $alert_config->period) == $alert_config->period ? 'checked' : '' }}>
-                            @else
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{ isset($construction) && $construction->alert_config == $alert_config->period ? 'checked' : '' }}>
-                            @endif
-                            @elseif(\Route::currentRouteName() == 'add')
-                            @if(old('alert_config'))
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{ old('alert_config', $alert_config->period) == $alert_config->period ? 'checked' : '' }}>
-                            @else
-                            <input type="radio" name="alert_config" value="{{$alert_config->period}}" id="{{$alert_config->name}}" {{env('default_alert_config') == $alert_config->period ? 'checked' : ''}}>
-                            @endif
-                            @endif
-
-                        </div>
-                        @endforeach
+                    <div class="flex items-center">
+                    @if(\Route::currentRouteName() == 'edit')
+                    <input type="date" value="@if($construction->alert_config){{$construction->alert_config}}@elseif($construction->construction_date){{$carbon::createFromFormat('Y-m-d',$construction->construction_date)->addDays(5)->format('Y-m-d')}}@endif">
+                    @elseif(\Route::currentRouteName() == 'add')
+                    <input type="date" value="{{$carbon::now()->addDays(5)->format('Y-m-d')}}">
+                    @endif
+                    <input type="checkbox" id="notAlert" value="" class="ml-10 mr-2">
+                    <label for="notAlert">アラートを設定しない</label>
                     </div>
-
-                    <p class="text-sm pt-3 text-right">※工事前に物品が到着していなかった場合、何日前にアラートを出すか設定できます（すべて土日祝を除いた日数）</p>
                 </div>
 
                 <div>

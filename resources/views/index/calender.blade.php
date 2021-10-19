@@ -51,15 +51,14 @@
                         @if ($date->dayOfWeek == 0)
                         <tr>
                             @endif
-                            <td class="h-28 pb-3 px-1 align-top border border-gray-600 {{$date->month != $month ? 'opacity-30' : ''}} {{$date->dayOfWeek == 0 ? 'text-red-500' : 'text-gray-700'}} {{$date->dayOfWeek == 6 ? 'text-blue-500' : 'text-gray-700'}} {{$date->format('Y-m-d') == date('Y-m-d') ? 'bg-green-100' : ''}}">
-                                <span class="block mb-1">{{ $date->day }}</span>
-                                <div class="text-center relative">
-                                    @foreach($constructions as $construction)
-                                    <div class="relative">
-                                        @include('components.chips')
+                            <td class="relative p-0 pb-3 h-28 align-top border border-gray-600 {{$date->month != $month ? 'opacity-30' : ''}} {{$date->dayOfWeek == 0 ? 'text-red-500' : 'text-gray-700'}} {{$date->dayOfWeek == 6 ? 'text-blue-500' : 'text-gray-700'}} {{$date->format('Y-m-d') == date('Y-m-d') ? 'bg-green-100' : ''}}">
+                                <a href="{{route('add', ['date' => $date->format('Y-m-d')])}}" class="w-full h-full hover:bg-gray-500 opacity-10 inline-block absolute bottom-0"></a>
+                                    <span class="block mb-1 pl-1">{{ $date->day }}</span>
+                                    <div class="text-center relative z-10">
+                                        @foreach($constructions as $construction)
+                                            @include('components.chips')
+                                        @endforeach
                                     </div>
-                                    @endforeach
-                                </div>
                             </td>
                             @if ($date->dayOfWeek == 6)
                         </tr>

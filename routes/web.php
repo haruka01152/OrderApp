@@ -18,7 +18,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // ダッシュボード
     Route::get('/', 'IndexController@index')->name('dashboard');
 
-    Route::get('add', 'ViewController@add')->name('add');
+    Route::get('add/{date?}', 'ViewController@add')->name('add');
     Route::post('add', 'IndexController@create');
 
     Route::get('edit/{id}', 'ViewController@edit')->name('edit');

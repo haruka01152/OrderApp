@@ -12,7 +12,6 @@ use App\Models\Log;
 use App\Http\Requests\IndexRequest;
 use App\Class\Common;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
 
 class IndexController extends Controller
 {
@@ -28,13 +27,12 @@ class IndexController extends Controller
     public function index(Request $request)
     {
         list($statuses, $alerts, $nonpage_constructions, $constructions) = $this->common->getInfoForDashboard();
-        $date = new Carbon;
         // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
-        return view('dashboard', compact('statuses', 'alerts', 'constructions', 'date'));
+        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
     }
 
     public function create(IndexRequest $request)

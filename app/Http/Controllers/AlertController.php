@@ -17,8 +17,7 @@ class AlertController extends Controller
     //
     public function alerts(){
         $alerts = Alert::getAlerts(50);
-        $date = new Carbon;
-        return view('index.alert', compact('alerts', 'date'));
+        return view('index.alert', compact('alerts'));
     }
 
     public function create()

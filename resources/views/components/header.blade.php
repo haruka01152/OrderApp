@@ -7,8 +7,11 @@
             <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => date('Y'), 'month' => date('m')])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
             <a title="アラート" class="ml-10 relative" href="{{route('alerts')}}"><i class="far fa-bell fa-2x"></i>
             @if(count($all_alerts) > 0)
-            <i class="absolute -right-1 top-0 text-red-500 fas fa-circle" style="font-size:20px;"></i>
-            <span class="absolute text-white" style="font-size:12px; {{strlen(count($all_alerts)) == 2 ? 'top:.5px; right:-1px;' : 'top:.5px; right:2px;'}}">{{count($all_alerts)}}</span>
+            <div class="absolute -top-1 -right-1">
+            <span class="inline-block bg-red-500 rounded-full relative text-center" style="font-size:12px; padding:1px 2px; min-width:18px;">
+                {{count($all_alerts)}}
+            </span>
+            </div>
             @endif
         </a>
         </div>

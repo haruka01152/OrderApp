@@ -157,7 +157,7 @@
                             <th>物品到着状況</th>
                         </tr>
                         @foreach($constructions as $construction)
-                        <tr>
+                        <tr class="{{$construction->status == 4 ? 'bg-gray-300 hover:bg-gray-300' : ''}}">
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->contract_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 25, '…')}}</a></td>
