@@ -44,7 +44,7 @@ class Alert extends Model
         foreach ($constructions as $construction) {
             $today =new Carbon();
             $construction_date =new Carbon($construction->construction_date);
-            if ($construction->$construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
+            if ($construction->construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
                 $alert = Alert::where('construction_id', $construction->id)->first();
                 $status = Construction::where('id', $construction->id)->first()->arrive_status;
                 if ($alert == null && $status != '✔') {
@@ -61,7 +61,7 @@ class Alert extends Model
         $today =new Carbon();
         $construction_date =new Carbon($construction->construction_date);
 
-        if ($construction->$construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
+        if ($construction->construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
             $alert = Alert::where('construction_id', $construction->id)->first();
             $status = Construction::where('id', $construction->id)->first()->arrive_status;
             if ($alert == null && $status != '✔') {

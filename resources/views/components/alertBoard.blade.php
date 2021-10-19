@@ -7,9 +7,10 @@
         @php
         $const_date = $date::createFromFormat('Y-m-d',$alert->constructions->construction_date);
         $diff_days = $date->diffInDays($const_date);
+        $today = $date::now()->format('Y-m-d H:i:s');
         @endphp
         <a href="{{route('edit', ['id' => $alert->construction_id])}}" class="table-row text-red-600 hover:bg-gray-100">
-            <div class="table-cell w-3/12">【{{$const_date <= $date::now() ? '工事日から'.$diff_days.'日経過' : '工事日まであと'.$diff_days.'日'}}】　―　{{$const_date->format('m/d')}}工事</div>
+            <div class="table-cell w-3/12">【@if($const_date == $today)工事日当日@elseif($const_date > $today)工事日まであと{{$diff_days}}日@else 工事日から{{$diff_days}}日経過@endif】　―　{{$const_date->format('m/d')}}工事</div>
             <div class="table-cell w-3/12">{{$alert->constructions->customer_name}}</div>
             <div class="table-cell w-6/12">{{Str::limit($alert->constructions->construction_name, 80, '…')}}</div>
         </a>
