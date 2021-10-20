@@ -53,36 +53,7 @@
 
   @livewireScripts
 
-  <script>
-    $(function() {
-      $('.js-open').on('click', function() {
-        $('#overlay, .modal-window').fadeIn();
-        return false;
-      });
-      $('.js-close, #overlay').on('click', function() {
-        $('#overlay, .modal-window').fadeOut();
-        return false;
-      });
-      $('.pdf').modaal({
-        type: 'iframe',
-      });
-      $("#submit_select").change(function() {
-        $("#submit_form").submit();
-      });
-
-      $('#target_msg_box').delay(1000).fadeOut(800);
-
-      $('.a-text').hover(
-        function() {
-          var i = $('.a-text').index(this);
-          $('.fukidashi').eq(i).css('display', 'block');
-        },
-        function() {
-          var i = $('.a-text').index(this);
-          $('.fukidashi').eq(i).css('display', 'none');
-        });
-    });
-  </script>
+  <script src="{{asset('js/index.js')}}"></script>
 
 </body>
 
