@@ -29,30 +29,36 @@ $(function() {
       });
 
     //   工事日を入力するとアラート発出日が自動入力される設定
-    $('#construction_date').change(function() {
-      var str = $(this).val();
-      str = new Date(str);
-      str.setDate(str.getDate() - 5);
-      var year = str.getFullYear();
-      var month = str.getMonth() + 1;
-      var day = str.getDate();
-      
-      if(String(month).length == 1){
-        month = '0'+month;
+      $('#construction_date').change(function() {
+        if(!$('#notAlert').is(':checked')){
+        var str = $(this).val();
+        str = new Date(str);
+        str.setDate(str.getDate() - 5);
+        var year = str.getFullYear();
+        var month = str.getMonth() + 1;
+        var day = str.getDate();
+        
+        if(String(month).length == 1){
+          month = '0'+month;
+        }
+        if(String(day).length == 1){
+          day = '0'+day;
+        }
+        $('#alert_config').val(year+'-'+month+'-'+day);
+        $('#alert_notice').removeClass('hidden');
       }
-      if(String(day).length == 1){
-        day = '0'+day;
-      }
-      $('#alert_config').val(year+'-'+month+'-'+day);
-    });
+      });
 
     $('#notAlert').change(function() {
       if ($('#notAlert').is(':checked')) {
-        $('#alert_config').prop('disabled', true);
-        $('#alert_config').addClass('bg-gray-200');
+        $('#alert_config')
+        .prop('disabled', true)
+        .addClass('bg-gray-200')
+        .val('');
       } else {
-        $('#alert_config').prop('disabled', false);
-        $('#alert_config').removeClass('bg-gray-200');
+        $('#alert_config')
+        .prop('disabled', false)
+        .removeClass('bg-gray-200');
       }
     });
   });

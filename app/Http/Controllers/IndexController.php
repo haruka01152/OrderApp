@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Status;
 use App\Models\Alert;
-use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
 use App\Models\Log;
@@ -26,13 +25,13 @@ class IndexController extends Controller
 
     public function index(Request $request)
     {
-        list($statuses, $alerts, $nonpage_constructions, $constructions) = $this->common->getInfoForDashboard();
+        list($statuses, $alerts, $nonpage_constructions, $constructions, $order_statuses) = $this->common->getInfoForDashboard();
         // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status']]);
         }
 
-        return view('dashboard', compact('statuses', 'alerts', 'constructions'));
+        return view('dashboard', compact('statuses', 'alerts', 'constructions', 'order_statuses'));
     }
 
     public function create(IndexRequest $request)
@@ -41,7 +40,7 @@ class IndexController extends Controller
         $id = Construction::latest()->first()->id;
         $this->alert->createOneAlert($id);
         $this->log->createLog(Auth::user()->name, $id, url()->current());
-        return redirect()->route('edit', ['id' => $id])->with('message', '案件を作成しました。');
+        return redirect()->route('dashboard')->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)

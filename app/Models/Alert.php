@@ -36,15 +36,14 @@ class Alert extends Model
         ]);
     }
 
-    // すべての工事のアラートを一斉に作成
+    // すべての工事のアラートを一斉に作成（タスクスケジューラ用）
     public static function createAlerts()
     {
         $constructions = Construction::getAllConstructions();
 
         foreach ($constructions as $construction) {
-            $today =new Carbon();
-            $construction_date =new Carbon($construction->construction_date);
-            if ($construction->construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
+            $today =new Carbon('today');
+            if ($construction->construction_date != null && ($construction->alert_config != null && $construction->alert_config <= $today)) {
                 $alert = Alert::where('construction_id', $construction->id)->first();
                 $status = Construction::where('id', $construction->id)->first()->arrive_status;
                 if ($alert == null && $status != '✔') {
@@ -58,10 +57,8 @@ class Alert extends Model
     public static function createOneAlert($id)
     {
         $construction = Construction::getConstruction($id);
-        $today =new Carbon();
-        $construction_date =new Carbon($construction->construction_date);
-
-        if ($construction->construction_date != null && $today->modify("+{$construction->alert_config} days") >= $construction_date) {
+        $today =new Carbon('today');
+        if ($construction->construction_date != null && ($construction->alert_config != null && $construction->alert_config <= $today)) {
             $alert = Alert::where('construction_id', $construction->id)->first();
             $status = Construction::where('id', $construction->id)->first()->arrive_status;
             if ($alert == null && $status != '✔') {

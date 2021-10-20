@@ -6,14 +6,20 @@
             @endif
             <div>
                 <div class="flex justify-between">
-                    <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}} text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
-
+                    <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}}  text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
                     @if(\Route::currentRouteName() == 'edit')
                     <a title="この案件を削除する" href="{{route('delete', ['id' => $construction->id])}}"><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
                     </a>
                     @endif
                 </div>
-
+                <div class="flex flex-col pt-10">
+                    <label for="order_status">ステータス</label>
+                    <select name="order_status" id="order_status" class="mt-1 w-2/12">
+                    @foreach($order_statuses as $status)
+                        <option value="{{$status->id}}" {{\Route::currentRouteName() == 'edit' && $construction->order_status == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
+                    @endforeach
+                    </select>
+                </div>
                 <div class="flex pt-10">
                     <div class="flex flex-col">
                         <label for="contract_date">契約日</label>
@@ -85,21 +91,32 @@
                 @endif
 
                 <div>
-                    <h4 class="pt-10 pb-3 text-gray-800">◆アラート設定</h4>
+                    <h4 class="pt-10 pb-3 text-gray-800">◆アラート発信日</h4>
 
                     <div class="flex items-center">
-                    @if(\Route::currentRouteName() == 'edit')
-                    <input type="date" value="@if($construction->alert_config){{$construction->alert_config}}@elseif($construction->construction_date){{$carbon::createFromFormat('Y-m-d',$construction->construction_date)->addDays(5)->format('Y-m-d')}}@endif">
-                    @elseif(\Route::currentRouteName() == 'add')
-                    <input type="date" value="{{$carbon::now()->addDays(5)->format('Y-m-d')}}">
-                    @endif
-                    <input type="checkbox" id="notAlert" value="" class="ml-10 mr-2">
-                    <label for="notAlert">アラートを設定しない</label>
+                        @if(\Route::currentRouteName() == 'edit')
+                        <input type="date" name="alert_config" id="alert_config" value="@if($construction->alert_config){{$construction->alert_config}}@endif" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
+                        @elseif(\Route::currentRouteName() == 'add')
+                        <input type="date" name="alert_config" id="alert_config" value="">
+                        @endif
+                        <input type="checkbox" name="notAlert" id="notAlert" value="null" class="ml-10 mr-2" {{\Route::currentRouteName() == 'edit' && $construction->alert_config == null ? 'checked' : ''}}>
+                        <label for="notAlert">アラートを設定しない</label>
                     </div>
+                    @if(\Route::currentRouteName() == 'edit')
+                    <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が変更されています。問題があれば変更してください。</p>
+                    @endif
+                    @error('alert_config')
+                    <p class="error">* {{$message}}</p>
+                    @enderror
                 </div>
 
                 <div>
-                    <h4 class="pt-10 pb-3 text-gray-800">◆注文書登録</h4>
+                    <h4 class="pt-16 pb-3 text-gray-800">◆案件・発注備考</h4>
+                    <textarea name="remarks" class="w-full" rows="3">{{$construction->remarks}}</textarea>
+                </div>
+
+                <div>
+                    <h4 class="pt-16 pb-3 text-gray-800">◆注文書登録</h4>
                     @error('images.*')
                     <p class="error">* {{$message}}</p>
                     @enderror
@@ -108,7 +125,6 @@
                         <input type="file" id="image" name="images[]" style="padding-top:285px; width:100%; border:0; outline:0; color:black;" multiple>
                         ここにファイルをドロップ<br>or<br>下のボタンをクリックして選択
                     </label>
-
                 </div>
             </div>
 

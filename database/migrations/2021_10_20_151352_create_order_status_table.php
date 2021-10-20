@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAlertConfigsTable extends Migration
+class CreateOrderStatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateAlertConfigsTable extends Migration
      */
     public function up()
     {
-        Schema::create('alert__configs', function (Blueprint $table) {
+        Schema::create('order_status', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('period');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateAlertConfigsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('alert__configs');
+        Schema::dropIfExists('order_status');
     }
 }

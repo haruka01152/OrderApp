@@ -144,13 +144,13 @@
                             </div>
                         </div>
                         @endif
-
                     </div>
 
                     @if(count($constructions) > 0)
                     <table class="text-center m-auto block overflow-x-scroll whitespace-nowrap w-full">
                         <tr class="bg-gray-200 hover:bg-gray-200">
-                            <th title="契約日で並べ替え">@sortablelink('contract_date', '契約日')</a></th>
+                            <th class="w-1/12">ステータス</th>
+                            <th title="契約日で並べ替え">@sortablelink('contract_date', '契約日')</th>
                             <th title="工事日で並べ替え">@sortablelink('construction_date', '工事日')</th>
                             <th title="お客様名で並べ替え">@sortablelink('customer_name', 'お客様名')</th>
                             <th title="案件名で並べ替え">@sortablelink('construction_name', '案件名')</th>
@@ -158,9 +158,10 @@
                         </tr>
                         @foreach($constructions as $construction)
                         <tr class="{{$construction->status == 4 ? 'bg-gray-300 hover:bg-gray-300' : ''}}">
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->order_statuses->name}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->contract_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 25, '…')}}</a></td>
+                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 35, '…')}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->construction_name, 50, '…')}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->arrive_status}}</a></td>
                         </tr>

@@ -6,14 +6,14 @@
             </a>
             <a title="カレンダー表示" class="ml-10" href="{{route('calender', ['year' => date('Y'), 'month' => date('m')])}}"><i class="far fa-calendar-alt fa-2x"></i></a>
             <a title="アラート" class="ml-10 relative" href="{{route('alerts')}}"><i class="far fa-bell fa-2x"></i>
-            @if(count($all_alerts) > 0)
-            <div class="absolute -top-1 -right-1">
-            <span class="inline-block bg-red-500 rounded-full relative text-center" style="font-size:12px; padding:1px 2px; min-width:18px;">
-                {{count($all_alerts)}}
-            </span>
-            </div>
-            @endif
-        </a>
+                @if(count($all_alerts) > 0)
+                <div class="absolute -top-1 -right-1">
+                    <span class="inline-block bg-red-500 rounded-full relative text-center" style="font-size:12px; padding:1px 2px; min-width:18px;">
+                        {{count($all_alerts)}}
+                    </span>
+                </div>
+                @endif
+            </a>
         </div>
 
         @if(\Route::currentRouteName() == 'dashboard')
@@ -21,6 +21,11 @@
             @csrf
             <div class="flex pl-5">
                 <div class="pl-3">
+                    <select name="order_status" id="#submit_select" onchange="submit(this.form)">
+                        @foreach($order_statuses as $status)
+                        <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
+                        @endforeach
+                    </select>
                     <select name="status" id="#submit_select" onchange="submit(this.form)">
                         @foreach($statuses as $status)
                         <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>

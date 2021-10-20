@@ -21,6 +21,8 @@ class Construction extends Model
         'construction_name',
         'arrive_status',
         'alert_config',
+        'order_status',
+        'remarks',
     ];
 
     public $sortable = ['contract_date', 'construction_date', 'customer_name', 'construction_name'];
@@ -28,6 +30,11 @@ class Construction extends Model
     public function alerts()
     {
         return $this->hasOne('App\Models\Alert');
+    }
+
+    public function order_statuses()
+    {
+        return $this->hasOne('App\Models\OrderStatus', 'id', 'order_status');
     }
 
     public static function getConstruction($id)
@@ -83,14 +90,18 @@ class Construction extends Model
 
     public function createData($request)
     {
-        Construction::create([
-            'contract_date' => $request->contract_date,
-            'construction_date' => $request->construction_date,
-            'customer_name' => $request->customer_name,
-            'construction_name' => $request->construction_name,
-            'arrive_status' => '',
-            'alert_config' => $request->alert_config,
-        ]);
+        if($request->notAlert){
+            $alert_config = null;
+        }else{
+            $alert_config = $request->alert_config;
+        }
+        $construction = new Construction;
+        $form = $request->all();
+        unset($form['_token']);
+        $construction->fill($form);
+        $construction->alert_config = $alert_config;
+        $construction->arrive_status = '';
+        $construction->save();
     }
 
     public function createConstruction($request)
@@ -130,14 +141,20 @@ class Construction extends Model
         unset($form['_token']);
         $construction->fill($form);
         $construction->arrive_status = $const_arrive_status;
+        if($request->notAlert){
+            $alert_config = null;
+        }else{
+            $alert_config = $request->alert_config;
+        }
+        $construction->alert_config = $alert_config;
         $construction->status = $status;
-
+        
         if ($construction->isDirty()) {
             $construction->save();
             Alert::createOneAlert($id);
-            $today = new Carbon();
+            $today = new Carbon('today');
 
-            if ($const_arrive_status == '✔' || $today->modify("+{$construction->alert_config} days") <= $construction->construction_date) {
+            if (($const_arrive_status == '✔' || $alert_config == null ) || $today <= $alert_config) {
                 Alert::deleteAlert($id);
             }
             return true;

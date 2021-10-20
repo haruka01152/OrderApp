@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Status;
 use App\Models\Alert;
-use App\Models\Alert_Config;
 use App\Models\Construction;
 use App\Models\Order;
 use Carbon\Carbon;

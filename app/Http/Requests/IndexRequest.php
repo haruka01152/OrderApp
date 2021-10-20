@@ -29,6 +29,8 @@ class IndexRequest extends FormRequest
             'construction_name' => ['required', 'max:100'],
             'orders.*.memo' => ['nullable', 'max:20'],
             'images.*' => ['mimes:jpeg,jpg,png,gif,pdf', 'max:10240'],
+            'alert_config' => ['nullable', 'required_without:notAlert'],
+            'notAlert' => ['nullable', 'required_without:alert_config'],
         ];
     }
 
@@ -40,6 +42,8 @@ class IndexRequest extends FormRequest
             'construction_name.required' => '案件名を入力してください。', 
             'construction_name.max' => '案件名は100文字以内で入力してください。',
             'orders.*.memo.max' => '備考は20文字以内で入力してください。', 
+            'alert_config.required_without' => 'アラート設定を入力してください。',
+            'notAlert.required_without' => 'アラート設定を入力してください。',
         ];
     }
 }
