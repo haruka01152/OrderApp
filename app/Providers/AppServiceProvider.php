@@ -6,6 +6,8 @@ use App\Models\Alert;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
+use Faker\Generator as FakerGenerator;
+use Faker\Factory as FakerFactory; 
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+        $this->app->singleton(FakerGenerator::class, function () {
+            return FakerFactory::create('ja_JP');
+        });
     }
 
     /**

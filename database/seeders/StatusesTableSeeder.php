@@ -23,9 +23,6 @@ class StatusesTableSeeder extends Seeder
                 'name' => '物品到着済',
             ],
             [
-                'name' => 'すべて',
-            ],
-            [
                 'name' => '削除済み',
             ],
         ]);

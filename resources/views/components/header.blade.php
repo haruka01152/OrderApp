@@ -17,18 +17,21 @@
         </div>
 
         @if(\Route::currentRouteName() == 'dashboard')
-        <form class="flex items-center m-0 w-8/12 justify-end" id="submit_form">
+        <form class="flex items-center m-0 w-8/12 justify-end">
             @csrf
             <div class="flex pl-5">
                 <div class="pl-3">
-                    <select name="order_status" id="#submit_select" onchange="submit(this.form)">
-                        @foreach($order_statuses as $status)
+                    <select name="status" onchange="submit(this.form)">
+                    <option value="all" {{request('status') == 'all' ? 'selected' : ''}}>(物品到着状況)</option>
+                    <option value="1" {{request('status') == 1 || request('status') == null ? 'selected' : ''}}>物品未着</option>
+                        @foreach($statuses as $status)
                         <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
                         @endforeach
                     </select>
-                    <select name="status" id="#submit_select" onchange="submit(this.form)">
-                        @foreach($statuses as $status)
-                        <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
+                    <select name="order_status" onchange="submit(this.form)">
+                    <option value="all" {{request('order_status') == 'all' ? 'selected' : ''}}>(発注状況)</option>
+                        @foreach($order_statuses as $order_status)
+                        <option value="{{$order_status->id}}" {{request('order_status') == $order_status->id ? 'selected' : ''}}>{{$order_status->name}}</option>
                         @endforeach
                     </select>
                 </div>

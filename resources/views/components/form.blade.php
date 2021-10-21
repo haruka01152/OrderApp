@@ -13,7 +13,7 @@
                     @endif
                 </div>
                 <div class="flex flex-col pt-10">
-                    <label for="order_status">ステータス</label>
+                    <label for="order_status">発注状況</label>
                     <select name="order_status" id="order_status" class="mt-1 w-2/12">
                     @foreach($order_statuses as $status)
                         <option value="{{$status->id}}" {{\Route::currentRouteName() == 'edit' && $construction->order_status == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
@@ -30,7 +30,9 @@
                         <input type="date" id="construction_date" name="construction_date" value="@if(isset($construction) && $construction->construction_date){{$construction->construction_date}}@elseif(request('date')){{request('date')}}@endif" class="mt-1">
                     </div>
                 </div>
-
+                @if(\Route::currentRouteName() == 'edit')
+                    <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が変更されました。問題があれば変更してください。</p>
+                    @endif
                 <div class="flex flex-col pt-10 w-2/4">
                     <label for="customer_name">お客様名</label>
                     <input type="text" id="customer_name" name="customer_name" value="{{isset($construction) && !old('customer_name') ? $construction->customer_name : old('customer_name')}}" class="mt-1">
@@ -102,9 +104,6 @@
                         <input type="checkbox" name="notAlert" id="notAlert" value="null" class="ml-10 mr-2" {{\Route::currentRouteName() == 'edit' && $construction->alert_config == null ? 'checked' : ''}}>
                         <label for="notAlert">アラートを設定しない</label>
                     </div>
-                    @if(\Route::currentRouteName() == 'edit')
-                    <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が変更されています。問題があれば変更してください。</p>
-                    @endif
                     @error('alert_config')
                     <p class="error">* {{$message}}</p>
                     @enderror
@@ -112,7 +111,7 @@
 
                 <div>
                     <h4 class="pt-16 pb-3 text-gray-800">◆案件・発注備考</h4>
-                    <textarea name="remarks" class="w-full" rows="3">{{$construction->remarks}}</textarea>
+                    <textarea name="remarks" class="w-full" rows="3">{{isset($construction->remarks) ? $construction->remarks : ''}}</textarea>
                 </div>
 
                 <div>

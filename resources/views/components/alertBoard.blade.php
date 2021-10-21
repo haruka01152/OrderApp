@@ -11,7 +11,7 @@
         $today = $carbon::now()->format('Y-m-d H:i:s');
         @endphp
         <a href="{{route('edit', ['id' => $alert->construction_id])}}" class="table-row text-red-600 hover:bg-gray-100">
-            <div class="table-cell w-3/12">【※未着物品あり　@if($const_date == $today)工事日当日@elseif($const_date > $today)工事日まであと{{$diff_days}}日@else 工事日から{{$diff_days}}日経過@endif】</div>
+            <div class="table-cell w-3/12">【※未着物品あり（{{$alert->constructions->order_status != 4 ? '未発注' : '発注済'}}）　@if($const_date == $today)工事日当日@elseif($const_date > $today)工事日まであと{{$diff_days}}日@else 工事日から{{$diff_days}}日経過@endif】</div>
             <div class="table-cell w-2/12">{{$const_date->format('m/d')}} ({{$week[$const_date->format('w')]}})工事</div>
             <div class="table-cell w-3/12">{{Str::limit($alert->constructions->customer_name, 50, '…')}}</div>
             <div class="table-cell w-4/12">{{Str::limit($alert->constructions->construction_name, 60, '…')}}</div>

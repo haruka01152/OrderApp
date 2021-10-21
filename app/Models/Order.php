@@ -82,7 +82,7 @@ class Order extends Model
         $construction_id = $request->id;
         $construction = Construction::findOrFail($construction_id);
 
-        if ($construction->status == 4) {
+        if ($construction->status == 3) {
             return redirect()->route('dashboard');
         }
 

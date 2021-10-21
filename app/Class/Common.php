@@ -22,7 +22,7 @@ class Common
 
     public function getInfoForDashboard()
     {
-        $statuses = $this->status->all();
+        $statuses = $this->status->where('id', '>', 1)->get();
         $alerts = $this->alert->getAlerts(5);
         $nonpage_constructions = $this->construction->findConstructions();
         $constructions = $nonpage_constructions->paginate(20);
@@ -61,9 +61,9 @@ class Common
     {
         $construction = $this->construction->findOrFail($id);
 
-        if ($construction->status != 4) {
+        if ($construction->status != 3) {
             $view = 'index.edit';
-        } elseif ($construction->status == 4) {
+        } elseif ($construction->status == 3) {
             $view = 'index.deleted';
         }
 

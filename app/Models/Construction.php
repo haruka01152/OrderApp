@@ -45,7 +45,7 @@ class Construction extends Model
 
     public static function getAllConstructions()
     {
-        $constructions = Construction::where('status', '!=', 4)->get();
+        $constructions = Construction::where('status', '!=', 3)->get();
         return $constructions;
     }
 
@@ -54,16 +54,23 @@ class Construction extends Model
         $nonpage_constructions = Construction::where(function ($query) {
 
             $status = request('status');
+            $order_status = request('order_status');
             $find = request('find');
 
             $query->where(function ($query) use ($status) {
-                if ($status == 3) {
+                if ($status == 'all') {
                     $query->where('status', '=', 1)
                         ->orWhere('status', '=', 2);
-                } elseif (!$status) {
+                } elseif ($status == null || $status == 1) {
                     $query->where('status', '=', 1);
                 } else {
                     $query->where('status', '=', $status);
+                }
+            });
+
+            $query->where(function ($query) use ($order_status) {
+                if (!$order_status == 'all' && !$order_status == null) {
+                    $query->where('order_status', '=', $order_status);
                 }
             });
 
@@ -90,9 +97,9 @@ class Construction extends Model
 
     public function createData($request)
     {
-        if($request->notAlert){
+        if ($request->notAlert) {
             $alert_config = null;
-        }else{
+        } else {
             $alert_config = $request->alert_config;
         }
         $construction = new Construction;
@@ -141,20 +148,20 @@ class Construction extends Model
         unset($form['_token']);
         $construction->fill($form);
         $construction->arrive_status = $const_arrive_status;
-        if($request->notAlert){
+        if ($request->notAlert) {
             $alert_config = null;
-        }else{
+        } else {
             $alert_config = $request->alert_config;
         }
         $construction->alert_config = $alert_config;
         $construction->status = $status;
-        
+
         if ($construction->isDirty()) {
             $construction->save();
             Alert::createOneAlert($id);
             $today = new Carbon('today');
 
-            if (($const_arrive_status == '✔' || $alert_config == null ) || $today <= $alert_config) {
+            if (($const_arrive_status == '✔' || $alert_config == null) || $today <= $alert_config) {
                 Alert::deleteAlert($id);
             }
             return true;
@@ -166,7 +173,7 @@ class Construction extends Model
     public function destroyConstruction($id)
     {
         Construction::where('id', $id)->update([
-            'status' => 4,
+            'status' => 3,
         ]);
     }
 
@@ -184,5 +191,4 @@ class Construction extends Model
             ]);
         }
     }
-
 }

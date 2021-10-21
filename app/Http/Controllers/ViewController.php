@@ -11,6 +11,7 @@ use App\Models\Alert;
 use App\Models\Log;
 use App\Class\Common;
 use App\Class\Calender;
+use App\Models\OrderStatus;
 
 class ViewController extends Controller
 {
@@ -27,7 +28,8 @@ class ViewController extends Controller
 
     public function add()
     {
-        return view('index.add');
+        $order_statuses = OrderStatus::all();
+        return view('index.add', compact('order_statuses'));
     }
 
     public function edit(Request $request, $id)

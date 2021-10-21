@@ -88,7 +88,7 @@
                     <h3 class="w-full text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
                 </div>
                 <div class="flex flex-col pt-10">
-                    <label for="order_status">ステータス</label>
+                    <label for="order_status">発注状況</label>
                     <select name="order_status" id="order_status" class="mt-1 w-2/12">
                     @foreach($order_statuses as $status)
                         <option value="{{$status->id}}" {{$construction->order_status == $status->id ? 'selected' : ''}}>{{$status->name}}</option>

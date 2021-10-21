@@ -28,9 +28,9 @@ class IndexController extends Controller
         list($statuses, $alerts, $nonpage_constructions, $constructions, $order_statuses) = $this->common->getInfoForDashboard();
         // 何も入力せず検索したらstatusを保って最初のURLにリダイレクト
         if (isset($request['find']) && $request['find'] == '') {
-            return redirect()->route('dashboard', ['status' => $request['status']]);
+            return redirect()->route('dashboard', ['status' => $request['status'], 'order_status' => $request['order_status']]);
         }
-
+    
         return view('dashboard', compact('statuses', 'alerts', 'constructions', 'order_statuses'));
     }
 
