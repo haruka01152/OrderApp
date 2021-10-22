@@ -23,7 +23,7 @@ class Common
     public function getInfoForDashboard()
     {
         $statuses = $this->status->where('id', '>', 1)->get();
-        $alerts = $this->alert->getAlerts(5);
+        $alerts = $this->alert->getAllAlerts(5);
         $nonpage_constructions = $this->construction->findConstructions();
         $constructions = $nonpage_constructions->paginate(20);
         $order_statuses = OrderStatus::all();

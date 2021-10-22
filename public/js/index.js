@@ -61,4 +61,10 @@ $(function() {
         .removeClass('bg-gray-200');
       }
     });
+    if($('#notAlert').is(':checked')){
+      $('#alert_config')
+      .prop('disabled', true)
+      .addClass('bg-gray-200')
+      .val('');
+    }
   });

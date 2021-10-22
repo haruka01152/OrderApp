@@ -17,6 +17,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Modaal/0.4.4/css/modaal.min.css">
   @if(\Route::currentRouteName() == 'edit')
   <link rel="stylesheet" href="{{ asset('css/editStyle.css') }}">
+  @elseif(\Route::currentRouteName() == 'dashboard')
+  <link rel="stylesheet" href="{{ asset('css/dashboardStyle.css') }}">
   @elseif(\Route::currentRouteName() == 'add')
   <link rel="stylesheet" href="{{ asset('css/addStyle.css') }}">
   @endif

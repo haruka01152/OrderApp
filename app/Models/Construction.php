@@ -8,6 +8,7 @@ use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\DB;
 use App\Class\Image;
 use Carbon\Carbon;
+use App\Models\Alert;
 
 class Construction extends Model
 {
@@ -69,8 +70,10 @@ class Construction extends Model
             });
 
             $query->where(function ($query) use ($order_status) {
-                if (!$order_status == 'all' && !$order_status == null) {
-                    $query->where('order_status', '=', $order_status);
+                if ($order_status == 'all' || $order_status == null) {
+                    $query->where('order_status', '!=', 0);
+                }else{
+                    $query->where('order_status', $order_status);
                 }
             });
 
@@ -160,10 +163,14 @@ class Construction extends Model
             $construction->save();
             Alert::createOneAlert($id);
             $today = new Carbon('today');
-
             if (($const_arrive_status == '✔' || $alert_config == null) || $today <= $alert_config) {
-                Alert::deleteAlert($id);
+                Alert::deleteAlert($id,1);
             }
+            $alert = Alert::where('construction_id', $construction->id)->where('class', '!=', 1)->first();
+            if($alert != null && $construction->order_status != $alert->class){
+                Alert::deleteAlert($construction->id, $alert->class);
+            }
+
             return true;
         } else {
             return false;

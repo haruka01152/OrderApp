@@ -35,9 +35,9 @@ class ViewController extends Controller
     public function edit(Request $request, $id)
     {
         list($construction, $orders, $logs, $order_statuses) = $this->common->getInfoForDetail($id);
-        list($previousUrl, $find) = $this->common->getFindWord($request);
+        // list($previousUrl, $find) = $this->common->getFindWord($request);
         $view = $this->common->selectBladeForEdit($id);
-        return view($view, compact('construction', 'orders', 'find', 'previousUrl', 'logs', 'order_statuses'));
+        return view($view, compact('construction', 'orders', 'logs', 'order_statuses'));
     }
 
     public function delete(Request $request, $id)

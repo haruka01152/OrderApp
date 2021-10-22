@@ -1,5 +1,5 @@
 <x-slot name="header">
-    <div class="flex items-center justify-between lg:container m-auto">
+    <div class="flex items-center lg:container m-auto">
         <div class="flex items-center text-white">
             <a title="工事物品管理トップ" href="{{route('dashboard')}}" class="font-semibold text-xl leading-tight">
                 工事物品管理
@@ -17,19 +17,19 @@
         </div>
 
         @if(\Route::currentRouteName() == 'dashboard')
-        <form class="flex items-center m-0 w-8/12 justify-end">
+        <form class="flex items-center ml-auto mb-0 w-8/12 justify-end">
             @csrf
             <div class="flex pl-5">
                 <div class="pl-3">
                     <select name="status" onchange="submit(this.form)">
-                    <option value="all" {{request('status') == 'all' ? 'selected' : ''}}>(物品到着状況)</option>
+                    <option value="all" {{request('status') == 'all' ? 'selected' : ''}}>(物品到着状況すべて)</option>
                     <option value="1" {{request('status') == 1 || request('status') == null ? 'selected' : ''}}>物品未着</option>
                         @foreach($statuses as $status)
                         <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
                         @endforeach
                     </select>
                     <select name="order_status" onchange="submit(this.form)">
-                    <option value="all" {{request('order_status') == 'all' ? 'selected' : ''}}>(発注状況)</option>
+                    <option value="all" {{request('order_status') == 'all' ? 'selected' : ''}}>(発注状況すべて)</option>
                         @foreach($order_statuses as $order_status)
                         <option value="{{$order_status->id}}" {{request('order_status') == $order_status->id ? 'selected' : ''}}>{{$order_status->name}}</option>
                         @endforeach
@@ -41,10 +41,10 @@
         </form>
 
         @elseif(\Route::currentRouteName() == 'calender')
-        <form class="flex m-0" action="" method="get">
+        <form class="flex ml-10" action="" method="get">
             @csrf
             <div>
-                <select name="year" id="year">
+                <select name="year" id="year" onchange="submit();">
                     @foreach(range(date('Y')-3,date('Y')+3) as $y)
                     <option value="{{$y}}" {{$y == $year ? 'selected' : ''}}>{{$y}}</option>
                     @endforeach
@@ -52,15 +52,28 @@
                 <label class="text-white font-bold pr-1" for="year">年</label>
             </div>
             <div>
-                <select name="month" id="month">
+                <select name="month" id="month" onchange="submit();">
                     @foreach(range(1,12) as $m)
                     <option value="{{$m}}" {{$m == $month ? 'selected' : ''}}>{{$m}}</option>
                     @endforeach
                 </select>
                 <label class="text-white font-bold" for="year">月</label>
             </div>
-            <input title="カレンダーを表示" type="submit" value="表示" class="cursor-pointer ml-5 py-1 px-5 text-lg rounded-lg border border-gray-500">
         </form>
+
+        @elseif(\Route::currentRouteName() == 'alerts')
+        <form class="flex ml-10" action="" method="get">
+            @csrf
+            <div>
+                <select name="class" onchange="submit();">
+                    <option value="all" {{request('class') == null ? 'selected' : ''}}>(アラート分類すべて)</option>
+                    <option value="1" {{request('class') == 1 ? 'selected' : ''}}>物品未着アラート</option>
+                    <option value="2" {{request('class') == 2 ? 'selected' : ''}}>発注指示待ちアラート</option>
+                    <option value="3" {{request('class') == 3 ? 'selected' : ''}}>発注指示アラート</option>
+                </select>
+            </div>
+        </form>
+
         @endif
     </div>
 </x-slot>

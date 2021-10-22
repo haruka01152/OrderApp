@@ -56,7 +56,7 @@ class IndexController extends Controller
     public function destroy(Request $request, $id)
     {
         $this->construction->destroyConstruction($id);
-        $this->alert->deleteAlert($id);
+        $this->alert->deleteAllAlert($id);
         $this->log->createLog(Auth::user()->name, $id, url()->current());
         return redirect()->route('dashboard')->with('message', '案件を削除しました。');
     }

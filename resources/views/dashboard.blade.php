@@ -1,99 +1,6 @@
-<!-- CSS -->
-<style>
-    th,
-    td {
-        border: 1px solid gray;
-        padding: 0;
-    }
-
-    tbody {
-        width: 100%;
-        display: table;
-    }
-
-    th {
-        cursor: default;
-    }
-
-    tr {
-        cursor: pointer;
-    }
-
-    tr:hover {
-        background-color: rgba(243, 244, 246, 1);
-    }
-
-    th,
-    .td-link {
-        padding: .7rem 1.5rem;
-    }
-
-    .td-link {
-        display: inline-block;
-        width: 100%;
-        height: 100%;
-    }
-
-    /* モーダルウィンドウ */
-    .modal-window {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 300px;
-        height: 300px;
-        border-radius: 5px;
-        background: white;
-        z-index: 11;
-        padding: 2rem;
-    }
-
-    /* 閉じるボタン */
-    .button-close {
-        position: absolute;
-        bottom: 1rem;
-        left: 50%;
-        transform: translate(-50%, 0);
-        width: 150px;
-        padding: .5em;
-        color: #eaeaea;
-        border-radius: 20rem;
-        cursor: pointer;
-    }
-
-    .modal-window {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 550px;
-        height: 380px;
-        background-color: white;
-        border-radius: 5px;
-        z-index: 11;
-        padding: 2rem;
-    }
-
-    .overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.3);
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-    }
-</style>
-
 <x-app-layout>
-
-    @if(Session::has('message'))
-    <div id="target_msg_box" class="message-box relative bg-red-400 text-white text-lg py-3">
-        <p class="message-text lg:container m-auto">{{session('message')}}</p>
-    </div>
-    @endif
+@section('title', 'ダッシュボード')
+@include('components.messageBox')
     <div class="modal-window">
         <h3 class="text-xl pb-8 text-center font-bold">ヘルプ　—　物品到着状況について</h3>
         <div class="pt-5 px-3">
@@ -107,17 +14,7 @@
     <div id="overlay" class="overlay"></div>
     @include('components.header')
 
-    <!-- パンくずリスト -->
-    @if(request('find'))
-    <div class="flex items-center py-2 px-8 bg-white shadow border-t-2 border-gray-200">
-        <div class="lg:container m-auto">
-            <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-            <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-            <a href="{{route('dashboard', ['find' => request('find')])}}" class="text-blue-500 pr-3">絞り込み : {{request('find')}}</a>
-        </div>
-    </div>
-    @endif
-
+    @include('components.breadCrumb')
     <div class="py-6">
         <div class="mx-auto lg:container">
             <div>
@@ -138,7 +35,7 @@
 
                         @if(count($constructions) > 0)
                         <div class="ml-auto flex items-center">
-                            <p class="text-gray-400 pl-10">{{$constructions->firstItem()}} - {{$constructions->lastItem()}} 件を表示しています（全{{$constructions->total()}}件）</p>
+                            <p class="text-gray-600 pl-10">{{$constructions->firstItem()}} - {{$constructions->lastItem()}} 件を表示しています（全{{$constructions->total()}}件）</p>
                             <div class="-mt-1">
                                 {{$constructions->appends(request()->query())->links()}}
                             </div>
@@ -148,17 +45,23 @@
 
                     @if(count($constructions) > 0)
                     <table class="text-center m-auto block overflow-x-scroll whitespace-nowrap w-full">
-                        <tr class="bg-gray-200 hover:bg-gray-200">
+                        <tr class="bg-yellow-200 hover:bg-yellow-200">
                             <th class="w-1/12">発注状況</th>
-                            <th title="契約日で並べ替え">@sortablelink('contract_date', '契約日')</th>
-                            <th title="工事日で並べ替え">@sortablelink('construction_date', '工事日')</th>
-                            <th title="お客様名で並べ替え">@sortablelink('customer_name', 'お客様名')</th>
-                            <th title="案件名で並べ替え">@sortablelink('construction_name', '案件名')</th>
+                            <th title="契約日で並べ替え" class="w-1/12">@sortablelink('contract_date', '契約日')</th>
+                            <th title="工事日で並べ替え" class="w-1/12">@sortablelink('construction_date', '工事日')</th>
+                            <th class="w-3/12">お客様名</th>
+                            <th class="w-4/12">案件名</th>
                             <th>物品到着状況</th>
                         </tr>
                         @foreach($constructions as $construction)
                         <tr class="{{$construction->status == 3 ? 'bg-gray-300 hover:bg-gray-300' : ''}}">
-                            <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->order_statuses->name}}</a></td>
+                            <td><a class="td-link relative" href="{{route('edit', ['id' => $construction->id])}}">
+                                @if($construction->order_status == 2)
+                                <i class="fas fa-exclamation-circle text-yellow-500 absolute left-1 top-1"></i>
+                                @elseif($construction->order_status == 3)
+                                <i class="fas fa-exclamation-circle text-red-500 absolute left-1 top-1"></i>
+                                @endif
+                                {{$construction->order_statuses->name}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->contract_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{$construction->construction_date}}</a></td>
                             <td><a class="td-link" href="{{route('edit', ['id' => $construction->id])}}">{{Str::limit($construction->customer_name, 35, '…')}}</a></td>

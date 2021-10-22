@@ -14,8 +14,9 @@ use App\Notifications\InvoicePaid;
 class AlertController extends Controller
 {
     //
-    public function alerts(){
-        $alerts = Alert::getAlerts(50);
+    public function alerts(Request $request){
+        $class = $request->class;
+        $alerts = Alert::getAlerts(50,$class);
         return view('index.alert', compact('alerts'));
     }
 
@@ -23,6 +24,12 @@ class AlertController extends Controller
     {
         Alert::createAlerts();
         return redirect()->route('dashboard')->with('message', 'アラートを作成');
+    }
+
+    public function delete()
+    {
+        Alert::destroyAlerts();
+        return redirect()->route('dashboard')->with('message', 'アラートを削除');
     }
 
 }

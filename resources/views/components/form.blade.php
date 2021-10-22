@@ -1,9 +1,9 @@
         <form class="{{\Route::currentRouteName() == 'add' ? 'max-w-7xl lg:container m-auto' : ''}} w-8/12 bg-white overflow-hidden shadow py-8 px-16" action="" method="post" enctype="multipart/form-data">
             @csrf
-            @if(isset($previousUrl) && $previousUrl != 0)
+            <!-- @if(isset($previousUrl) && $previousUrl != 0)
             <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
             <input type="hidden" name="find" value="{{$find}}">
-            @endif
+            @endif -->
             <div>
                 <div class="flex justify-between">
                     <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}}  text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
@@ -15,34 +15,34 @@
                 <div class="flex flex-col pt-10">
                     <label for="order_status">発注状況</label>
                     <select name="order_status" id="order_status" class="mt-1 w-2/12">
-                    @foreach($order_statuses as $status)
-                        <option value="{{$status->id}}" {{\Route::currentRouteName() == 'edit' && $construction->order_status == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
-                    @endforeach
+                        @foreach($order_statuses as $status)
+                        <option value="{{$status->id}}" {{old('order_status', isset($construction) && $construction->order_status == $status->id) == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="flex pt-10">
                     <div class="flex flex-col">
                         <label for="contract_date">契約日</label>
-                        <input type="date" id="contract_date" name="contract_date" value="@if(isset($construction) && $construction->contract_date){{$construction->contract_date}}@endif" class="mt-1">
+                        <input type="date" id="contract_date" name="contract_date" value="{{old('contract_date',isset($construction) ? $construction->contract_date : '')}}" class="mt-1">
                     </div>
                     <div class="flex flex-col ml-10">
                         <label for="construction_date">工事日</label>
-                        <input type="date" id="construction_date" name="construction_date" value="@if(isset($construction) && $construction->construction_date){{$construction->construction_date}}@elseif(request('date')){{request('date')}}@endif" class="mt-1">
+                        <input type="date" id="construction_date" name="construction_date" value="{{request('date') == null ? old('construction_date',isset($construction) ? $construction->construction_date : '') : request('date')}}" class="mt-1">
                     </div>
                 </div>
-                @if(\Route::currentRouteName() == 'edit')
-                    <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が変更されました。問題があれば変更してください。</p>
-                    @endif
+                @if(\Route::currentRouteName() == 'edit'|| request('date'))
+                <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が再設定されました。問題があれば変更してください。</p>
+                @endif
                 <div class="flex flex-col pt-10 w-2/4">
                     <label for="customer_name">お客様名</label>
-                    <input type="text" id="customer_name" name="customer_name" value="{{isset($construction) && !old('customer_name') ? $construction->customer_name : old('customer_name')}}" class="mt-1">
+                    <input type="text" id="customer_name" name="customer_name" value="{{old('customer_name',isset($construction) ? $construction->customer_name : '')}}" class="mt-1">
                 </div>
                 @error('customer_name')
                 <p class="error">* {{$message}}</p>
                 @enderror
                 <div class="flex flex-col pt-10 w-2/4">
                     <label for="">案件名</label>
-                    <input type="text" id="construction_name" name="construction_name" value="{{isset($construction) && !old('construction_name') ? $construction->construction_name : old('construction_name')}}" class="mt-1">
+                    <input type="text" id="construction_name" name="construction_name" value="{{old('construction_name',isset($construction) ? $construction->construction_name : '')}}" class="mt-1">
                 </div>
                 @error('construction_name')
                 <p class="error">* {{$message}}</p>
@@ -93,15 +93,15 @@
                 @endif
 
                 <div>
-                    <h4 class="pt-10 pb-3 text-gray-800">◆アラート発信日</h4>
+                    <h4 class="pt-10 pb-3 text-gray-800">◆物品未着のアラート発信日</h4>
 
                     <div class="flex items-center">
                         @if(\Route::currentRouteName() == 'edit')
-                        <input type="date" name="alert_config" id="alert_config" value="@if($construction->alert_config){{$construction->alert_config}}@endif" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
+                        <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config',$construction->alert_config)}}" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
                         @elseif(\Route::currentRouteName() == 'add')
-                        <input type="date" name="alert_config" id="alert_config" value="">
+                        <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config', request('date') ? $carbon::createFromFormat('Y-m-d', request('date'))->subDays(5)->format('Y-m-d') : '')}}">
                         @endif
-                        <input type="checkbox" name="notAlert" id="notAlert" value="null" class="ml-10 mr-2" {{\Route::currentRouteName() == 'edit' && $construction->alert_config == null ? 'checked' : ''}}>
+                        <input type="checkbox" name="notAlert" id="notAlert" value="null" class="ml-10 mr-2" @if(old('notAlert') != null || (isset($construction) && $construction->alert_config == null))checked @endif>
                         <label for="notAlert">アラートを設定しない</label>
                     </div>
                     @error('alert_config')
@@ -111,7 +111,7 @@
 
                 <div>
                     <h4 class="pt-16 pb-3 text-gray-800">◆案件・発注備考</h4>
-                    <textarea name="remarks" class="w-full" rows="3">{{isset($construction->remarks) ? $construction->remarks : ''}}</textarea>
+                    <textarea name="remarks" class="w-full" rows="3">{{old('remarks', isset($construction) ? $construction->remarks : '')}}</textarea>
                 </div>
 
                 <div>

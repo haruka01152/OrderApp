@@ -19,7 +19,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/', 'IndexController@index')->name('dashboard');
 
     Route::get('add/{date?}', 'ViewController@add')->name('add');
-    Route::post('add', 'IndexController@create');
+    Route::post('add/{date?}', 'IndexController@create');
 
     Route::get('edit/{id}', 'ViewController@edit')->name('edit');
     Route::post('edit/{id}', 'IndexController@update');
@@ -37,4 +37,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('alerts', 'AlertController@alerts')->name('alerts');
     Route::get('createAlerts', 'AlertController@create');
+    Route::get('destroyAlerts', 'AlertController@delete');
 });
