@@ -38,7 +38,7 @@
     </div>
     @endif
     @if(\Route::currentRouteName() == 'dashboard' && count($all_alerts) > 5)
-    <div class="text-right pt-5 pr-5">
+    <div class="text-right pt-2 pr-5">
         <a href="{{route('alerts')}}" class="text-red-600">すべて見る >></a>
     </div>
     @endif
