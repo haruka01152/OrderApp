@@ -41,7 +41,7 @@
         </form>
 
         @elseif(\Route::currentRouteName() == 'calender')
-        <form class="flex ml-10" action="" method="get">
+        <form class="flex ml-10 mb-0" action="" method="get">
             @csrf
             <div>
                 <select name="year" id="year" onchange="submit();">

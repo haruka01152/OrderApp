@@ -101,7 +101,7 @@
                         @elseif(\Route::currentRouteName() == 'add')
                         <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config', request('date') ? $carbon::createFromFormat('Y-m-d', request('date'))->subDays(5)->format('Y-m-d') : '')}}" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
                         @endif
-                        <input type="checkbox" name="notAlert" id="notAlert" value="null" class="ml-10 mr-2" @if(old('alert_config') == null || (isset($construction) && $construction->alert_config == null))checked @endif>
+                        <input type="checkbox" name="notAlert" id="notAlert" value="notAlert" class="ml-10 mr-2" @if(old('notAlert') || (isset($construction) && $construction->alert_config == null))checked @endif>
                         <label for="notAlert">アラートを設定しない</label>
                     </div>
                     @error('alert_config')
