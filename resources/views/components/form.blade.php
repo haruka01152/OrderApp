@@ -1,11 +1,7 @@
         <form class="{{\Route::currentRouteName() == 'add' ? 'max-w-7xl lg:container m-auto' : ''}} w-8/12 bg-white overflow-hidden shadow py-8 px-16" action="" method="post" enctype="multipart/form-data">
             @csrf
-            <!-- @if(isset($previousUrl) && $previousUrl != 0)
-            <input type="hidden" name="previousUrl" value="{{$previousUrl}}">
-            <input type="hidden" name="find" value="{{$find}}">
-            @endif -->
             <div>
-                <div class="flex justify-between">
+                <div class="flex justify-between items-center">
                     <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}}  text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
                     @if(\Route::currentRouteName() == 'edit')
                     <a title="この案件を削除する" href="{{route('delete', ['id' => $construction->id])}}"><i class="fas fa-trash-alt fa-2x text-gray-600 transition-all transform duration-300 hover:scale-110 hover:opacity-80"></i>
@@ -99,7 +95,7 @@
                         @if(\Route::currentRouteName() == 'edit')
                         <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config', $construction->alert_config != null ? $construction->alert_config : '')}}" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
                         @elseif(\Route::currentRouteName() == 'add')
-                        <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config', request('date') ? $carbon::createFromFormat('Y-m-d', request('date'))->subDays(5)->format('Y-m-d') : '')}}" {{$construction->alert_config == null ? 'disabled class=bg-gray-200' : ''}}>
+                        <input type="date" name="alert_config" id="alert_config" value="{{old('alert_config', request('date') ? $carbon::createFromFormat('Y-m-d', request('date'))->subDays(5)->format('Y-m-d') : '')}}" {{old('notAlert') != null ? 'disabled class=bg-gray-200' : ''}}>
                         @endif
                         <input type="checkbox" name="notAlert" id="notAlert" value="notAlert" class="ml-10 mr-2" @if(old('notAlert') || (isset($construction) && $construction->alert_config == null))checked @endif>
                         <label for="notAlert">アラートを設定しない</label>

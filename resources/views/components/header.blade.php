@@ -9,7 +9,7 @@
                 @if(count($all_alerts) > 0)
                 <div class="absolute -top-1 -right-1">
                     <span class="inline-block bg-red-500 rounded-full relative text-center" style="font-size:12px; padding:1px 2px; min-width:18px;">
-                        {{count($all_alerts)}}
+                        {{count($all_alerts) <= 99 ? count($all_alerts) : '99+'}}
                     </span>
                 </div>
                 @endif
