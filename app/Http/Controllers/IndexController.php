@@ -10,7 +10,6 @@ use App\Models\Order;
 use App\Models\Log;
 use App\Http\Requests\IndexRequest;
 use App\Class\Common;
-use Illuminate\Support\Facades\Auth;
 
 class IndexController extends Controller
 {
@@ -39,14 +38,13 @@ class IndexController extends Controller
         $this->construction->createConstruction($request);
         $id = Construction::latest()->first()->id;
         $this->alert->createOneAlert($id);
-        $this->log->createLog(Auth::user()->name, $id, url()->current());
+        $this->log->createAddLog($id, $request);
         return redirect()->route('dashboard')->with('message', '案件を作成しました。');
     }
 
     public function update(IndexRequest $request, $id)
     {
         if($this->construction->updateConstruction($request, $id) != false){
-            $this->log->createLog(Auth::user()->name, $id, url()->current());
             return redirect()->route('edit', ['id' => $id])->with('message', '案件を更新しました。');    
         }else{
             return redirect()->route('edit', ['id' => $id])->with('message', '※項目に変化がありません。');
@@ -57,7 +55,7 @@ class IndexController extends Controller
     {
         $this->construction->destroyConstruction($id);
         $this->alert->deleteAllAlert($id);
-        $this->log->createLog(Auth::user()->name, $id, url()->current());
+        $this->log->createDeleteLog($id, $request);
         return redirect()->route('dashboard')->with('message', '案件を削除しました。');
     }
 
@@ -65,7 +63,7 @@ class IndexController extends Controller
     {
         $this->construction->restoreConstruction($id);
         $this->alert->createOneAlert($id);
-        $this->log->createLog(Auth::user()->name, $id, url()->current());
+        $this->log->createLog($id, url()->current(),$request);
         return redirect()->route('edit', ['id' => $id])->with('message', '案件を復元しました。');
     }
 }

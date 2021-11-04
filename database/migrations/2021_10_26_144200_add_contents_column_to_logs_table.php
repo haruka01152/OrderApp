@@ -15,7 +15,7 @@ class AddContentsColumnToLogsTable extends Migration
     {
         Schema::table('logs', function (Blueprint $table) {
             //
-            $table->string('contents');
+            $table->string('contents')->nullable();
         });
     }
 

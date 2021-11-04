@@ -67,4 +67,15 @@ $(function() {
       .addClass('bg-gray-200')
       .val('');
     }
+
+    // ログの横の▼ボタンを押すと詳細を表示
+    $('.view-log-button').on('click', function(){
+      var i = $('.view-log-button').index(this);
+      console.log(i);
+      $('.log-content').eq(i).fadeToggle();
+      $(this).toggleClass('opened-view-log');
+    });
+    $('#view-all-logs').on('click', function(){
+      $('.log-content').fadeToggle();
+    });
   });

@@ -72,7 +72,7 @@ class Construction extends Model
             $query->where(function ($query) use ($order_status) {
                 if ($order_status == 'all' || $order_status == null) {
                     $query->where('order_status', '!=', 0);
-                }else{
+                } else {
                     $query->where('order_status', $order_status);
                 }
             });
@@ -137,11 +137,6 @@ class Construction extends Model
             Order::createOrder($imageAndPath, $id);
         }
 
-        // 既存の注文書があれば情報を更新
-        if ($request->orders) {
-            Order::updateOrder($request);
-        }
-
         // 注文書の到着状況を取得
         list($const_arrive_status, $status) = Order::getArriveStatusOfOrders($id);
 
@@ -160,19 +155,28 @@ class Construction extends Model
         $construction->status = $status;
 
         if ($construction->isDirty()) {
+            if($request->orders){
+                Order::updateOrder($request);
+            }
+            Log::createEditLog($id, $request, $construction->getDirty());
             $construction->save();
             Alert::createOneAlert($id);
             $today = new Carbon('today');
             if (($const_arrive_status == '✔' || $alert_config == null) || $today <= $alert_config) {
-                Alert::deleteAlert($id,1);
+                Alert::deleteAlert($id, 1);
             }
             $alert = Alert::where('construction_id', $construction->id)->where('class', '!=', 1)->first();
-            if($alert != null && $construction->order_status != $alert->class){
+            if ($alert != null && $construction->order_status != $alert->class) {
                 Alert::deleteAlert($construction->id, $alert->class);
             }
-
             return true;
-        } else {
+        }elseif($request->orders){
+            Order::updateOrder($request);
+            Log::createEditLog($id, $request, $construction->getDirty());
+            $construction->save();
+            Alert::createOneAlert($id);
+            return true;
+        }else{
             return false;
         }
     }

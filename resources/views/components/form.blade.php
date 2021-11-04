@@ -9,7 +9,7 @@
                     @endif
                 </div>
                 <div class="flex flex-col pt-10">
-                    <label for="order_status">発注状況</label>
+                    <label for="order_status">■ 発注状況</label>
                     <select name="order_status" id="order_status" class="mt-1 w-2/12">
                         @foreach($order_statuses as $status)
                         <option value="{{$status->id}}" {{old('order_status', isset($construction) && $construction->order_status == $status->id) == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
@@ -18,11 +18,11 @@
                 </div>
                 <div class="flex pt-10">
                     <div class="flex flex-col">
-                        <label for="contract_date">契約日</label>
+                        <label for="contract_date">■ 契約日</label>
                         <input type="date" id="contract_date" name="contract_date" value="{{old('contract_date',isset($construction) ? $construction->contract_date : '')}}" class="mt-1">
                     </div>
                     <div class="flex flex-col ml-10">
-                        <label for="construction_date">工事日</label>
+                        <label for="construction_date">■ 工事日</label>
                         <input type="date" id="construction_date" name="construction_date" value="{{request('date') == null ? old('construction_date',isset($construction) ? $construction->construction_date : '') : request('date')}}" class="mt-1">
                     </div>
                 </div>
@@ -30,14 +30,14 @@
                 <p id="alert_notice" class="hidden error">※工事日の変更に伴い、アラート発信日が再設定されました。問題があれば変更してください。</p>
                 @endif
                 <div class="flex flex-col pt-10 w-2/4">
-                    <label for="customer_name">お客様名</label>
+                    <label for="customer_name">■ お客様名</label>
                     <input type="text" id="customer_name" name="customer_name" value="{{old('customer_name',isset($construction) ? $construction->customer_name : '')}}" class="mt-1">
                 </div>
                 @error('customer_name')
                 <p class="error">* {{$message}}</p>
                 @enderror
                 <div class="flex flex-col pt-10 w-2/4">
-                    <label for="">案件名</label>
+                    <label for="">■ 案件名</label>
                     <input type="text" id="construction_name" name="construction_name" value="{{old('construction_name',isset($construction) ? $construction->construction_name : '')}}" class="mt-1">
                 </div>
                 @error('construction_name')
@@ -49,7 +49,7 @@
                 <h3 class="mt-16 text-xl border-b border-l-8 pl-3 border-gray-500">発注物品</h3>
 
                 @if(\Route::currentRouteName() == 'edit' && count($orders) > 0)
-                <h4 class="pt-10 pb-3 text-gray-800">◆登録済みの注文書　<span>（到着状況：　{{isset($construction) && $construction->arrive_status == '✔' ? 'すべて到着' : $construction->arrive_status}}）</span></h4>
+                <h4 class="pt-10 pb-3 text-gray-800">■ 登録済みの注文書　<span>（到着状況：　{{isset($construction) && $construction->arrive_status == '✔' ? 'すべて到着' : $construction->arrive_status}}）</span></h4>
 
                 <div class="table">
                     <div class="table-row bg-gray-200">
@@ -89,7 +89,7 @@
                 @endif
 
                 <div>
-                    <h4 class="pt-10 pb-3 text-gray-800">◆物品未着のアラート発信日</h4>
+                    <h4 class="pt-10 pb-3 text-gray-800">■ 物品未着のアラート発信日</h4>
 
                     <div class="flex items-center">
                         @if(\Route::currentRouteName() == 'edit')
@@ -106,12 +106,12 @@
                 </div>
 
                 <div>
-                    <h4 class="pt-16 pb-3 text-gray-800">◆案件・発注備考</h4>
+                    <h4 class="pt-16 pb-3 text-gray-800">■ 案件・発注備考</h4>
                     <textarea name="remarks" class="w-full" rows="3">{{old('remarks', isset($construction) ? $construction->remarks : '')}}</textarea>
                 </div>
 
                 <div>
-                    <h4 class="pt-16 pb-3 text-gray-800">◆注文書登録</h4>
+                    <h4 class="pt-16 pb-3 text-gray-800">■ 注文書登録</h4>
                     @error('images.*')
                     <p class="error">* {{$message}}</p>
                     @enderror

@@ -1,3 +1,7 @@
+    .opened-view-log{
+        transform:rotate(-90deg);
+    }
+    
     input[type="file"] {
         position: absolute;
         bottom: -50px;
