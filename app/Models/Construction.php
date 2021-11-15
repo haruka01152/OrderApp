@@ -130,6 +130,12 @@ class Construction extends Model
 
     public function updateConstruction($request, $id)
     {
+        // 既存注文書の情報が変わっているかチェック
+        // （変わっていれば更新処理）
+        $judge = Order::judgeOrderChange($id, $request->orders);
+        if ($judge) {
+            Order::updateOrder($request);
+        }
 
         // 新しい注文書があれば登録
         if (isset($request->images) && $request->images[0] != null) {
@@ -154,29 +160,12 @@ class Construction extends Model
         $construction->alert_config = $alert_config;
         $construction->status = $status;
 
-        if ($construction->isDirty()) {
-            if($request->orders){
-                Order::updateOrder($request);
-            }
+        if ($construction->isDirty() || $judge) {
             Log::createEditLog($id, $request, $construction->getDirty());
             $construction->save();
-            Alert::createOneAlert($id);
-            $today = new Carbon('today');
-            if (($const_arrive_status == '✔' || $alert_config == null) || $today <= $alert_config) {
-                Alert::deleteAlert($id, 1);
-            }
-            $alert = Alert::where('construction_id', $construction->id)->where('class', '!=', 1)->first();
-            if ($alert != null && $construction->order_status != $alert->class) {
-                Alert::deleteAlert($construction->id, $alert->class);
-            }
+            Alert::alertForUpdateConstruction($id, $const_arrive_status, $alert_config, $construction);
             return true;
-        }elseif($request->orders){
-            Order::updateOrder($request);
-            Log::createEditLog($id, $request, $construction->getDirty());
-            $construction->save();
-            Alert::createOneAlert($id);
-            return true;
-        }else{
+        } else {
             return false;
         }
     }

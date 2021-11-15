@@ -1,5 +1,8 @@
         <form class="{{\Route::currentRouteName() == 'add' ? 'max-w-7xl lg:container m-auto' : ''}} w-8/12 bg-white overflow-hidden shadow py-8 px-16" action="" method="post" enctype="multipart/form-data">
             @csrf
+            @if(isset($construction))
+            <input type="hidden" name="construction_id" value="{{$construction->id}}">
+            @endif
             <div>
                 <div class="flex justify-between items-center">
                     <h3 class="{{\Route::currentRouteName() == 'edit' ? 'w-11/12' : 'w-full'}}  text-xl border-b border-l-8 pl-3 border-gray-500">案件情報</h3>
@@ -61,17 +64,16 @@
                     </div>
 
                     @foreach($orders as $order)
-                    <input type="hidden" name="orders[{{$order->id}}][id]" value="{{$order->id}}">
                     <div class="table-row">
                         <div class="table-cell">{{date('m/d', strtotime($order->created_at))}}</div>
                         <div class="table-cell">
                             <a href="{{asset(str_replace('public/','storage/',$order->path))}}" class="pdf cursor-pointer text-blue-500">{{{Str::limit($order->image, 30, '…')}}}</a>
                         </div>
                         <div class="table-cell" style="padding:0;">
-                            <input type="text" name="orders[{{$order->id}}][memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
+                            <input type="text" name="orders[order{{$order->id}}_memo]" value="@if($order->memo){{$order->memo}}@endif" class="block w-full border-none text-center">
                         </div>
                         <div class="table-cell p-0">
-                            <input type="checkbox" name="orders[{{$order->id}}][arrive_status]" class="ordersCheck" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>
+                            <input type="checkbox" name="orders[order{{$order->id}}_arrive_status]" class="ordersCheck" id="order{{$order->id}}" value="1" @if($order->arrive_status == 1)checked @endif>
                             <label for="order{{$order->id}}" class="ordersLabel block w-full h-full" style="border:none;">
                                 <i class="fas fa-check fa-2x text-gray-500"></i>
                             </label>

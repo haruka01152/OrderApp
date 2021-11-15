@@ -20,11 +20,19 @@ class Log extends Model
 
     public static function createData($user, $message, $id, $contents)
     {
-        Log::create([
-            'message' => $user . $message,
-            'construction_id' => $id,
-            'contents' => implode("\n", $contents),
-        ]);
+        if(is_array($contents)){
+            Log::create([
+                'message' => $user . $message,
+                'construction_id' => $id,
+                'contents' => implode("\n", $contents),
+            ]);    
+        }else{
+            Log::create([
+                'message' => $user . $message,
+                'construction_id' => $id,
+                'contents' => $contents,
+            ]);    
+        }
     }
 
     public static function createAddLog($id, $request)
@@ -36,7 +44,7 @@ class Log extends Model
             foreach ($request->images as $image) {
                 $names[] = $image->getClientOriginalName();
             }
-            $images = implode('、', $names);
+            $images = implode("\n", $names);
         }
 
         $contents = [
@@ -45,9 +53,9 @@ class Log extends Model
             'construction_date' => $request->construction_date ? '【工事日】' . $request->construction_date : '【工事日】',
             'customer_name' => '【お客様名】' . $request->customer_name,
             'construction_name' => '【案件名】' . $request->construction_name,
+            'orders' => $request->images ? '【注文書】'."\n" . $images : '【注文書】',
             'alert_config' => $request->notAlert ? '【アラート発信日】発信しない' : '【アラート発信日】' . $request->alert_config,
             'remarks' => $request->remarks ? '【案件・発注備考】' . $request->remarks : '【案件・発注備考】',
-            'images' => $request->images ? '【注文書登録】' . $images : '【注文書登録】'
         ];
 
         self::createData($user, $message, $id, $contents);
@@ -83,11 +91,41 @@ class Log extends Model
         ];
 
         foreach($contents as $key => $value){
-            if(!array_key_exists($key, $dirty) && $key != 'orders'){
+            if(!array_key_exists($key, $dirty)){
                 unset($contents[$key]);
             }
         }
 
         self::createData($user, $message, $id, $contents);
+    }
+
+    public static function createDeleteLog($id)
+    {
+        $user = Auth::user()->name;
+        $message = 'さんが案件を削除しました。';
+        $contents = null;
+        self::createData($user, $message, $id, $contents);
+    }
+
+    public static function createRestoreLog($id)
+    {
+        $user = Auth::user()->name;
+        $message = 'さんが案件を復元しました。';
+        $contents = null;
+        self::createData($user, $message, $id, $contents);
+    }
+
+    public static function createDeleteOrderLog($construction_id, $order_id)
+    {
+        $user = Auth::user()->name;
+        $message = 'さんが注文書を削除しました。';
+        $order = Order::findOrFail($order_id);
+        if ($order->arrive_status == 1) {
+            $arrive_status =  '✔';
+        } elseif ($order->arrive_status == 0) {
+            $arrive_status =  '×';
+        }
+        $contents = '【削除した注文書】'. $order->image . ' (備考:' . $order->memo . ') 到着状況:' . $arrive_status;
+        self::createData($user, $message, $construction_id, $contents);
     }
 }

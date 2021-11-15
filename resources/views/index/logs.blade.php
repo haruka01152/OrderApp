@@ -1,9 +1,15 @@
-@if(count($logs) > 0)
-<div class="bg-white overflow-hidden shadow py-8 px-5 h-full" style="width:30%;">
-<div class="flex justify-between">
-<h3 class="w-full text-xl border-b border-l-8 pl-3 border-gray-500">この案件の操作履歴</h3>
-<i title="すべての履歴の詳細を開く" id="view-all-logs" class="transition duration-500 ease-in-out mx-4 cursor-pointer fa-2x text-gray-400 fas fa-angle-double-down"></i>
-</div>
+<x-app-layout>
+
+    @include('components.header')
+
+    @include('components.breadCrumb')
+
+    @if(count($logs) > 0)
+    <div class="bg-white p-10 lg:container mx-auto my-5">
+    <div class="flex justify-between">
+        <h3 class="w-full text-xl border-b border-l-8 pl-3 border-gray-500">操作履歴一覧</h3>
+        <i title="すべての履歴の詳細を開く" id="view-all-logs" class="transition duration-500 ease-in-out mx-4 cursor-pointer fa-2x text-gray-400 fas fa-angle-double-down"></i>
+    </div>
 
     @foreach($logs as $log)
     <div class="mt-11 px-4">
@@ -27,8 +33,9 @@
     </div>
     @endforeach
     <div class="pt-5 md:mt-0 flex justify-center">
-        {{$logs->appends(request()->query())->links()}}
+        {{$logs->links()}}
     </div>
-</div>
+    </div>
+    @endif
 
-@endif
+</x-app-layout>

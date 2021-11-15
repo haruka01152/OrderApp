@@ -35,7 +35,6 @@ class ViewController extends Controller
     public function edit(Request $request, $id)
     {
         list($construction, $orders, $logs, $order_statuses) = $this->common->getInfoForDetail($id);
-        // list($previousUrl, $find) = $this->common->getFindWord($request);
         $view = $this->common->selectBladeForEdit($id);
         return view($view, compact('construction', 'orders', 'logs', 'order_statuses'));
     }
@@ -51,5 +50,17 @@ class ViewController extends Controller
         list($dates, $year, $month, $previousYear, $previousMonth, $nextYear, $nextMonth) = $this->calender->getCalendarDates($request);
         $constructions = $this->construction->getAllConstructions();
         return view('index.calender', compact('dates', 'year', 'month', 'previousYear', 'previousMonth', 'nextYear', 'nextMonth', 'constructions'));
+    }
+
+    public function alerts(Request $request){
+        $class = $request->class;
+        $alerts = Alert::getAlerts(50,$class);
+        return view('index.alert', compact('alerts'));
+    }
+
+    public function logs()
+    {
+        $logs = Log::paginate(50);
+        return view('index.logs', compact('logs'));
     }
 }

@@ -71,11 +71,17 @@ $(function() {
     // ログの横の▼ボタンを押すと詳細を表示
     $('.view-log-button').on('click', function(){
       var i = $('.view-log-button').index(this);
-      console.log(i);
       $('.log-content').eq(i).fadeToggle();
       $(this).toggleClass('opened-view-log');
     });
-    $('#view-all-logs').on('click', function(){
-      $('.log-content').fadeToggle();
+    $('body').on('click', '#view-all-logs', function(){
+      $('.log-content').fadeIn();
+      $('.view-log-button').addClass('opened-view-log');
+      $(this).addClass('opened-view-all');  
+    });
+    $('body').on('click', '.opened-view-all', function(){
+      $('.log-content').css('display', 'none');
+      $('.view-log-button').removeClass('opened-view-log');
+      $(this).removeClass('opened-view-all');
     });
   });

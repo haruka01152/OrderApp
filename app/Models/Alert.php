@@ -29,19 +29,19 @@ class Alert extends Model
         return $alerts;
     }
 
-    public static function getAlerts($paginate_number,$class)
+    public static function getAlerts($paginate_number, $class)
     {
-        if($class != null && $class != 'all'){
+        if ($class != null && $class != 'all') {
             $alerts = Alert::select('alerts.*')
-            ->join('constructions', 'alerts.construction_id', '=', 'constructions.id')
-            ->where('class', $class)
-            ->orderBy('constructions.construction_date', 'asc')
-            ->paginate($paginate_number);
-        }elseif($class == null || $class == 'all'){
+                ->join('constructions', 'alerts.construction_id', '=', 'constructions.id')
+                ->where('class', $class)
+                ->orderBy('constructions.construction_date', 'asc')
+                ->paginate($paginate_number);
+        } elseif ($class == null || $class == 'all') {
             $alerts = Alert::select('alerts.*')
-            ->join('constructions', 'alerts.construction_id', '=', 'constructions.id')
-            ->orderBy('constructions.construction_date', 'asc')
-            ->paginate($paginate_number);
+                ->join('constructions', 'alerts.construction_id', '=', 'constructions.id')
+                ->orderBy('constructions.construction_date', 'asc')
+                ->paginate($paginate_number);
         }
         return $alerts;
     }
@@ -126,6 +126,19 @@ class Alert extends Model
         }
     }
 
+    public static function alertForUpdateConstruction($id, $const_arrive_status, $alert_config, $construction)
+    {
+        Alert::createOneAlert($id);
+        $today = new Carbon('today');
+        if (($const_arrive_status == '✔' || $alert_config == null) || $today <= $alert_config) {
+            Alert::deleteAlert($id, 1);
+        }
+        $alert = Alert::where('construction_id', $construction->id)->where('class', '!=', 1)->first();
+        if ($alert != null && $construction->order_status != $alert->class) {
+            Alert::deleteAlert($construction->id, $alert->class);
+        }
+    }
+
     public static function deleteAllAlert($id)
     {
         Alert::where('construction_id', $id)->delete();
@@ -144,7 +157,7 @@ class Alert extends Model
             $status = $construction->status;
 
             if ($status == 2 || $status == 3) {
-                self::deleteAlert($construction->id,1);
+                self::deleteAlert($construction->id, 1);
             }
         }
     }

@@ -14,6 +14,7 @@
                 </div>
                 @endif
             </a>
+            <a title="操作履歴" href="{{route('logs')}}" class="ml-10"><i class="fas fa-history fa-2x"></i></a>
         </div>
 
         @if(\Route::currentRouteName() == 'dashboard')

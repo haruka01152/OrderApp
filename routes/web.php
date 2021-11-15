@@ -30,12 +30,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('delete/{id}', 'ViewController@delete')->name('delete');
     Route::post('delete/{id}', 'IndexController@destroy');
 
-    // 削除した工事を復元
     Route::post('restore/{id}', 'IndexController@restore')->name('restore');
 
     Route::get('calender', 'ViewController@calender')->name('calender');
 
-    Route::get('alerts', 'AlertController@alerts')->name('alerts');
+    Route::get('alerts', 'ViewController@alerts')->name('alerts');
+
+    Route::get('logs', 'ViewController@logs')->name('logs');
+
+    // 開発用ルート（運用中はコメントアウト）
     Route::get('createAlerts', 'AlertController@create');
     Route::get('destroyAlerts', 'AlertController@delete');
 });

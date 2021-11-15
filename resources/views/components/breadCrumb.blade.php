@@ -37,6 +37,8 @@
             アラート一覧
             @elseif(\Route::currentRouteName() == 'delete')
             案件削除
+            @elseif(\Route::currentRouteName() == 'logs')
+            操作履歴一覧
             @endif
         </a>
     </div>

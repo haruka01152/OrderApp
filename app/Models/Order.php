@@ -61,16 +61,17 @@ class Order extends Model
 
     public static function updateOrder($request)
     {
-        foreach ($request->orders as $order) {
+        $orders = Order::getOrders($request->construction_id);
+        foreach ($orders as $order) {
 
-            if (isset($order['arrive_status'])) {
-                Order::where('id', $order['id'])->update([
-                    'memo' => $order['memo'],
+            if (isset($request->orders['order' . $order->id . '_arrive_status'])) {
+                $order->update([
+                    'memo' => $request->orders['order' . $order->id . '_memo'],
                     'arrive_status' => 1,
                 ]);
             } else {
-                Order::where('id', $order['id'])->update([
-                    'memo' => $order['memo'],
+                $order->update([
+                    'memo' => $request->orders['order' . $order->id . '_memo'],
                     'arrive_status' => 0,
                 ]);
             }
@@ -97,6 +98,31 @@ class Order extends Model
             'arrive_status' => $const_arrive_status,
             'status' => $status,
         ]);
+    }
 
+    public static function judgeOrderChange($construction_id, $request_orders)
+    {
+        // 既存注文書の情報が変わっているかどうかのチェック
+        $order_list = Order::getOrders($construction_id);
+
+        if (count($order_list) > 0) {
+            foreach ($order_list as $order) {
+                if ($request_orders['order' . $order->id . '_memo'] != $order->memo) {
+                    $changeFlg[] = 1;
+                } elseif ((isset($request_orders['order' . $order->id . '_arrive_status']) && $order->arrive_status == 0) || (!isset($request_orders['order' . $order->id . '_arrive_status']) && $order->arrive_status == 1)) {
+                    $changeFlg[] = 1;
+                } else {
+                    $changeFlg[] = 0;
+                }
+            }
+
+            if (in_array(1, $changeFlg, true)) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 }

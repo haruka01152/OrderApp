@@ -28,7 +28,7 @@
         @endforeach
     </div>
     @if(\Route::currentRouteName() == 'alerts')
-    <div class="mt-5 flex justify-center">
+    <div class="pt-5 flex justify-center">
         {{$alerts->appends(request()->query())->links()}}
     </div>
     @endif
