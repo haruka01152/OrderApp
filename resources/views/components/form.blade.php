@@ -85,7 +85,7 @@
                     @endforeach
                 </div>
 
-                @error('orders.*.*')
+                @error('orders.*')
                 <p class="error">* {{$message}}</p>
                 @enderror
                 @endif
@@ -111,6 +111,9 @@
                     <h4 class="pt-16 pb-3 text-gray-800">■ 案件・発注備考</h4>
                     <textarea name="remarks" class="w-full" rows="3">{{old('remarks', isset($construction) ? $construction->remarks : '')}}</textarea>
                 </div>
+                @error('remarks')
+                    <p class="error">* {{$message}}</p>
+                    @enderror
 
                 <div>
                     <h4 class="pt-16 pb-3 text-gray-800">■ 注文書登録</h4>

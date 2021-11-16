@@ -46,9 +46,9 @@ class IndexController extends Controller
     {
         if($this->construction->updateConstruction($request, $id) != false){
             // ログ作成はConstruction.phpにて
-            return redirect()->route('edit', ['id' => $id])->with('message', '案件を更新しました。');
+            return redirect()->route('edit', $id)->with('message', '案件を更新しました。');
         }else{
-            return redirect()->route('edit', ['id' => $id])->with('message', '※項目に変化がありません。');
+            return redirect()->route('edit', $id)->with('message', '※項目に変化がありません。');
         }
     }
 
@@ -65,6 +65,6 @@ class IndexController extends Controller
         $this->construction->restoreConstruction($id);
         $this->alert->createOneAlert($id);
         $this->log->createRestoreLog($id);
-        return redirect()->route('edit', ['id' => $id])->with('message', '案件を復元しました。');
+        return redirect()->route('edit', $id)->with('message', '案件を復元しました。');
     }
 }

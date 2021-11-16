@@ -60,7 +60,7 @@ class ViewController extends Controller
 
     public function logs()
     {
-        $logs = Log::paginate(50);
+        $logs = Log::orderBy('id', 'desc')->paginate(50);
         return view('index.logs', compact('logs'));
     }
 }

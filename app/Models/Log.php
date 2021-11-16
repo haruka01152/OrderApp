@@ -12,6 +12,11 @@ class Log extends Model
 
     protected $fillable = ['message', 'construction_id', 'contents'];
 
+    public function constructions()
+    {
+        return $this->belongsTo('App\Models\Construction', 'construction_id', 'id');
+    }
+
     public static function getLogs($id)
     {
         $logs = Log::where('construction_id', $id)->orderBy('created_at', 'desc')->paginate(5);
@@ -20,18 +25,18 @@ class Log extends Model
 
     public static function createData($user, $message, $id, $contents)
     {
-        if(is_array($contents)){
+        if (is_array($contents)) {
             Log::create([
                 'message' => $user . $message,
                 'construction_id' => $id,
                 'contents' => implode("\n", $contents),
-            ]);    
-        }else{
+            ]);
+        } else {
             Log::create([
                 'message' => $user . $message,
                 'construction_id' => $id,
                 'contents' => $contents,
-            ]);    
+            ]);
         }
     }
 
@@ -53,7 +58,7 @@ class Log extends Model
             'construction_date' => $request->construction_date ? '【工事日】' . $request->construction_date : '【工事日】',
             'customer_name' => '【お客様名】' . $request->customer_name,
             'construction_name' => '【案件名】' . $request->construction_name,
-            'orders' => $request->images ? '【注文書】'."\n" . $images : '【注文書】',
+            'orders' => $request->images ? '【注文書】' . "\n" . $images : '【注文書】',
             'alert_config' => $request->notAlert ? '【アラート発信日】発信しない' : '【アラート発信日】' . $request->alert_config,
             'remarks' => $request->remarks ? '【案件・発注備考】' . $request->remarks : '【案件・発注備考】',
         ];
@@ -61,22 +66,43 @@ class Log extends Model
         self::createData($user, $message, $id, $contents);
     }
 
-    public static function createEditLog($id, $request, $dirty)
+    public static function createEditLog($id, $request, $dirty, $changeOrder, $newOrders)
     {
         $user = Auth::user()->name;
         $message = 'さんが案件を更新しました。';
 
         $order_list = Order::where('construction_id', $id)->get();
         if ($order_list) {
-            foreach ($order_list as $order) {
-                if ($order->arrive_status == 1) {
-                    $orders[] = $order->image . ' (備考:' . $order->memo . ') 到着状況:✔';
-                } elseif ($order->arrive_status == 0) {
-                    $orders[] = $order->image . ' (備考:' . $order->memo . ') 到着状況:×';
+            if ($changeOrder) {
+                foreach ($order_list as $order) {
+                    if ($changeOrder[$order->id] == 1) {
+                        if ($order->arrive_status == 1) {
+                            $orders[] = $order->image . ' (備考:' . $order->memo . ') 到着状況:✔';
+                        } else {
+                            $orders[] = $order->image . ' (備考:' . $order->memo . ') 到着状況:×';
+                        }
+                    }
+                }
+            } elseif ($newOrders != 0) {
+                $uploaded = Order::whereIn('id', $newOrders)->get();
+                foreach ($uploaded as $u) {
+                    if ($u->arrive_status == 1) {
+                        $orders[] = $u->image . ' (備考:' . $u->memo . ') 到着状況:✔';
+                    } else {
+                        $orders[] = $u->image . ' (備考:' . $u->memo . ') 到着状況:×';
+                    }
                 }
             }
         } else {
             $orders = null;
+        }
+
+        if (isset($orders)) {
+            if (isset($uploaded)) {
+                $order_contents = '【注文書登録】' . "\n" . implode("\n", $orders);
+            } else {
+                $order_contents = '【注文書】' . "\n" . implode("\n", $orders);
+            }
         }
 
         $contents = [
@@ -85,13 +111,13 @@ class Log extends Model
             'construction_date' => $request->construction_date ? '【工事日】' . $request->construction_date : '【工事日】',
             'customer_name' => '【お客様名】' . $request->customer_name,
             'construction_name' => '【案件名】' . $request->construction_name,
-            'orders' => $orders != null ? '【注文書】'."\n" . implode("\n", $orders) : '【注文書】',
+            'orders' => isset($order_contents) ? $order_contents : null,
             'alert_config' => $request->notAlert ? '【アラート発信日】発信しない' : '【アラート発信日】' . $request->alert_config,
             'remarks' => $request->remarks ? '【案件・発注備考】' . $request->remarks : '【案件・発注備考】',
         ];
 
-        foreach($contents as $key => $value){
-            if(!array_key_exists($key, $dirty)){
+        foreach ($contents as $key => $value) {
+            if ((!array_key_exists($key, $dirty) && $key != 'orders') || $value == null) {
                 unset($contents[$key]);
             }
         }
@@ -125,7 +151,7 @@ class Log extends Model
         } elseif ($order->arrive_status == 0) {
             $arrive_status =  '×';
         }
-        $contents = '【削除した注文書】'. $order->image . ' (備考:' . $order->memo . ') 到着状況:' . $arrive_status;
+        $contents = '【削除した注文書】' . $order->image . ' (備考:' . $order->memo . ') 到着状況:' . $arrive_status;
         self::createData($user, $message, $construction_id, $contents);
     }
 }

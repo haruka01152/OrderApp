@@ -56,7 +56,11 @@ class Order extends Model
                 'arrive_status' => 0,
                 'path' => $path,
             ]);
+
+            $newOrders[] = Order::where('path', $path)->value('id');
         }
+
+        return $newOrders;
     }
 
     public static function updateOrder($request)
@@ -108,16 +112,16 @@ class Order extends Model
         if (count($order_list) > 0) {
             foreach ($order_list as $order) {
                 if ($request_orders['order' . $order->id . '_memo'] != $order->memo) {
-                    $changeFlg[] = 1;
+                    $changeOrder[$order->id] = 1;
                 } elseif ((isset($request_orders['order' . $order->id . '_arrive_status']) && $order->arrive_status == 0) || (!isset($request_orders['order' . $order->id . '_arrive_status']) && $order->arrive_status == 1)) {
-                    $changeFlg[] = 1;
+                    $changeOrder[$order->id] = 1;
                 } else {
-                    $changeFlg[] = 0;
+                    $changeOrder[$order->id] = 0;
                 }
             }
 
-            if (in_array(1, $changeFlg, true)) {
-                return true;
+            if (in_array(1, $changeOrder, true)) {
+                return $changeOrder;
             } else {
                 return false;
             }

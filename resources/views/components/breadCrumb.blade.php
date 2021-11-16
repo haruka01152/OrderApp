@@ -13,15 +13,18 @@
 <div class="flex items-center py-2 px-8 bg-white shadow border-t-2 border-gray-200">
     <div class="lg:container m-auto">
         <a href="{{route('dashboard')}}" class="text-blue-500 pr-3">工事物品管理トップ</a>
-        @if(strpos(url()->previous(), 'calender'))
+        @if(strpos(url()->previous(), 'calender') && !\Route::currentRouteName() == 'calender')
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
         <a href="{{url()->previous()}}" class="text-blue-500 pr-3">カレンダー表示</a>
         @elseif(strpos(url()->previous(), 'find'))
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
-        <a href="{{url()->previous()}}" class="text-blue-500 pr-3">絞り込み: {{str_replace('find=', '', strstr(url()->previous(), 'find='))}}</a>
+        <a href="{{url()->previous()}}" class="text-blue-500 pr-3">絞り込み: {{urldecode(str_replace('find=', '', strstr(url()->previous(), 'find=')))}}</a>
         @elseif(strpos(url()->previous(), 'edit') && \Route::currentRouteName() != 'edit')
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
         <a href="{{url()->previous()}}" class="text-blue-500 pr-3">案件編集</a>
+        @elseif(strpos(url()->previous(), 'alerts') && !\Route::currentRouteName() == 'alerts')
+        <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
+        <a href="{{url()->previous()}}" class="text-blue-500 pr-3">アラート一覧</a>
         @endif
         <i class="fas fa-chevron-right text-gray-500 mr-3"></i>
         <a href="{{url()->full()}}" class="text-blue-500 pr-3">
@@ -31,12 +34,16 @@
             @else
             案件編集
             @endif
-            @elseif(\Route::currentRouteName() == 'add')
+            @endif
+
+            @if(\Route::currentRouteName() == 'add')
             案件作成
             @elseif(\Route::currentRouteName() == 'alerts')
             アラート一覧
             @elseif(\Route::currentRouteName() == 'delete')
             案件削除
+            @elseif(\Route::currentRouteName() == 'calender')
+            カレンダー表示
             @elseif(\Route::currentRouteName() == 'logs')
             操作履歴一覧
             @endif

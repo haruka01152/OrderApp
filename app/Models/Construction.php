@@ -33,6 +33,11 @@ class Construction extends Model
         return $this->hasOne('App\Models\Alert');
     }
 
+    public function logs()
+    {
+        return $this->hasMany('App\Models\Log');
+    }
+
     public function order_statuses()
     {
         return $this->hasOne('App\Models\OrderStatus', 'id', 'order_status');
@@ -132,16 +137,19 @@ class Construction extends Model
     {
         // 既存注文書の情報が変わっているかチェック
         // （変わっていれば更新処理）
-        $judge = Order::judgeOrderChange($id, $request->orders);
-        if ($judge) {
+        $changeOrder = Order::judgeOrderChange($id, $request->orders);
+        if ($changeOrder) {
             Order::updateOrder($request);
         }
 
         // 新しい注文書があれば登録
         if (isset($request->images) && $request->images[0] != null) {
             $imageAndPath = Image::store($request);
-            Order::createOrder($imageAndPath, $id);
+            $newOrders = Order::createOrder($imageAndPath, $id);
+        }else{
+            $newOrders = 0;
         }
+        
 
         // 注文書の到着状況を取得
         list($const_arrive_status, $status) = Order::getArriveStatusOfOrders($id);
@@ -160,8 +168,8 @@ class Construction extends Model
         $construction->alert_config = $alert_config;
         $construction->status = $status;
 
-        if ($construction->isDirty() || $judge) {
-            Log::createEditLog($id, $request, $construction->getDirty());
+        if ($construction->isDirty() || $changeOrder) {
+            Log::createEditLog($id, $request, $construction->getDirty(), $changeOrder, $newOrders);
             $construction->save();
             Alert::alertForUpdateConstruction($id, $const_arrive_status, $alert_config, $construction);
             return true;
