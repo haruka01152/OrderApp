@@ -4,7 +4,8 @@
 
     @include('components.breadCrumb')
 
-    <div class="bg-white overflow-hidden shadow p-7 border-4 border-gray-500 border-double lg:container mx-auto my-6">
+    <div class="py-6">
+    <div class="bg-white overflow-hidden shadow p-7 border-4 border-gray-500 border-double lg:container mx-auto">
     <div class="flex justify-between">
         <h3 class="w-full text-xl border-b border-l-8 pl-3 border-gray-500">操作履歴一覧</h3>
         <i title="すべての履歴の詳細を開く" id="view-all-logs" class="transition duration-500 ease-in-out mx-4 cursor-pointer fa-2x text-gray-400 fas fa-angle-double-down"></i>
@@ -42,6 +43,7 @@
     </div>
 
     @endif
+    </div>
     </div>
 
 </x-app-layout>

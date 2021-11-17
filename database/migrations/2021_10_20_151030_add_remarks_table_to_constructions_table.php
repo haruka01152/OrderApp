@@ -15,7 +15,7 @@ class AddRemarksTableToConstructionsTable extends Migration
     {
         Schema::table('constructions', function (Blueprint $table) {
             //
-            $table->string('remarks')->nullable();
+            $table->string('remarks', 1000)->nullable();
         });
     }
 

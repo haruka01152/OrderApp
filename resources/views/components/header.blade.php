@@ -23,14 +23,14 @@
             <div class="flex pl-5">
                 <div class="pl-3">
                     <select name="status" onchange="submit(this.form)">
-                    <option value="all" {{request('status') == 'all' ? 'selected' : ''}}>(物品到着状況すべて)</option>
-                    <option value="1" {{request('status') == 1 || request('status') == null ? 'selected' : ''}}>物品未着</option>
+                        <option value="all" {{request('status') == 'all' ? 'selected' : ''}}>(物品到着状況すべて)</option>
+                        <option value="1" {{request('status') == 1 || request('status') == null ? 'selected' : ''}}>物品未着</option>
                         @foreach($statuses as $status)
                         <option value="{{$status->id}}" {{request('status') == $status->id ? 'selected' : ''}}>{{$status->name}}</option>
                         @endforeach
                     </select>
                     <select name="order_status" onchange="submit(this.form)">
-                    <option value="all" {{request('order_status') == 'all' ? 'selected' : ''}}>(発注状況すべて)</option>
+                        <option value="all" {{request('order_status') == 'all' ? 'selected' : ''}}>(発注状況すべて)</option>
                         @foreach($order_statuses as $order_status)
                         <option value="{{$order_status->id}}" {{request('order_status') == $order_status->id ? 'selected' : ''}}>{{$order_status->name}}</option>
                         @endforeach
@@ -75,6 +75,11 @@
             </div>
         </form>
 
+        @elseif(\Route::currentRouteName() == 'profile.show')
+        <form class="ml-auto" action="{{route('logout')}}" method="POST">
+            @csrf
+            <input type="submit" class="py-2 px-4 bg-red-500 border-2 border-white text-white rounded-lg cursor-pointer" value="ログアウト">
+        </form>
         @endif
     </div>
 </x-slot>

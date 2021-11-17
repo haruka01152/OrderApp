@@ -86,11 +86,7 @@ class Log extends Model
             } elseif ($newOrders != 0) {
                 $uploaded = Order::whereIn('id', $newOrders)->get();
                 foreach ($uploaded as $u) {
-                    if ($u->arrive_status == 1) {
-                        $orders[] = $u->image . ' (備考:' . $u->memo . ') 到着状況:✔';
-                    } else {
-                        $orders[] = $u->image . ' (備考:' . $u->memo . ') 到着状況:×';
-                    }
+                    $orders[] = $u->image;
                 }
             }
         } else {
