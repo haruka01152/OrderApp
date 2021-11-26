@@ -29,6 +29,7 @@ class IndexController extends Controller
         if (isset($request['find']) && $request['find'] == '') {
             return redirect()->route('dashboard', ['status' => $request['status'], 'order_status' => $request['order_status']]);
         }
+        Alert::createAlerts();
     
         return view('dashboard', compact('statuses', 'alerts', 'constructions', 'order_statuses'));
     }
